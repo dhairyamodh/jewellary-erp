@@ -12,7 +12,6 @@ import {
 import { NavLink as RouterLink } from 'react-router-dom';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 
-import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
 import BrightnessLowTwoToneIcon from '@mui/icons-material/BrightnessLowTwoTone';
 import MmsTwoToneIcon from '@mui/icons-material/MmsTwoTone';
 import TableChartTwoToneIcon from '@mui/icons-material/TableChartTwoTone';
@@ -34,6 +33,7 @@ import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTo
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
+  margin-top: ${theme.spacing(2)};
   .MuiList-root {
     padding: ${theme.spacing(1)};
 
@@ -177,26 +177,51 @@ const SubMenuWrapper = styled(Box)(
 function SidebarMenu() {
   const { closeSidebar } = useContext(SidebarContext);
 
+  const sidebarMenuItems = [
+    {
+      title: 'Purchase',
+      menuItems: [
+        {
+          title: 'Entry',
+          disableRipple: false,
+          to: '/entry'
+        }
+      ]
+    }
+  ];
+
   return (
     <>
       <MenuWrapper>
-        <List component="div">
-          <SubMenuWrapper>
-            <List component="div">
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/overview"
-                  startIcon={<DesignServicesTwoToneIcon />}
-                >
-                  Overview
-                </Button>
-              </ListItem>
-            </List>
-          </SubMenuWrapper>
-        </List>
+        {sidebarMenuItems?.map((item, index) => (
+          <List
+            key={index}
+            component="div"
+            subheader={
+              <ListSubheader component="div" disableSticky>
+                {item?.title}
+              </ListSubheader>
+            }
+          >
+            <SubMenuWrapper>
+              <List component="div">
+                {item.menuItems?.map((menuItem, menuIndex) => (
+                  <ListItem component="div" key={menuIndex}>
+                    <Button
+                      disableRipple={menuItem?.disableRipple || true}
+                      component={RouterLink}
+                      onClick={closeSidebar}
+                      to={menuItem?.to}
+                      startIcon={<BrightnessLowTwoToneIcon />}
+                    >
+                      {menuItem?.title}
+                    </Button>
+                  </ListItem>
+                ))}
+              </List>
+            </SubMenuWrapper>
+          </List>
+        ))}
         <List
           component="div"
           subheader={

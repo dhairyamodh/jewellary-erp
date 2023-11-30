@@ -15,6 +15,10 @@ const Loader = (Component) => (props) =>
 
 // Pages
 
+// Entry
+
+const Entry = Loader(lazy(() => import('src/content/applications/Entry')));
+
 const Overview = Loader(lazy(() => import('src/content/overview')));
 
 // Dashboards
@@ -87,6 +91,20 @@ const routes = [
       {
         path: '/',
         element: <Navigate to="/dashboard" replace />
+      },
+      {
+        path: 'entry',
+        element: <SidebarLayout />,
+        children: [
+          {
+            path: '',
+            element: <Navigate to="list" replace />
+          },
+          {
+            path: 'list',
+            element: <Entry />
+          }
+        ]
       },
       {
         path: 'status',
