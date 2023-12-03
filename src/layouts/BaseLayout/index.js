@@ -1,9 +1,27 @@
 import PropTypes from 'prop-types';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { Box } from '@mui/material';
+import { memo, useCallback, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
-const BaseLayout = ({ children }) => {
+const BaseLayout = memo(({ children }) => {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const nonAuthRoutes = ['/login'];
+
+  const handleNavigation = useCallback(() => {
+    if (!nonAuthRoutes.includes(location.pathname) && !isAuthenticated) {
+      navigate('/login');
+    }
+  }, [location]);
+
+  useEffect(() => {
+    handleNavigation();
+  }, [handleNavigation]);
+
   return (
     <Box
       sx={{
@@ -14,7 +32,7 @@ const BaseLayout = ({ children }) => {
       {children || <Outlet />}
     </Box>
   );
-};
+});
 
 BaseLayout.propTypes = {
   children: PropTypes.node

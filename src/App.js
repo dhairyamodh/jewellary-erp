@@ -8,6 +8,7 @@ import { CssBaseline } from '@mui/material';
 import ThemeProvider from './theme/ThemeProvider';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
+import SnackbarComp from './components/Snackbar';
 
 function App() {
   const content = useRoutes(router);
@@ -15,6 +16,7 @@ function App() {
   return (
     <Provider store={store}>
       <ThemeProvider>
+        <SnackbarComp />
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <CssBaseline />
           {content}
