@@ -26,6 +26,10 @@ const CreateOrder = Loader(
   lazy(() => import('src/content/applications/Order/CreateOrder'))
 );
 
+const AddPayment = Loader(
+  lazy(() => import('src/content/applications/Order/AddPayment'))
+);
+
 // const Overview = Loader(lazy(() => import('src/content/overview')));
 
 // // Dashboards
@@ -104,6 +108,10 @@ const routes = [
           {
             path: 'add',
             element: <CreateOrder />
+          },
+          {
+            path: 'add-payment/:id',
+            element: <AddPayment />
           }
         ]
       },

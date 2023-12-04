@@ -18,7 +18,6 @@ const snackbarSlice = createSlice({
     },
     closeSnackbar: (state) => {
       state.open = false;
-      state.message = '';
       state.severity = 'success';
     }
   }

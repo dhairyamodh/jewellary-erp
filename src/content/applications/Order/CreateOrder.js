@@ -1,4 +1,4 @@
-import { LoadingButton } from '@mui/lab';
+import { DatePicker, LoadingButton, LocalizationProvider } from '@mui/lab';
 import {
   Box,
   Button,
@@ -19,9 +19,11 @@ import {
 } from '@mui/material';
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useFieldArray, useForm, useWatch } from 'react-hook-form';
+import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrderAsync } from 'src/redux/Order/orderThunk';
+import { RUPEE_SYMBOL } from 'src/utils/constants';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
 const AddEntry = () => {
   const {
@@ -56,8 +58,7 @@ const AddEntry = () => {
         ...data,
         items: data.item,
         total_amount: data.total,
-        advance_payment: data.advancedPayment,
-        address: 'ddfdf'
+        advance_payment: data.advancedPayment
       })
     );
   };
@@ -122,6 +123,17 @@ const AddEntry = () => {
                             required: true
                           })}
                           error={Boolean(errors?.customerMobile)}
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={6}>
+                        <TextField
+                          name="address"
+                          label="Customer Address"
+                          fullWidth
+                          {...register('address', {
+                            required: true
+                          })}
+                          error={Boolean(errors?.address)}
                         />
                       </Grid>
                       {fields.map((field, index) => (
@@ -276,17 +288,39 @@ const AddEntry = () => {
                                     <Typography>Due Date</Typography>
                                   </Grid>
                                   <Grid item xs={6}>
-                                    <TextField
-                                      label="Due Date"
-                                      type="date"
-                                      defaultValue={new Date()}
-                                      min={new Date()}
-                                      fullWidth
+                                    <Controller
+                                      control={control}
                                       name="dueDate"
-                                      {...register('dueDate', {
-                                        required: !watch('isFullPayment')
-                                      })}
-                                      error={Boolean(errors?.dueDate)}
+                                      render={({ field }) => {
+                                        return (
+                                          <LocalizationProvider
+                                            dateAdapter={AdapterDateFns}
+                                          >
+                                            <DatePicker
+                                              {...field}
+                                              value={field.value || null}
+                                              inputFormat="dd/mm/yyyy"
+                                              onChange={(value) => {
+                                                field.onChange(value);
+                                              }}
+                                              minDate={new Date()}
+                                              renderInput={(params) => {
+                                                console.log(params);
+                                                return (
+                                                  <TextField
+                                                    {...params}
+                                                    label="Due Date"
+                                                    fullWidth
+                                                    error={Boolean(
+                                                      errors?.dueDate
+                                                    )}
+                                                  />
+                                                );
+                                              }}
+                                            />
+                                          </LocalizationProvider>
+                                        );
+                                      }}
                                     />
                                   </Grid>
                                 </>
@@ -300,7 +334,8 @@ const AddEntry = () => {
                                   variant="h4"
                                   {...register('total')}
                                 >
-                                  ₹ {watch('total')?.toLocaleString()}
+                                  {RUPEE_SYMBOL}{' '}
+                                  {watch('total')?.toLocaleString()}
                                 </Typography>
                               </Grid>
                             </Grid>

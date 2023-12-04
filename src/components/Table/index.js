@@ -14,7 +14,7 @@ const applyPagination = (data, page, limit) => {
   return data.slice(page * limit, page * limit + limit);
 };
 
-const CustomTable = ({ columns, data }) => {
+const CustomTable = ({ columns, data, loading }) => {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(5);
 
@@ -37,24 +37,37 @@ const CustomTable = ({ columns, data }) => {
             ))}
           </TableHead>
           <TableBody>
-            {paginatedCryptoOrders.map((item, index) => {
-              return (
-                <TableRow key={index}>
-                  {columns.map((header) => {
-                    return (
-                      <TableCell>
-                        {Object.prototype.hasOwnProperty.call(header, 'cell')
-                          ? header?.cell({
-                              row: item,
-                              value: item?.[header?.accessor]
-                            })
-                          : item[header.accessor]}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
+            {!loading ? (
+              paginatedCryptoOrders.map((item, index) => {
+                return (
+                  <TableRow key={index}>
+                    {columns.map((header) => {
+                      return (
+                        <TableCell>
+                          {Object.prototype.hasOwnProperty.call(header, 'cell')
+                            ? header?.cell({
+                                row: item,
+                                value: item?.[header?.accessor]
+                              })
+                            : item[header.accessor]}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns?.length}
+                  sx={{
+                    textAlign: 'center'
+                  }}
+                >
+                  <i>Fetching records...</i>
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

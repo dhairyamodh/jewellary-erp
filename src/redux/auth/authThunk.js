@@ -29,6 +29,33 @@ export const loginAsync = createAsyncThunk(
   }
 );
 
+export const profileAsync = createAsyncThunk(
+  'auth/profile',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axiosClient.get('/auth/profile');
+      // if (response?.data?.success) {
+      //   dispatch(
+      //     openSnackbar({
+      //       message: response?.data?.msg,
+      //       severity: 'success'
+      //     })
+      //   );
+      // } else {
+      //   dispatch(
+      //     openSnackbar({
+      //       message: response?.data?.msg,
+      //       severity: 'error'
+      //     })
+      //   );
+      // }
+      return response;
+    } catch (error) {
+      return rejectWithValue('Login failed. Please check your credentials.');
+    }
+  }
+);
+
 export const loginAsyncCase = (builder) => {
   builder
     .addCase(loginAsync.pending, (state) => {
@@ -44,6 +71,27 @@ export const loginAsyncCase = (builder) => {
       state.user = action.payload.user;
     })
     .addCase(loginAsync.rejected, (state, action) => {
+      state.isAuthenticated = false;
+      state.token = null;
+      state.loading = false;
+      state.error = action.payload;
+      state.user = null;
+    });
+};
+
+export const profileAsyncCase = (builder) => {
+  builder
+    .addCase(profileAsync.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(profileAsync.fulfilled, (state, action) => {
+      state.isAuthenticated = !!action.payload.data.user;
+      state.loading = false;
+      state.error = null;
+      state.user = action.payload.data.user;
+    })
+    .addCase(profileAsync.rejected, (state, action) => {
       state.isAuthenticated = false;
       state.token = null;
       state.loading = false;

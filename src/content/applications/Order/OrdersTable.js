@@ -8,28 +8,25 @@ import {
   Select,
   MenuItem,
   CardHeader,
-  IconButton,
-  Tooltip,
-  Stack
+  Stack,
+  Button
 } from '@mui/material';
 
 import CustomTable from 'src/components/Table';
 import Label from 'src/components/Label';
-import { EditTwoTone } from '@mui/icons-material';
-import { useDispatch } from 'react-redux';
-import { getTransactionById } from 'src/redux/Order/orderThunk';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOrdersAsync } from 'src/redux/Order/orderThunk';
+import { RUPEE_SYMBOL } from 'src/utils/constants';
+import moment from 'moment';
+import { useNavigate } from 'react-router';
 
 const getStatusLabel = (status) => {
   const map = {
-    failed: {
-      text: 'Failed',
-      color: 'error'
-    },
-    completed: {
+    Payment_Completed: {
       text: 'Completed',
       color: 'success'
     },
-    pending: {
+    Payment_Pending: {
       text: 'Pending',
       color: 'warning'
     }
@@ -59,10 +56,14 @@ const OrdersTable = () => {
     status: null
   });
 
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
+  const { data, loading } = useSelector((state) => state.order);
+
   useEffect(() => {
-    dispatch(getTransactionById({ id: 1 }));
+    dispatch(getOrdersAsync());
   }, []);
 
   const statusOptions = [
@@ -71,33 +72,70 @@ const OrdersTable = () => {
       name: 'All'
     },
     {
-      id: 'completed',
+      id: 'Payment_Completed',
       name: 'Completed'
     },
     {
       id: 'pending',
       name: 'Pending'
-    },
-    {
-      id: 'failed',
-      name: 'Failed'
     }
   ];
 
   const columns = [
     {
-      id: 'name',
-      header: 'Name',
-      accessor: 'name'
+      header: 'Customer Name',
+      accessor: 'customerName'
     },
     {
-      id: 'age',
-      header: 'Age',
-      accessor: 'age'
+      header: 'Products',
+      accessor: 'total_amount',
+      cell: ({ row }) => {
+        return <>{row.items.length}</>;
+      }
+    },
+    {
+      header: 'Due Date',
+      accessor: 'dueDate',
+      cell: ({ value }) => {
+        return <>{moment(value).format('DD/MM/YY')}</>;
+      }
+    },
+    {
+      header: 'Advanced payment',
+      accessor: 'advance_payment',
+      cell: ({ value }) => {
+        return (
+          <>
+            {RUPEE_SYMBOL} {value}
+          </>
+        );
+      }
+    },
+    {
+      header: 'Remaining Amount',
+      accessor: 'remainingAmount',
+      cell: ({ value }) => {
+        return (
+          <>
+            {RUPEE_SYMBOL} {value}
+          </>
+        );
+      }
+    },
+    {
+      header: 'total',
+      accessor: 'total_amount',
+      cell: ({ value }) => {
+        return (
+          <>
+            {RUPEE_SYMBOL} {value}
+          </>
+        );
+      }
     },
     {
       id: 'status',
-      header: 'Status',
+      header: 'Payment',
       accessor: 'status',
       cell: ({ value }) => {
         return getStatusLabel(value);
@@ -107,23 +145,19 @@ const OrdersTable = () => {
       id: 'actions',
       header: 'Actions',
       accessor: 'actions',
-      cell: () => {
+      cell: ({ row }) => {
         return (
           <Stack spacing={1} direction="row">
-            <Tooltip title="Edit Order" arrow>
-              <IconButton color="primary">
-                <EditTwoTone fontSize="small" />
-              </IconButton>
-            </Tooltip>
+            <Button
+              variant="outlined"
+              onClick={() => navigate(`/order/add-payment/${row._id}`)}
+            >
+              Add Payment
+            </Button>
           </Stack>
         );
       }
     }
-  ];
-  const data = [
-    { name: 'John Doe', age: 25, status: 'completed' },
-    { name: 'Jane Doe', age: 30, status: 'pending' }
-    // Add more data rows as needed
   ];
   const handleStatusChange = (e) => {
     let value = null;
@@ -147,11 +181,11 @@ const OrdersTable = () => {
           action={
             <Box width={150}>
               <FormControl fullWidth variant="outlined">
-                <InputLabel>Status</InputLabel>
+                <InputLabel>Payment</InputLabel>
                 <Select
                   value={filters.status || 'all'}
                   onChange={handleStatusChange}
-                  label="Status"
+                  label="Payment"
                   autoWidth
                 >
                   {statusOptions.map((statusOption) => (
@@ -167,7 +201,11 @@ const OrdersTable = () => {
         />
       )}
       <Divider />
-      <CustomTable columns={columns} data={filteredCryptoOrders} />
+      <CustomTable
+        columns={columns}
+        data={filteredCryptoOrders}
+        loading={loading}
+      />
     </Card>
   );
 };

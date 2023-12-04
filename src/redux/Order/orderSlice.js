@@ -1,10 +1,15 @@
 // orderSlice.js
 import { createSlice } from '@reduxjs/toolkit';
-import { createOrderAsyncCase, getTransactionById } from './orderThunk';
+import {
+  createOrderAsyncCase,
+  getOrderByIdCase,
+  getOrdersAsyncCase
+} from './orderThunk';
 
 // Define the initial state for the slice
 const initialState = {
   data: [],
+  details: {},
   loading: false,
   error: null
 };
@@ -15,8 +20,9 @@ const orderSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    getTransactionById(builder);
+    getOrderByIdCase(builder);
     createOrderAsyncCase(builder);
+    getOrdersAsyncCase(builder);
   }
 });
 

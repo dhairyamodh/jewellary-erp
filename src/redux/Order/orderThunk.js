@@ -3,13 +3,26 @@ import axiosClient from 'src/client/axiosClient';
 import { openSnackbar } from '../Snackbar/snackbarSlice';
 
 // Create an async thunk for making the API call
-export const getTransactionById = createAsyncThunk(
+export const getOrderById = createAsyncThunk(
   '/transaction/get-transaction',
+  async ({ id }) => {
+    try {
+      const response = await axiosClient.get(
+        `/transaction/get-transaction/${id}`
+      );
+      return response;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+);
+
+export const getOrdersAsync = createAsyncThunk(
+  '/transaction/getallorders',
   async () => {
     try {
-      const response = await axiosClient.get('/transaction/get-transaction/1');
-      const data = await response.json();
-      return data;
+      const response = await axiosClient.get('/transaction/getallorders');
+      return response;
     } catch (error) {
       throw Error(error.message);
     }
@@ -46,17 +59,47 @@ export const createOrderAsync = createAsyncThunk(
   }
 );
 
-export const getTransactionByIdCase = (builder) => {
+export const addPaymentAsync = createAsyncThunk(
+  `/update-transaction`,
+  async (req, { dispatch }) => {
+    try {
+      const response = await axiosClient.put(
+        `/transaction/update-transaction/${req.id}`,
+        req
+      );
+      if (response.data.success) {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg,
+            severity: 'success'
+          })
+        );
+      } else {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg,
+            severity: 'error'
+          })
+        );
+      }
+      return response;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+);
+
+export const getOrderByIdCase = (builder) => {
   builder
-    .addCase(getTransactionById.pending, (state) => {
+    .addCase(getOrderById.pending, (state) => {
       state.loading = true;
       state.error = null;
     })
-    .addCase(getTransactionById.fulfilled, (state, action) => {
+    .addCase(getOrderById.fulfilled, (state, action) => {
       state.loading = false;
-      state.data = action.payload;
+      state.details = action.payload?.data?.getdata;
     })
-    .addCase(getTransactionById.rejected, (state, action) => {
+    .addCase(getOrderById.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     });
@@ -72,6 +115,22 @@ export const createOrderAsyncCase = (builder) => {
       state.loading = false;
     })
     .addCase(createOrderAsync.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    });
+};
+
+export const getOrdersAsyncCase = (builder) => {
+  builder
+    .addCase(getOrdersAsync.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(getOrdersAsync.fulfilled, (state, action) => {
+      state.loading = false;
+      state.data = action.payload?.data?.GetAllorders;
+    })
+    .addCase(getOrdersAsync.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     });

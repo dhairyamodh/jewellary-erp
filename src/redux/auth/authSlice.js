@@ -1,6 +1,6 @@
 // authSlice.js
 import { createSlice } from '@reduxjs/toolkit';
-import { loginAsyncCase } from './authThunk';
+import { loginAsyncCase, profileAsyncCase } from './authThunk';
 
 const authSlice = createSlice({
   name: 'auth',
@@ -19,6 +19,7 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     loginAsyncCase(builder);
+    profileAsyncCase(builder);
   }
 });
 

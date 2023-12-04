@@ -9,6 +9,7 @@ import ThemeProvider from './theme/ThemeProvider';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import SnackbarComp from './components/Snackbar';
+import Auth from './content/auth';
 
 function App() {
   const content = useRoutes(router);
@@ -16,10 +17,10 @@ function App() {
   return (
     <Provider store={store}>
       <ThemeProvider>
-        <SnackbarComp />
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <CssBaseline />
-          {content}
+          <SnackbarComp />
+          <Auth>{content}</Auth>
         </LocalizationProvider>
       </ThemeProvider>
     </Provider>
