@@ -15,7 +15,7 @@ const Auth = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (!isAuthenticated && !localStorage.getItem('token')) {
+    if (!isAuthenticated && localStorage.getItem('token') === undefined) {
       navigate('/');
     }
   }, [isAuthenticated, loading]);

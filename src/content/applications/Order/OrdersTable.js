@@ -38,7 +38,7 @@ const getStatusLabel = (status) => {
 };
 
 const applyFilters = (cryptoOrders, filters) => {
-  return cryptoOrders.filter((cryptoOrder) => {
+  return cryptoOrders?.filter((cryptoOrder) => {
     let matches = true;
 
     if (filters.status && cryptoOrder.status !== filters.status) {

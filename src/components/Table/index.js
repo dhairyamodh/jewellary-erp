@@ -11,7 +11,7 @@ import {
 import React, { useState } from 'react';
 
 const applyPagination = (data, page, limit) => {
-  return data.slice(page * limit, page * limit + limit);
+  return data?.slice(page * limit, page * limit + limit);
 };
 
 const CustomTable = ({ columns, data, loading }) => {
@@ -38,7 +38,7 @@ const CustomTable = ({ columns, data, loading }) => {
           </TableHead>
           <TableBody>
             {!loading ? (
-              paginatedCryptoOrders.map((item, index) => {
+              paginatedCryptoOrders?.map((item, index) => {
                 return (
                   <TableRow key={index}>
                     {columns.map((header) => {
@@ -74,7 +74,7 @@ const CustomTable = ({ columns, data, loading }) => {
       <Box p={2}>
         <TablePagination
           component="div"
-          count={paginatedCryptoOrders.length}
+          count={paginatedCryptoOrders?.length}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
           page={page}

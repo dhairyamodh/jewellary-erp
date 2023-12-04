@@ -64,7 +64,7 @@ const applyFilters = (cryptoOrders, filters) => {
 };
 
 const applyPagination = (cryptoOrders, page, limit) => {
-  return cryptoOrders.slice(page * limit, page * limit + limit);
+  return cryptoOrders?.slice(page * limit, page * limit + limit);
 };
 
 const RecentOrdersTable = ({ cryptoOrders }) => {
