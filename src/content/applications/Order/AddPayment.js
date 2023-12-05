@@ -63,6 +63,7 @@ const AddPayment = () => {
       dispatch(getOrderById({ id }));
     }
   }, [id]);
+
   if (loading) {
     return (
       <Backdrop
@@ -85,6 +86,34 @@ const AddPayment = () => {
             <Divider />
             <CardContent>
               <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Card>
+                    <CardHeader title="Customer Information" />
+                    <Divider />
+                    <CardContent>
+                      <Grid container spacing={2}>
+                        <Grid item xs={3}>
+                          <Typography variant="h6">Customer Name</Typography>
+                          <Typography variant="h6">
+                            {details?.customerName}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Typography variant="h6">Customer Mobile</Typography>
+                          <Typography variant="h6">
+                            {details?.customerMobile}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Typography variant="h6">Customer Address</Typography>
+                          <Typography variant="h6">
+                            {details?.address}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </CardContent>
+                  </Card>
+                </Grid>
                 <Grid item xs={12}>
                   <Card>
                     <CardHeader title="Items" />
@@ -165,51 +194,69 @@ const AddPayment = () => {
                   </Card>
                 </Grid>
 
-                <Grid item xs={12}>
-                  <Card>
-                    <CardHeader title="All Payments" />
-                    <Divider />
-                    <CardContent>
-                      <form onSubmit={handleSubmit(onSubmit)}>
-                        <Grid container spacing={2}>
-                          <Grid item xs={6}>
-                            <Typography variant="h4" fontWeight="bold">
-                              Remaining Amount
-                            </Typography>
+                {details?.status !== 'Payment_Completed' && (
+                  <Grid item xs={12}>
+                    <Card>
+                      <CardHeader title="Add Amount" />
+                      <Divider />
+                      <CardContent>
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                          <Grid container spacing={2}>
+                            <Grid item xs={6} md={4}>
+                              <Typography variant="h4" fontWeight="bold">
+                                Remaining Amount
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={6} md={8}>
+                              <Typography variant="h4" fontWeight="bold">
+                                {RUPEE_SYMBOL} {details?.remainingAmount}
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={6} md={4}>
+                              Amount
+                            </Grid>
+                            <Grid item xs={6} md={4}>
+                              <TextField
+                                name="amount"
+                                label="Amount"
+                                fullWidth
+                                {...register('amount', {
+                                  required: true,
+                                  validate: (value) => {
+                                    const parsedValue = Number(value);
+                                    const remainingAmount = Number(
+                                      details?.remainingAmount
+                                    );
+
+                                    if (parsedValue >= remainingAmount) {
+                                      return 'Amount should not be greater than remaining amount';
+                                    }
+
+                                    return '';
+                                  }
+                                })}
+                                error={Boolean(
+                                  errors?.amount &&
+                                    errors?.amount?.message !== ''
+                                )}
+                                helperText={errors?.amount?.message}
+                              />
+                            </Grid>
+                            <Grid item xs={6} md={4}>
+                              <LoadingButton
+                                loading={paymentLoading}
+                                variant="contained"
+                                type="submit"
+                              >
+                                Submit
+                              </LoadingButton>
+                            </Grid>
                           </Grid>
-                          <Grid item xs={6}>
-                            <Typography variant="h4" fontWeight="bold">
-                              {RUPEE_SYMBOL} {details?.remainingAmount}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={6} md={4}>
-                            Add Amount
-                          </Grid>
-                          <Grid item xs={6} md={4}>
-                            <TextField
-                              name="amount"
-                              label="Amount"
-                              fullWidth
-                              {...register('amount', {
-                                required: true
-                              })}
-                              error={Boolean(errors?.amount)}
-                            />
-                          </Grid>
-                          <Grid item xs={6} md={4}>
-                            <LoadingButton
-                              loading={paymentLoading}
-                              variant="contained"
-                              type="submit"
-                            >
-                              Submit
-                            </LoadingButton>
-                          </Grid>
-                        </Grid>
-                      </form>
-                    </CardContent>
-                  </Card>
-                </Grid>
+                        </form>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                )}
               </Grid>
             </CardContent>
           </Card>

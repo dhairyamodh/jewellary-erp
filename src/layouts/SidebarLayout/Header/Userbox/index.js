@@ -73,14 +73,12 @@ function HeaderUserbox() {
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Hidden mdDown>
-          <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
-          <UserBoxText>
-            <UserBoxLabel variant="body1" textTransform="capitalize">
-              {user?.name}
-            </UserBoxLabel>
-          </UserBoxText>
-        </Hidden>
+        <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
+        <UserBoxText>
+          <UserBoxLabel variant="body1" textTransform="capitalize">
+            {user?.name}
+          </UserBoxLabel>
+        </UserBoxText>
         <Hidden smDown>
           <ExpandMoreTwoToneIcon sx={{ ml: 1 }} />
         </Hidden>

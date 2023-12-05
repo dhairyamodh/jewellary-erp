@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
   Divider,
-  Box,
   FormControl,
   InputLabel,
   Card,
@@ -19,6 +18,8 @@ import { getOrdersAsync } from 'src/redux/Order/orderThunk';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
 import moment from 'moment';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
+import { AddTwoTone } from '@mui/icons-material';
 
 const getStatusLabel = (status) => {
   const map = {
@@ -76,7 +77,7 @@ const OrdersTable = () => {
       name: 'Completed'
     },
     {
-      id: 'pending',
+      id: 'Payment_Pending',
       name: 'Pending'
     }
   ];
@@ -85,13 +86,6 @@ const OrdersTable = () => {
     {
       header: 'Customer Name',
       accessor: 'customerName'
-    },
-    {
-      header: 'Products',
-      accessor: 'total_amount',
-      cell: ({ row }) => {
-        return <>{row.items.length}</>;
-      }
     },
     {
       header: 'Due Date',
@@ -149,10 +143,15 @@ const OrdersTable = () => {
         return (
           <Stack spacing={1} direction="row">
             <Button
-              variant="outlined"
+              variant="contained"
+              color={
+                row.status === 'Payment_Completed' ? 'secondary' : 'primary'
+              }
               onClick={() => navigate(`/order/add-payment/${row._id}`)}
             >
-              Add Payment
+              {row.status === 'Payment_Completed'
+                ? 'View details'
+                : 'Add Payment'}
             </Button>
           </Stack>
         );
@@ -179,14 +178,14 @@ const OrdersTable = () => {
       {!selectedBulkActions && (
         <CardHeader
           action={
-            <Box width={150}>
+            <Stack direction="row" gap={2} width={300}>
               <FormControl fullWidth variant="outlined">
                 <InputLabel>Payment</InputLabel>
                 <Select
                   value={filters.status || 'all'}
                   onChange={handleStatusChange}
                   label="Payment"
-                  autoWidth
+                  fullWidth
                 >
                   {statusOptions.map((statusOption) => (
                     <MenuItem key={statusOption.id} value={statusOption.id}>
@@ -195,7 +194,19 @@ const OrdersTable = () => {
                   ))}
                 </Select>
               </FormControl>
-            </Box>
+              <Link to="/order/add">
+                <Button
+                  variant="contained"
+                  sx={{
+                    whiteSpace: 'nowrap',
+                    height: '100%'
+                  }}
+                  startIcon={<AddTwoTone fontSize="small" />}
+                >
+                  Create Order
+                </Button>
+              </Link>
+            </Stack>
           }
           title="Order List"
         />

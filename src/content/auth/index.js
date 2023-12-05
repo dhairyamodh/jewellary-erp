@@ -8,17 +8,23 @@ const Auth = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, isAuthenticated } = useSelector((state) => state.auth);
+  const { loading, isAuthenticated, error } = useSelector(
+    (state) => state.auth
+  );
 
   useEffect(() => {
     dispatch(profileAsync());
   }, []);
 
   useEffect(() => {
-    if (!isAuthenticated && localStorage.getItem('token') === undefined) {
-      navigate('/');
+    if (!isAuthenticated && !localStorage.getItem('token')) {
+      navigate('/login');
     }
   }, [isAuthenticated, loading]);
+
+  useEffect(() => {
+    navigate('/login');
+  }, [error]);
 
   if (loading) {
     return (

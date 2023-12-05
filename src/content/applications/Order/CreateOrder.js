@@ -32,13 +32,14 @@ const AddEntry = () => {
     register,
     watch,
     setValue,
+    reset,
     formState: { errors }
   } = useForm({
     defaultValues: {
       isFullPayment: true,
       item: [
         {
-          itemName: '',
+          name: '',
           type: 'gold',
           quantity: 1,
           weight: '',
@@ -48,19 +49,40 @@ const AddEntry = () => {
     }
   });
 
+  console.log('error', errors);
+
   const dispatch = useDispatch();
 
   const { loading } = useSelector((state) => state.order);
 
   const onSubmit = (data) => {
-    dispatch(
-      createOrderAsync({
-        ...data,
-        items: data.item,
-        total_amount: data.total,
-        advance_payment: data.advancedPayment
-      })
-    );
+    (async () => {
+      const res = await dispatch(
+        createOrderAsync({
+          customerName: data.customerName,
+          customerMobile: data.customerMobile,
+          address: data.address,
+          isFullPayment: data.isFullPayment,
+          dueDate: data.dueDate,
+          paymentType: data.paymentType,
+          items: data.item.map((i) => {
+            return {
+              name: i?.name,
+              type: i.type,
+              quantity: parseInt(i.qauntity),
+              weight: parseFloat(i.weight),
+              price: parseFloat(i.price)
+            };
+          }),
+          transactions: [{ amount: parseFloat(data.advancedPayment) }],
+          total_amount: parseFloat(data.total),
+          advance_payment: parseFloat(data.advancedPayment)
+        })
+      );
+      if (res?.payload?.data?.success) {
+        reset();
+      }
+    })();
   };
 
   const { fields, append, remove } = useFieldArray({
@@ -141,13 +163,13 @@ const AddEntry = () => {
                           <Grid container spacing={2}>
                             <Grid item xs={12} md={3}>
                               <TextField
-                                name={`item.${index}.itemName`}
+                                name={`item.${index}.name`}
                                 label="Item Name"
                                 fullWidth
-                                {...register(`item.${index}.itemName`, {
+                                {...register(`item.${index}.name`, {
                                   required: true
                                 })}
-                                error={Boolean(errors?.item?.[index]?.itemName)}
+                                error={Boolean(errors?.item?.[index]?.name)}
                               />
                             </Grid>
                             <Grid item xs={12} md={2}>
@@ -299,13 +321,12 @@ const AddEntry = () => {
                                             <DatePicker
                                               {...field}
                                               value={field.value || null}
-                                              inputFormat="dd/mm/yyyy"
+                                              inputFormat="dd/MM/yyyy"
                                               onChange={(value) => {
                                                 field.onChange(value);
                                               }}
                                               minDate={new Date()}
                                               renderInput={(params) => {
-                                                console.log(params);
                                                 return (
                                                   <TextField
                                                     {...params}
