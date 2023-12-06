@@ -237,7 +237,7 @@ const AddPayment = () => {
                                         return 'Amount should not be greater than remaining amount';
                                       }
 
-                                      return '';
+                                      return true;
                                     }
                                   })}
                                   error={Boolean(
