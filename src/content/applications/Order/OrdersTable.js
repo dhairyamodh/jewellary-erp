@@ -94,7 +94,7 @@ const OrdersTable = () => {
         return (
           <>
             {row.status !== 'Payment_Completed'
-              ? `${RUPEE_SYMBOL} ${moment(value).format('DD/MM/YY')}`
+              ? `${moment(value).format('DD/MM/YY')}`
               : '-'}
           </>
         );
