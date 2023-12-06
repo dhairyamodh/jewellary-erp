@@ -41,7 +41,7 @@ const AddEntry = () => {
         {
           name: '',
           type: 'gold',
-          quantity: 1,
+          quantity: '1',
           weight: '',
           price: ''
         }
@@ -49,36 +49,33 @@ const AddEntry = () => {
     }
   });
 
-  console.log('error', errors);
-
   const dispatch = useDispatch();
 
   const { loading } = useSelector((state) => state.order);
 
   const onSubmit = (data) => {
     (async () => {
-      const res = await dispatch(
-        createOrderAsync({
-          customerName: data.customerName,
-          customerMobile: data.customerMobile,
-          address: data.address,
-          isFullPayment: data.isFullPayment,
-          dueDate: data.dueDate,
-          paymentType: data.paymentType,
-          items: data.item.map((i) => {
-            return {
-              name: i?.name,
-              type: i.type,
-              quantity: parseInt(i.qauntity),
-              weight: parseFloat(i.weight),
-              price: parseFloat(i.price)
-            };
-          }),
-          transactions: [{ amount: parseFloat(data.advancedPayment) }],
-          total_amount: parseFloat(data.total),
-          advance_payment: parseFloat(data.advancedPayment)
-        })
-      );
+      const request = {
+        customerName: data.customerName,
+        customerMobile: data.customerMobile,
+        address: data.address,
+        isFullPayment: data.isFullPayment,
+        dueDate: data.dueDate,
+        paymentType: data.paymentType,
+        items: data.item.map((i) => {
+          return {
+            name: i?.name,
+            type: i.type,
+            quantity: parseInt(i.qauntity || 1),
+            weight: parseFloat(i.weight),
+            price: parseFloat(i.price)
+          };
+        }),
+        transactions: [{ amount: parseFloat(data.advancedPayment) }],
+        total_amount: parseFloat(data.total),
+        advance_payment: parseFloat(data.advancedPayment)
+      };
+      const res = await dispatch(createOrderAsync(request));
       if (res?.payload?.data?.success) {
         reset();
       }

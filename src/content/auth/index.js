@@ -20,10 +20,12 @@ const Auth = ({ children }) => {
     if (!isAuthenticated && !localStorage.getItem('token')) {
       navigate('/login');
     }
-  }, [isAuthenticated, loading]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
-    navigate('/login');
+    if (error) {
+      navigate('/login');
+    }
   }, [error]);
 
   if (loading) {

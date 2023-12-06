@@ -155,107 +155,113 @@ const AddPayment = () => {
                     </CardContent>
                   </Card>
                 </Grid>
-
-                <Grid item xs={12}>
-                  <Card>
-                    <CardHeader title="All Payments" />
-                    <Divider />
-                    <CardContent>
-                      <TableContainer>
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>Amount</TableCell>
-                              <TableCell>Date</TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            {details?.transactions?.map((row, index) => (
-                              <TableRow
-                                key={index}
-                                sx={{
-                                  '&:last-child td, &:last-child th': {
-                                    border: 0
-                                  }
-                                }}
-                              >
-                                <TableCell component="th" scope="row">
-                                  {row.amount}
-                                </TableCell>
-                                <TableCell>
-                                  {moment(row.date).format('DD/MM/YY hh:mm a')}
-                                </TableCell>
-                              </TableRow>
-                            ))}
-                          </TableBody>
-                        </Table>
-                      </TableContainer>
-                    </CardContent>
-                  </Card>
-                </Grid>
-
                 {details?.status !== 'Payment_Completed' && (
-                  <Grid item xs={12}>
-                    <Card>
-                      <CardHeader title="Add Amount" />
-                      <Divider />
-                      <CardContent>
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                          <Grid container spacing={2}>
-                            <Grid item xs={6} md={4}>
-                              <Typography variant="h4" fontWeight="bold">
-                                Remaining Amount
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={6} md={8}>
-                              <Typography variant="h4" fontWeight="bold">
-                                {RUPEE_SYMBOL} {details?.remainingAmount}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={6} md={4}>
-                              Amount
-                            </Grid>
-                            <Grid item xs={6} md={4}>
-                              <TextField
-                                name="amount"
-                                label="Amount"
-                                fullWidth
-                                {...register('amount', {
-                                  required: true,
-                                  validate: (value) => {
-                                    const parsedValue = Number(value);
-                                    const remainingAmount = Number(
-                                      details?.remainingAmount
-                                    );
+                  <>
+                    <Grid item xs={12}>
+                      <Card>
+                        <CardHeader title="All Payments" />
+                        <Divider />
+                        <CardContent>
+                          <TableContainer>
+                            <Table
+                              sx={{ minWidth: 650 }}
+                              aria-label="simple table"
+                            >
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell>Amount</TableCell>
+                                  <TableCell>Date</TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                {details?.transactions?.map((row, index) => (
+                                  <TableRow
+                                    key={index}
+                                    sx={{
+                                      '&:last-child td, &:last-child th': {
+                                        border: 0
+                                      }
+                                    }}
+                                  >
+                                    <TableCell component="th" scope="row">
+                                      {row.amount}
+                                    </TableCell>
+                                    <TableCell>
+                                      {moment(row.date).format(
+                                        'DD/MM/YY hh:mm a'
+                                      )}
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          </TableContainer>
+                        </CardContent>
+                      </Card>
+                    </Grid>
 
-                                    if (parsedValue >= remainingAmount) {
-                                      return 'Amount should not be greater than remaining amount';
+                    <Grid item xs={12}>
+                      <Card>
+                        <CardHeader title="Add Amount" />
+                        <Divider />
+                        <CardContent>
+                          <form onSubmit={handleSubmit(onSubmit)}>
+                            <Grid container spacing={2}>
+                              <Grid item xs={6} md={4}>
+                                <Typography variant="h4" fontWeight="bold">
+                                  Remaining Amount
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={6} md={8}>
+                                <Typography variant="h4" fontWeight="bold">
+                                  {RUPEE_SYMBOL} {details?.remainingAmount}
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={6} md={4}>
+                                Amount
+                              </Grid>
+                              <Grid item xs={6} md={4}>
+                                <TextField
+                                  name="amount"
+                                  label="Amount"
+                                  fullWidth
+                                  {...register('amount', {
+                                    required: true,
+                                    validate: (value) => {
+                                      const parsedValue = Number(value);
+                                      const remainingAmount = Number(
+                                        details?.remainingAmount
+                                      );
+
+                                      if (parsedValue >= remainingAmount) {
+                                        return 'Amount should not be greater than remaining amount';
+                                      }
+
+                                      return '';
                                     }
-
-                                    return '';
-                                  }
-                                })}
-                                error={Boolean(
-                                  errors?.amount &&
-                                    errors?.amount?.message !== ''
-                                )}
-                                helperText={errors?.amount?.message}
-                              />
+                                  })}
+                                  error={Boolean(
+                                    errors?.amount &&
+                                      errors?.amount?.message !== ''
+                                  )}
+                                  helperText={errors?.amount?.message}
+                                />
+                              </Grid>
+                              <Grid item xs={6} md={4}>
+                                <LoadingButton
+                                  loading={paymentLoading}
+                                  variant="contained"
+                                  type="submit"
+                                >
+                                  Submit
+                                </LoadingButton>
+                              </Grid>
                             </Grid>
-                            <Grid item xs={6} md={4}>
-                              <LoadingButton
-                                loading={paymentLoading}
-                                variant="contained"
-                                type="submit"
-                              >
-                                Submit
-                              </LoadingButton>
-                            </Grid>
-                          </Grid>
-                        </form>
-                      </CardContent>
-                    </Card>
-                  </Grid>
+                          </form>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  </>
                 )}
               </Grid>
             </CardContent>

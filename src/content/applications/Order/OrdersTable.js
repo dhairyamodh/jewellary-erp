@@ -90,17 +90,25 @@ const OrdersTable = () => {
     {
       header: 'Due Date',
       accessor: 'dueDate',
-      cell: ({ value }) => {
-        return <>{moment(value).format('DD/MM/YY')}</>;
+      cell: ({ value, row }) => {
+        return (
+          <>
+            {row.status !== 'Payment_Completed'
+              ? `${RUPEE_SYMBOL} ${moment(value).format('DD/MM/YY')}`
+              : '-'}
+          </>
+        );
       }
     },
     {
       header: 'Advanced payment',
       accessor: 'advance_payment',
-      cell: ({ value }) => {
+      cell: ({ value, row }) => {
         return (
           <>
-            {RUPEE_SYMBOL} {value}
+            {row.status !== 'Payment_Completed'
+              ? `${RUPEE_SYMBOL} ${value}`
+              : '-'}
           </>
         );
       }
@@ -108,10 +116,12 @@ const OrdersTable = () => {
     {
       header: 'Remaining Amount',
       accessor: 'remainingAmount',
-      cell: ({ value }) => {
+      cell: ({ value, row }) => {
         return (
           <>
-            {RUPEE_SYMBOL} {value}
+            {row.status !== 'Payment_Completed'
+              ? `${RUPEE_SYMBOL} ${value}`
+              : '-'}
           </>
         );
       }
