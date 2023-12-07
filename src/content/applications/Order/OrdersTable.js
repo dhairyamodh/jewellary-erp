@@ -101,19 +101,6 @@ const OrdersTable = () => {
       }
     },
     {
-      header: 'Advanced payment',
-      accessor: 'advance_payment',
-      cell: ({ value, row }) => {
-        return (
-          <>
-            {row.status !== 'Payment_Completed'
-              ? `${RUPEE_SYMBOL} ${value}`
-              : '-'}
-          </>
-        );
-      }
-    },
-    {
       header: 'Remaining Amount',
       accessor: 'remainingAmount',
       cell: ({ value, row }) => {
@@ -154,14 +141,10 @@ const OrdersTable = () => {
           <Stack spacing={1} direction="row">
             <Button
               variant="contained"
-              color={
-                row.status === 'Payment_Completed' ? 'secondary' : 'primary'
-              }
+              color={row?.remainingAmount <= 0 ? 'secondary' : 'primary'}
               onClick={() => navigate(`/order/add-payment/${row._id}`)}
             >
-              {row.status === 'Payment_Completed'
-                ? 'View details'
-                : 'Add Payment'}
+              {row?.remainingAmount <= 0 ? 'View details' : 'Add Payment'}
             </Button>
           </Stack>
         );

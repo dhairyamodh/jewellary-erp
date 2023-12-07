@@ -9,7 +9,7 @@ import {
   Card,
   TextField
 } from '@mui/material';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,7 +41,9 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const { isAuthenticated, loading } = useSelector((state) => state.auth);
+  const [submitLoading, setSubmitLoading] = useState(false);
+
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -50,7 +52,12 @@ function Login() {
   }, [isAuthenticated]);
 
   const onSubmit = (data) => {
-    dispatch(loginAsync(data));
+    try {
+      setSubmitLoading(true);
+      dispatch(loginAsync(data));
+    } catch (error) {
+      setSubmitLoading(false);
+    }
   };
 
   return (
@@ -95,7 +102,7 @@ function Login() {
                   <Grid item xs={12}>
                     <Box display="flex" justifyContent="center">
                       <LoadingButton
-                        loading={loading}
+                        loading={submitLoading}
                         variant="contained"
                         type="submit"
                       >

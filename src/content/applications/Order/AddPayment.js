@@ -155,7 +155,7 @@ const AddPayment = () => {
                     </CardContent>
                   </Card>
                 </Grid>
-                {details?.status !== 'Payment_Completed' && (
+                {details?.remainingAmount > 0 && (
                   <>
                     <Grid item xs={12}>
                       <Card>
@@ -233,11 +233,11 @@ const AddPayment = () => {
                                         details?.remainingAmount
                                       );
 
-                                      if (parsedValue >= remainingAmount) {
+                                      if (parsedValue > remainingAmount) {
                                         return 'Amount should not be greater than remaining amount';
                                       }
 
-                                      return true;
+                                      return undefined;
                                     }
                                   })}
                                   error={Boolean(

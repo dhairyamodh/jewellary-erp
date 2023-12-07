@@ -74,7 +74,7 @@ const CustomTable = ({ columns, data, loading }) => {
       <Box p={2}>
         <TablePagination
           component="div"
-          count={paginatedCryptoOrders?.length}
+          count={data?.length}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
           page={page}

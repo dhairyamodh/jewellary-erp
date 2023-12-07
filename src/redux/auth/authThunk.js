@@ -59,21 +59,18 @@ export const profileAsync = createAsyncThunk(
 export const loginAsyncCase = (builder) => {
   builder
     .addCase(loginAsync.pending, (state) => {
-      state.loading = true;
       state.error = null;
     })
     .addCase(loginAsync.fulfilled, (state, action) => {
       state.isAuthenticated = true;
       state.token = action.payload.token;
       localStorage.setItem('token', action.payload.token);
-      state.loading = false;
       state.error = null;
       state.user = action.payload.user;
     })
     .addCase(loginAsync.rejected, (state, action) => {
       state.isAuthenticated = false;
       state.token = null;
-      state.loading = false;
       state.error = action.payload;
       state.user = null;
     });
