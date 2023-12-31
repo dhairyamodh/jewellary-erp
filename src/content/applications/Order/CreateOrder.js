@@ -1,4 +1,5 @@
-import { DatePicker, LoadingButton, LocalizationProvider } from '@mui/lab';
+import { Add, DeleteOutlineTwoTone } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 import {
   Box,
   Button,
@@ -19,11 +20,10 @@ import {
 } from '@mui/material';
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form';
+import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrderAsync } from 'src/redux/Order/orderThunk';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
 const AddEntry = () => {
   const {
@@ -41,7 +41,7 @@ const AddEntry = () => {
         {
           name: '',
           type: 'gold',
-          quantity: '1',
+          quantity: 1,
           weight: '',
           price: ''
         }
@@ -230,9 +230,17 @@ const AddEntry = () => {
                                   sx={{
                                     height: '100%'
                                   }}
-                                  onClick={append}
+                                  onClick={() =>
+                                    append({
+                                      name: '',
+                                      type: 'gold',
+                                      quantity: 1,
+                                      weight: '',
+                                      price: ''
+                                    })
+                                  }
                                 >
-                                  Add
+                                  <Add />
                                 </Button>
                               ) : (
                                 <Button
@@ -244,7 +252,7 @@ const AddEntry = () => {
                                   }}
                                   onClick={() => remove(index)}
                                 >
-                                  Remove
+                                  <DeleteOutlineTwoTone />
                                 </Button>
                               )}
                             </Grid>
@@ -301,44 +309,6 @@ const AddEntry = () => {
                                         required: !watch('isFullPayment')
                                       })}
                                       error={Boolean(errors?.advancedPayment)}
-                                    />
-                                  </Grid>
-                                  <Grid item xs={6}>
-                                    <Typography>Due Date</Typography>
-                                  </Grid>
-                                  <Grid item xs={6}>
-                                    <Controller
-                                      control={control}
-                                      name="dueDate"
-                                      render={({ field }) => {
-                                        return (
-                                          <LocalizationProvider
-                                            dateAdapter={AdapterDateFns}
-                                          >
-                                            <DatePicker
-                                              {...field}
-                                              value={field.value || null}
-                                              inputFormat="dd/MM/yyyy"
-                                              onChange={(value) => {
-                                                field.onChange(value);
-                                              }}
-                                              minDate={new Date()}
-                                              renderInput={(params) => {
-                                                return (
-                                                  <TextField
-                                                    {...params}
-                                                    label="Due Date"
-                                                    fullWidth
-                                                    error={Boolean(
-                                                      errors?.dueDate
-                                                    )}
-                                                  />
-                                                );
-                                              }}
-                                            />
-                                          </LocalizationProvider>
-                                        );
-                                      }}
                                     />
                                   </Grid>
                                 </>

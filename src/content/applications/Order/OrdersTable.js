@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   Divider,
   FormControl,
@@ -14,12 +14,12 @@ import {
 import CustomTable from 'src/components/Table';
 import Label from 'src/components/Label';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrdersAsync } from 'src/redux/Order/orderThunk';
+import { cancelOrderAsync, getOrdersAsync } from 'src/redux/Order/orderThunk';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
-import moment from 'moment';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { AddTwoTone } from '@mui/icons-material';
+import { useQuery } from 'src/hooks/useQuery';
 
 const getStatusLabel = (status) => {
   const map = {
@@ -61,11 +61,27 @@ const OrdersTable = () => {
 
   const dispatch = useDispatch();
 
-  const { data, loading } = useSelector((state) => state.order);
+  const { data, count, loading } = useSelector((state) => state.order);
 
-  useEffect(() => {
-    dispatch(getOrdersAsync());
-  }, []);
+  const fetchData = (page, limit, search) => {
+    dispatch(
+      getOrdersAsync({
+        page,
+        limit,
+        search
+      })
+    );
+  };
+
+  const query = useQuery();
+
+  const handleCancelOrder = (id) => {
+    dispatch(cancelOrderAsync({ id }));
+    const page = query.get('page');
+    const limit = query.get('limit');
+    const search = query.get('search') || '';
+    fetchData(page, limit, search);
+  };
 
   const statusOptions = [
     {
@@ -86,19 +102,6 @@ const OrdersTable = () => {
     {
       header: 'Customer Name',
       accessor: 'customerName'
-    },
-    {
-      header: 'Due Date',
-      accessor: 'dueDate',
-      cell: ({ value, row }) => {
-        return (
-          <>
-            {row.status !== 'Payment_Completed'
-              ? `${moment(value).format('DD/MM/YY')}`
-              : '-'}
-          </>
-        );
-      }
     },
     {
       header: 'Remaining Amount',
@@ -146,6 +149,15 @@ const OrdersTable = () => {
             >
               {row?.remainingAmount <= 0 ? 'View details' : 'Add Payment'}
             </Button>
+            {row.status === 'Payment_Pending' && (
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => handleCancelOrder(row._id)}
+              >
+                Cancel Order
+              </Button>
+            )}
           </Stack>
         );
       }
@@ -209,6 +221,8 @@ const OrdersTable = () => {
         columns={columns}
         data={filteredCryptoOrders}
         loading={loading}
+        fetchData={fetchData}
+        count={count}
       />
     </Card>
   );

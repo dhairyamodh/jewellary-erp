@@ -19,9 +19,12 @@ export const getOrderById = createAsyncThunk(
 
 export const getOrdersAsync = createAsyncThunk(
   '/transaction/getallorders',
-  async () => {
+  async (data) => {
     try {
-      const response = await axiosClient.get('/transaction/getallorders');
+      const response = await axiosClient.request({
+        method: 'get',
+        url: `/transaction/getallorders/${data.search}`
+      });
       return response;
     } catch (error) {
       throw Error(error.message);
@@ -89,6 +92,35 @@ export const addPaymentAsync = createAsyncThunk(
   }
 );
 
+export const cancelOrderAsync = createAsyncThunk(
+  `/cancel-order`,
+  async ({ id }, { dispatch }) => {
+    try {
+      const response = await axiosClient.put(`/transaction/cancel-order/${id}`);
+      if (response.data.success) {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg,
+            severity: 'success'
+          })
+        );
+      } else {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg,
+            severity: 'error'
+          })
+        );
+      }
+      return response;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+);
+
+// Builder Cases
+
 export const getOrderByIdCase = (builder) => {
   builder
     .addCase(getOrderById.pending, (state) => {
@@ -128,7 +160,9 @@ export const getOrdersAsyncCase = (builder) => {
     })
     .addCase(getOrdersAsync.fulfilled, (state, action) => {
       state.loading = false;
-      state.data = action.payload?.data?.GetAllorders;
+      state.data =
+        action.payload?.data?.result || action?.payload?.data?.getOrders;
+      state.count = action.payload?.data.count;
     })
     .addCase(getOrdersAsync.rejected, (state, action) => {
       state.loading = false;

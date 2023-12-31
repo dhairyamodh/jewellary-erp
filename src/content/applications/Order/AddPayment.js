@@ -94,19 +94,19 @@ const AddPayment = () => {
                       <Grid container spacing={2}>
                         <Grid item xs={3}>
                           <Typography variant="h6">Customer Name</Typography>
-                          <Typography variant="h6">
+                          <Typography variant="h4" mt={1}>
                             {details?.customerName}
                           </Typography>
                         </Grid>
                         <Grid item xs={3}>
                           <Typography variant="h6">Customer Mobile</Typography>
-                          <Typography variant="h6">
+                          <Typography variant="h4" mt={1}>
                             {details?.customerMobile}
                           </Typography>
                         </Grid>
                         <Grid item xs={6}>
                           <Typography variant="h6">Customer Address</Typography>
-                          <Typography variant="h6">
+                          <Typography variant="h4" mt={1}>
                             {details?.address}
                           </Typography>
                         </Grid>
@@ -120,7 +120,7 @@ const AddPayment = () => {
                     <Divider />
                     <CardContent>
                       <TableContainer>
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                        <Table>
                           <TableHead>
                             <TableRow>
                               <TableCell>Name</TableCell>
@@ -146,7 +146,9 @@ const AddPayment = () => {
                                 <TableCell>{row.type}</TableCell>
                                 <TableCell>{row.quantity}</TableCell>
                                 <TableCell>{row.weight}</TableCell>
-                                <TableCell align="right">{row.price}</TableCell>
+                                <TableCell align="right">
+                                  {RUPEE_SYMBOL} {row.price.toLocaleString()}
+                                </TableCell>
                               </TableRow>
                             ))}
                           </TableBody>
