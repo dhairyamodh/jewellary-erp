@@ -23,7 +23,8 @@ export const getOrdersAsync = createAsyncThunk(
     try {
       const response = await axiosClient.request({
         method: 'get',
-        url: `/transaction/getallorders/${data.search}`
+        url: `/transaction/getallorders`,
+        params: data
       });
       return response;
     } catch (error) {
@@ -160,8 +161,7 @@ export const getOrdersAsyncCase = (builder) => {
     })
     .addCase(getOrdersAsync.fulfilled, (state, action) => {
       state.loading = false;
-      state.data =
-        action.payload?.data?.result || action?.payload?.data?.getOrders;
+      state.data = action.payload?.data?.results;
       state.count = action.payload?.data.count;
     })
     .addCase(getOrdersAsync.rejected, (state, action) => {

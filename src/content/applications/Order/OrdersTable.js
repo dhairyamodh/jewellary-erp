@@ -27,6 +27,10 @@ const getStatusLabel = (status) => {
       text: 'Completed',
       color: 'success'
     },
+    cancel_order: {
+      text: 'Canceled',
+      color: 'error'
+    },
     Payment_Pending: {
       text: 'Pending',
       color: 'warning'
@@ -66,9 +70,9 @@ const OrdersTable = () => {
   const fetchData = (page, limit, search) => {
     dispatch(
       getOrdersAsync({
+        search,
         page,
-        limit,
-        search
+        perpage: limit
       })
     );
   };
@@ -95,6 +99,10 @@ const OrdersTable = () => {
     {
       id: 'Payment_Pending',
       name: 'Pending'
+    },
+    {
+      id: 'cancel_order',
+      name: 'Canceled'
     }
   ];
 
