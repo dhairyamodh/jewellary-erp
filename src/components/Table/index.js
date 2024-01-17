@@ -1,6 +1,6 @@
 import {
   Box,
-  CircularProgress,
+  Skeleton,
   Stack,
   Table,
   TableBody,
@@ -28,7 +28,6 @@ const CustomTable = ({ columns, data, loading, count, fetchData }) => {
   };
 
   useEffect(() => {
-    console.log('search', search);
     const fetchServerData = async () => {
       await fetchData(page, limit, search);
     };
@@ -119,24 +118,21 @@ const CustomTable = ({ columns, data, loading, count, fetchData }) => {
                 </TableRow>
               )
             ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns?.length}
-                  sx={{
-                    textAlign: 'center'
-                  }}
-                >
-                  <Stack
-                    direction="row"
-                    spacing={2}
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <CircularProgress size={25} />
-                    <i>Fetching records...</i>
-                  </Stack>
-                </TableCell>
-              </TableRow>
+              [...Array(limit)]?.map(() => (
+                <TableRow>
+                  {[...Array(columns?.length)]?.map(() => {
+                    return (
+                      <TableCell
+                        sx={{
+                          textAlign: 'center'
+                        }}
+                      >
+                        <Skeleton variant="text" sx={{ fontSize: '1.77rem' }} />
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              ))
             )}
           </TableBody>
         </Table>

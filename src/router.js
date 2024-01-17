@@ -26,8 +26,17 @@ const CreateOrder = Loader(
   lazy(() => import('src/content/applications/Order/CreateOrder'))
 );
 
+const ViewDetails = Loader(
+  lazy(() => import('src/content/applications/Order/ViewDetails'))
+);
+
+// Transactions
+const Transactions = Loader(
+  lazy(() => import('./content/applications/Transaction'))
+);
+
 const AddPayment = Loader(
-  lazy(() => import('src/content/applications/Order/AddPayment'))
+  lazy(() => import('src/content/applications/Transaction/AddPayment'))
 );
 
 // const Overview = Loader(lazy(() => import('src/content/overview')));
@@ -108,6 +117,24 @@ const routes = [
           {
             path: 'add',
             element: <CreateOrder />
+          },
+          {
+            path: 'view-details/:id',
+            element: <ViewDetails />
+          }
+        ]
+      },
+      {
+        path: 'transaction',
+        element: <SidebarLayout />,
+        children: [
+          {
+            path: '',
+            element: <Navigate to="list" replace />
+          },
+          {
+            path: 'list',
+            element: <Transactions />
           },
           {
             path: 'add-payment/:id',

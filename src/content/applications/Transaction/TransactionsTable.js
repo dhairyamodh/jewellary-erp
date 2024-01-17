@@ -14,13 +14,11 @@ import {
 import CustomTable from 'src/components/Table';
 import Label from 'src/components/Label';
 import { useDispatch, useSelector } from 'react-redux';
-import { cancelOrderAsync, getOrdersAsync } from 'src/redux/Order/orderThunk';
+import { getOrdersAsync } from 'src/redux/Order/orderThunk';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
 import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
-import { AddTwoTone } from '@mui/icons-material';
+import DiscountDialog from 'src/components/Dialogs/DiscountDialog';
 import { useQuery } from 'src/hooks/useQuery';
-import DeleteDialog from 'src/components/Dialogs/DeleteDialog';
 
 const getStatusLabel = (status) => {
   const map = {
@@ -55,16 +53,11 @@ const applyFilters = (cryptoOrders, filters) => {
   });
 };
 
-const OrdersTable = () => {
+const TransactionsTable = () => {
   const [selectedCryptoOrders] = useState([]);
   const selectedBulkActions = selectedCryptoOrders.length > 0;
   const [filters, setFilters] = useState({
     status: null
-  });
-
-  const [openCancel, setOpenCancel] = useState({
-    open: false,
-    id: undefined
   });
 
   const navigate = useNavigate();
@@ -72,6 +65,35 @@ const OrdersTable = () => {
   const dispatch = useDispatch();
 
   const { data, count, loading } = useSelector((state) => state.order);
+
+  const [openDiscount, setOpenDiscount] = useState({
+    id: undefined,
+    open: false
+  });
+
+  const query = useQuery();
+
+  const handleOpenDiscount = (id) => {
+    setOpenDiscount({
+      open: true,
+      id: id
+    });
+  };
+
+  const handleCloseDiscount = () => {
+    setOpenDiscount({
+      open: false,
+      id: undefined
+    });
+  };
+
+  const handleAddDiscount = () => {
+    const page = query.get('page');
+    const limit = query.get('limit');
+    const search = query.get('search') || '';
+    fetchData(page, limit, search);
+    handleCloseDiscount();
+  };
 
   const fetchData = (page, limit, search) => {
     dispatch(
@@ -81,31 +103,6 @@ const OrdersTable = () => {
         perpage: limit
       })
     );
-  };
-
-  const query = useQuery();
-
-  const handleOpenCancelDialog = (id) => {
-    setOpenCancel({
-      id: id,
-      open: true
-    });
-  };
-
-  const handleCloseCancelDialog = () => {
-    setOpenCancel({
-      id: undefined,
-      open: false
-    });
-  };
-
-  const handleCancelOrder = () => {
-    dispatch(cancelOrderAsync({ id: openCancel?.id }));
-    const page = query.get('page');
-    const limit = query.get('limit');
-    const search = query.get('search') || '';
-    fetchData(page, limit, search);
-    handleCloseCancelDialog();
   };
 
   const statusOptions = [
@@ -133,17 +130,27 @@ const OrdersTable = () => {
       accessor: 'customerName'
     },
     {
-      header: 'Mobile',
-      accessor: 'customerMobile',
-      cell: ({ value }) => {
-        return value;
+      header: 'Remaining Amount',
+      accessor: 'remainingAmount',
+      cell: ({ value, row }) => {
+        return (
+          <>
+            {row.status !== 'Payment_Completed'
+              ? `${RUPEE_SYMBOL} ${value}`
+              : '-'}
+          </>
+        );
       }
     },
     {
-      header: 'Items',
-      accessor: 'items',
+      header: 'Previous Payment',
+      accessor: 'transactions',
       cell: ({ value }) => {
-        return value?.length;
+        return (
+          <>
+            {RUPEE_SYMBOL} {value?.at(-1)?.amount || 0}
+          </>
+        );
       }
     },
     {
@@ -174,18 +181,17 @@ const OrdersTable = () => {
           <Stack spacing={1} direction="row">
             <Button
               variant="contained"
-              color={'primary'}
-              onClick={() => navigate(`/order/view-details/${row._id}`)}
+              color={row?.status !== 'pending' ? 'secondary' : 'primary'}
+              onClick={() => navigate(`/transaction/add-payment/${row._id}`)}
             >
-              View details
+              {row?.status !== 'pending' ? 'View details' : 'Add Payment'}
             </Button>
-            {row.status === 'Payment_Pending' && (
+            {row?.status === 'pending' && (
               <Button
-                variant="contained"
-                color="error"
-                onClick={() => handleOpenCancelDialog(row._id)}
+                variant="outlined"
+                onClick={() => handleOpenDiscount(row?._id)}
               >
-                Cancel Order
+                Discount
               </Button>
             )}
           </Stack>
@@ -229,21 +235,9 @@ const OrdersTable = () => {
                   ))}
                 </Select>
               </FormControl>
-              <Link to="/order/add">
-                <Button
-                  variant="contained"
-                  sx={{
-                    whiteSpace: 'nowrap',
-                    height: '100%'
-                  }}
-                  startIcon={<AddTwoTone fontSize="small" />}
-                >
-                  Create
-                </Button>
-              </Link>
             </Stack>
           }
-          title="Order List"
+          title="Transaction List"
         />
       )}
       <Divider />
@@ -254,13 +248,14 @@ const OrdersTable = () => {
         fetchData={fetchData}
         count={count}
       />
-      <DeleteDialog
-        onAccept={handleCancelOrder}
-        open={openCancel.open}
-        onClose={handleCloseCancelDialog}
+      <DiscountDialog
+        open={openDiscount?.open}
+        onClose={handleCloseDiscount}
+        onClick={handleAddDiscount}
+        id={openDiscount?.id}
       />
     </Card>
   );
 };
 
-export default OrdersTable;
+export default TransactionsTable;

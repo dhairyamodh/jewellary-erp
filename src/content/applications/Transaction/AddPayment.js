@@ -26,7 +26,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { addPaymentAsync, getOrderById } from 'src/redux/Order/orderThunk';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
-// import { RUPEE_SYMBOL } from 'src/utils/constants';
 
 const AddPayment = () => {
   const { id } = useParams();
@@ -219,44 +218,51 @@ const AddPayment = () => {
                                   {RUPEE_SYMBOL} {details?.remainingAmount}
                                 </Typography>
                               </Grid>
-                              <Grid item xs={6} md={4}>
-                                Amount
-                              </Grid>
-                              <Grid item xs={6} md={4}>
-                                <TextField
-                                  name="amount"
-                                  label="Amount"
-                                  fullWidth
-                                  {...register('amount', {
-                                    required: true,
-                                    validate: (value) => {
-                                      const parsedValue = Number(value);
-                                      const remainingAmount = Number(
-                                        details?.remainingAmount
-                                      );
+                              <Grid item xs={12}>
+                                <Grid container spacing={2}>
+                                  <Grid item xs={6} md={4}>
+                                    Amount
+                                  </Grid>
+                                  <Grid item xs={6} md={4}>
+                                    <TextField
+                                      name="amount"
+                                      label="Amount"
+                                      fullWidth
+                                      {...register('amount', {
+                                        required: true,
+                                        validate: (value) => {
+                                          const parsedValue = Number(value);
+                                          const remainingAmount = Number(
+                                            details?.remainingAmount
+                                          );
 
-                                      if (parsedValue > remainingAmount) {
-                                        return 'Amount should not be greater than remaining amount';
-                                      }
+                                          if (parsedValue > remainingAmount) {
+                                            return 'Amount should not be greater than remaining amount';
+                                          }
 
-                                      return undefined;
-                                    }
-                                  })}
-                                  error={Boolean(
-                                    errors?.amount &&
-                                      errors?.amount?.message !== ''
-                                  )}
-                                  helperText={errors?.amount?.message}
-                                />
-                              </Grid>
-                              <Grid item xs={6} md={4}>
-                                <LoadingButton
-                                  loading={paymentLoading}
-                                  variant="contained"
-                                  type="submit"
-                                >
-                                  Submit
-                                </LoadingButton>
+                                          return undefined;
+                                        }
+                                      })}
+                                      error={Boolean(
+                                        errors?.amount &&
+                                          errors?.amount?.message !== ''
+                                      )}
+                                      helperText={errors?.amount?.message}
+                                    />
+                                  </Grid>
+                                  <Grid item xs={6} md={4}>
+                                    <LoadingButton
+                                      loading={paymentLoading}
+                                      variant="contained"
+                                      type="submit"
+                                      sx={{
+                                        height: '100%'
+                                      }}
+                                    >
+                                      Submit
+                                    </LoadingButton>
+                                  </Grid>
+                                </Grid>
                               </Grid>
                             </Grid>
                           </form>

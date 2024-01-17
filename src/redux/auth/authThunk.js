@@ -86,7 +86,7 @@ export const profileAsyncCase = (builder) => {
       state.isAuthenticated = true;
       state.loading = false;
       state.error = null;
-      state.user = action.payload.data.user;
+      state.user = action.payload.data.results;
     })
     .addCase(profileAsync.rejected, (state, action) => {
       state.isAuthenticated = false;

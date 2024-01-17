@@ -120,6 +120,33 @@ export const cancelOrderAsync = createAsyncThunk(
   }
 );
 
+export const discountTransactionAsync = createAsyncThunk(
+  `/cancel-order`,
+  async ({ id }, { dispatch }) => {
+    try {
+      const response = await axiosClient.put(`/transaction/discount/${id}`);
+      if (response.data.success) {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg,
+            severity: 'success'
+          })
+        );
+      } else {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg,
+            severity: 'error'
+          })
+        );
+      }
+      return response;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+);
+
 // Builder Cases
 
 export const getOrderByIdCase = (builder) => {
@@ -130,7 +157,7 @@ export const getOrderByIdCase = (builder) => {
     })
     .addCase(getOrderById.fulfilled, (state, action) => {
       state.loading = false;
-      state.details = action.payload?.data?.getdata;
+      state.details = action.payload?.data?.results;
     })
     .addCase(getOrderById.rejected, (state, action) => {
       state.loading = false;
