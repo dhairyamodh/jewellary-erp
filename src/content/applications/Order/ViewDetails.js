@@ -52,7 +52,7 @@ const ViewDetails = () => {
       <Container maxWidth="xl">
         <Box py={4}>
           <Card>
-            <CardHeader title="Add Payment" />
+            <CardHeader title="View Details" />
             <Divider />
             <CardContent>
               <Grid container spacing={2}>
@@ -129,50 +129,52 @@ const ViewDetails = () => {
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid item xs={12}>
-                  <Card>
-                    <CardHeader title="Replacement Items" />
-                    <Divider />
-                    <CardContent>
-                      <TableContainer>
-                        <Table>
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>Name</TableCell>
-                              <TableCell>Type</TableCell>
-                              <TableCell>Quantity</TableCell>
-                              <TableCell>Weight/gm</TableCell>
-                              <TableCell align="right">Price</TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            {details?.replacement?.map((row, index) => (
-                              <TableRow
-                                key={index}
-                                sx={{
-                                  '&:last-child td, &:last-child th': {
-                                    border: 0
-                                  }
-                                }}
-                              >
-                                <TableCell component="th" scope="row">
-                                  {row.name}
-                                </TableCell>
-                                <TableCell>{row.type}</TableCell>
-                                <TableCell>{row.quantity}</TableCell>
-                                <TableCell>{row.weight}</TableCell>
-                                <TableCell align="right">
-                                  {RUPEE_SYMBOL}{' '}
-                                  {row?.total_Price?.toLocaleString()}
-                                </TableCell>
+                {details?.replacement?.length > 0 && (
+                  <Grid item xs={12}>
+                    <Card>
+                      <CardHeader title="Replacement Items" />
+                      <Divider />
+                      <CardContent>
+                        <TableContainer>
+                          <Table>
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>Name</TableCell>
+                                <TableCell>Type</TableCell>
+                                <TableCell>Quantity</TableCell>
+                                <TableCell>Weight/gm</TableCell>
+                                <TableCell align="right">Price</TableCell>
                               </TableRow>
-                            ))}
-                          </TableBody>
-                        </Table>
-                      </TableContainer>
-                    </CardContent>
-                  </Card>
-                </Grid>
+                            </TableHead>
+                            <TableBody>
+                              {details?.replacement?.map((row, index) => (
+                                <TableRow
+                                  key={index}
+                                  sx={{
+                                    '&:last-child td, &:last-child th': {
+                                      border: 0
+                                    }
+                                  }}
+                                >
+                                  <TableCell component="th" scope="row">
+                                    {row.name}
+                                  </TableCell>
+                                  <TableCell>{row.type}</TableCell>
+                                  <TableCell>{row.quantity}</TableCell>
+                                  <TableCell>{row.weight}</TableCell>
+                                  <TableCell align="right">
+                                    {RUPEE_SYMBOL}{' '}
+                                    {row?.total_Price?.toLocaleString()}
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                )}
               </Grid>
             </CardContent>
           </Card>
