@@ -5,7 +5,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField
+  TextField,
+  Typography
 } from '@mui/material';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -42,8 +43,11 @@ const DiscountDialog = ({ open, onClose, onClick, id }) => {
       aria-describedby="alert-dialog-description"
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogTitle id="alert-dialog-title">Add Discount</DialogTitle>
+        <DialogTitle variant="h4">Add Discount</DialogTitle>
         <DialogContent>
+          <Typography variant="h6" mb={2}>
+            Enter discounted amount to complete this transaction
+          </Typography>
           <TextField
             name="amount"
             label="Amount"

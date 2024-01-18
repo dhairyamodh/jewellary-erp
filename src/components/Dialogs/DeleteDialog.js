@@ -18,9 +18,7 @@ const DeleteDialog = ({ open, msg, onClose, onAccept }) => {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">
-        {'Are you sure?' || msg}
-      </DialogTitle>
+      <DialogTitle ariant="h4">{'Are you sure?' || msg}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
           You won't be able to revert this!
