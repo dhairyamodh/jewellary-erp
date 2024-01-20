@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { debounce } from 'lodash';
 import { TextField } from '@mui/material';
 
-const SearchComponent = ({ fetchData, sx, label, value }) => {
+const SearchComponent = ({ fetchData, sx, label, placeholder, value }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   // Debounce the search term
@@ -30,8 +30,8 @@ const SearchComponent = ({ fetchData, sx, label, value }) => {
     <div>
       <TextField
         type="text"
-        placeholder="Search..."
-        label={label}
+        placeholder={placeholder || 'Search...'}
+        label={label || 'Search'}
         value={searchTerm}
         onChange={handleSearch}
         fullWidth

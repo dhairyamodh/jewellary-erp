@@ -15,12 +15,13 @@ import CustomTable from 'src/components/Table';
 import Label from 'src/components/Label';
 import { useDispatch, useSelector } from 'react-redux';
 import { cancelOrderAsync, getOrdersAsync } from 'src/redux/Order/orderThunk';
-import { RUPEE_SYMBOL } from 'src/utils/constants';
+import { DATETIME_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { AddTwoTone } from '@mui/icons-material';
 import { useQuery } from 'src/hooks/useQuery';
 import DeleteDialog from 'src/components/Dialogs/DeleteDialog';
+import moment from 'moment';
 
 const getStatusLabel = (status) => {
   const map = {
@@ -166,6 +167,15 @@ const OrdersTable = () => {
       }
     },
     {
+      id: 'createdAt',
+      header: 'Created Date',
+      accessor: 'createdAt',
+      cell: ({ value }) => {
+        console.log(value);
+        return moment(value).format(DATETIME_FORMAT);
+      }
+    },
+    {
       id: 'actions',
       header: 'Actions',
       accessor: 'actions',
@@ -206,14 +216,37 @@ const OrdersTable = () => {
     }));
   };
 
-  const filteredCryptoOrders = applyFilters(data, filters);
+  const filteredData = applyFilters(data, filters);
 
   return (
     <Card>
       {!selectedBulkActions && (
         <CardHeader
+          sx={{
+            alignItems: {
+              xs: 'flex-start',
+              md: 'center'
+            },
+            gap: {
+              xs: 3,
+              md: 0
+            },
+            flexDirection: {
+              xs: 'column',
+              md: 'row'
+            }
+          }}
           action={
-            <Stack direction="row" gap={2} width={300}>
+            <Stack
+              direction="row"
+              gap={2}
+              sx={{
+                width: {
+                  xs: 250,
+                  md: 300
+                }
+              }}
+            >
               <FormControl fullWidth variant="outlined">
                 <InputLabel>Payment</InputLabel>
                 <Select
@@ -249,10 +282,11 @@ const OrdersTable = () => {
       <Divider />
       <CustomTable
         columns={columns}
-        data={filteredCryptoOrders}
+        data={filteredData}
         loading={loading}
         fetchData={fetchData}
         count={count}
+        searchPlaceholder="Search by names"
       />
       <DeleteDialog
         onAccept={handleCancelOrder}
