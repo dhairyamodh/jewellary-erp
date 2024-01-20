@@ -171,6 +171,11 @@ function SidebarMenu() {
           title: 'Transactions',
           disableRipple: false,
           to: '/transaction'
+        },
+        {
+          title: 'Loans',
+          disableRipple: false,
+          to: '/loan'
         }
       ]
     }

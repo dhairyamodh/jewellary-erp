@@ -14,7 +14,14 @@ import React, { useEffect, useState } from 'react';
 import SearchComponent from '../Search';
 import { useQuery } from 'src/hooks/useQuery';
 
-const CustomTable = ({ columns, data, loading, count, fetchData }) => {
+const CustomTable = ({
+  columns,
+  data,
+  loading,
+  count,
+  searchPlaceholder,
+  fetchData
+}) => {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(5);
   const [search, setSearch] = useState('');
@@ -60,10 +67,14 @@ const CustomTable = ({ columns, data, loading, count, fetchData }) => {
       <Box display="flex" justifyContent="end" pt={2} px={1}>
         <SearchComponent
           fetchData={(data) => setSearch(data)}
-          label="Search by names"
+          label="Search"
           value={search}
+          placeholder={searchPlaceholder}
           sx={{
-            minWidth: 250
+            minWidth: {
+              xs: 200,
+              md: 250
+            }
           }}
         />
       </Box>
@@ -71,7 +82,13 @@ const CustomTable = ({ columns, data, loading, count, fetchData }) => {
         <Table>
           <TableHead>
             {columns.map((header) => (
-              <TableCell>{header.header}</TableCell>
+              <TableCell
+                sx={{
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                {header.header}
+              </TableCell>
             ))}
           </TableHead>
           <TableBody>
@@ -82,7 +99,11 @@ const CustomTable = ({ columns, data, loading, count, fetchData }) => {
                     <TableRow key={index}>
                       {columns.map((header) => {
                         return (
-                          <TableCell>
+                          <TableCell
+                            sx={{
+                              whiteSpace: 'nowrap'
+                            }}
+                          >
                             {Object.prototype.hasOwnProperty.call(
                               header,
                               'cell'

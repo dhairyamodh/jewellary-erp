@@ -39,6 +39,9 @@ const AddPayment = Loader(
   lazy(() => import('src/content/applications/Transaction/AddPayment'))
 );
 
+// Loans
+const Loans = Loader(lazy(() => import('./content/applications/Loan')));
+
 // const Overview = Loader(lazy(() => import('src/content/overview')));
 
 // // Dashboards
@@ -139,6 +142,20 @@ const routes = [
           {
             path: 'add-payment/:id',
             element: <AddPayment />
+          }
+        ]
+      },
+      {
+        path: 'loan',
+        element: <SidebarLayout />,
+        children: [
+          {
+            path: '',
+            element: <Navigate to="list" replace />
+          },
+          {
+            path: 'list',
+            element: <Loans />
           }
         ]
       },
