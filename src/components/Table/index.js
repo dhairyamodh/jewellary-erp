@@ -22,7 +22,7 @@ const CustomTable = ({
   searchPlaceholder,
   fetchData
 }) => {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
   const [search, setSearch] = useState('');
 
@@ -167,7 +167,7 @@ const CustomTable = ({
             onRowsPerPageChange={handleLimitChange}
             page={page - 1}
             rowsPerPage={limit}
-            rowsPerPageOptions={[5, 10, 25, 30]}
+            rowsPerPageOptions={[5, 10, 20, 30]}
           />
         </Box>
       )}

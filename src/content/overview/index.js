@@ -18,7 +18,7 @@ function Overview() {
   return (
     <OverviewWrapper>
       <Helmet>
-        <title>Tokyo Free Black React Javascript Admin Dashboard</title>
+        <title>Jewellery ERP</title>
       </Helmet>
       <Container maxWidth="lg">
         <Box display="flex" justifyContent="center" py={5} alignItems="center">

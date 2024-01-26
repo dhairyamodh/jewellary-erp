@@ -176,6 +176,16 @@ function SidebarMenu() {
           title: 'Loans',
           disableRipple: false,
           to: '/loan'
+        },
+        {
+          title: 'EMI',
+          disableRipple: false,
+          to: '/emi'
+        },
+        {
+          title: 'Reports',
+          disableRipple: false,
+          to: '/report'
         }
       ]
     }
