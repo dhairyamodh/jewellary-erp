@@ -41,6 +41,15 @@ const AddPayment = Loader(
 
 // Loans
 const Loans = Loader(lazy(() => import('./content/applications/Loan')));
+const CreateLoan = Loader(
+  lazy(() => import('./content/applications/Loan/CreateLoan'))
+);
+const AddLoanAmount = Loader(
+  lazy(() => import('./content/applications/Loan/AddLoanAmount'))
+);
+
+// EMI
+const EMIs = Loader(lazy(() => import('./content/applications/EMI')));
 
 // const Overview = Loader(lazy(() => import('src/content/overview')));
 
@@ -156,6 +165,28 @@ const routes = [
           {
             path: 'list',
             element: <Loans />
+          },
+          {
+            path: 'add',
+            element: <CreateLoan />
+          },
+          {
+            path: 'add-payment/:id',
+            element: <AddLoanAmount />
+          }
+        ]
+      },
+      {
+        path: 'emi',
+        element: <SidebarLayout />,
+        children: [
+          {
+            path: '',
+            element: <Navigate to="list" replace />
+          },
+          {
+            path: 'list',
+            element: <EMIs />
           }
         ]
       },

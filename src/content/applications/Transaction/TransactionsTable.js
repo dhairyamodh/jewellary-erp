@@ -148,10 +148,11 @@ const TransactionsTable = () => {
             </Button>
             {row?.status === 'Payment_Pending' && (
               <Button
-                variant="outlined"
+                variant="contained"
+                color="warning"
                 onClick={() => handleOpenDiscount(row?._id)}
               >
-                Discount
+                Add Discount
               </Button>
             )}
           </Stack>

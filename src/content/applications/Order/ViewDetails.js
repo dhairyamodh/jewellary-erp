@@ -119,7 +119,7 @@ const ViewDetails = () => {
                                 <TableCell>{row.weight}</TableCell>
                                 <TableCell>{row.item_no}</TableCell>
                                 <TableCell align="right">
-                                  {RUPEE_SYMBOL} {row.price.toLocaleString()}
+                                  {RUPEE_SYMBOL} {row.price?.toLocaleString()}
                                 </TableCell>
                               </TableRow>
                             ))}

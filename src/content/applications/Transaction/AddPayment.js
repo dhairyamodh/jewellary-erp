@@ -146,7 +146,7 @@ const AddPayment = () => {
                                 <TableCell>{row.quantity}</TableCell>
                                 <TableCell>{row.weight}</TableCell>
                                 <TableCell align="right">
-                                  {RUPEE_SYMBOL} {row.price.toLocaleString()}
+                                  {RUPEE_SYMBOL} {row.price?.toLocaleString()}
                                 </TableCell>
                               </TableRow>
                             ))}

@@ -313,7 +313,8 @@ const AddEntry = () => {
                                           quantity: 1,
                                           weight: '',
                                           price: '',
-                                          design: ''
+                                          design: '',
+                                          labour: ''
                                         })
                                       }
                                     >

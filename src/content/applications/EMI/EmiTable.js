@@ -1,64 +1,19 @@
-import { useState } from 'react';
-import {
-  Divider,
-  FormControl,
-  InputLabel,
-  Card,
-  Select,
-  MenuItem,
-  CardHeader,
-  Stack,
-  Button
-} from '@mui/material';
+import { Divider, Card, CardHeader, Stack, Button } from '@mui/material';
 
 import CustomTable from 'src/components/Table';
-import Label from 'src/components/Label';
 import { useDispatch, useSelector } from 'react-redux';
-import { getLoanListAsync } from 'src/redux/Loan/loanThunk';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { AddTwoTone } from '@mui/icons-material';
+import { getEmiListAsync } from 'src/redux/EMI/emiThunk';
 
-const getStatusLabel = (status) => {
-  const map = {
-    'Loan closed': {
-      text: 'Closed',
-      color: 'success'
-    },
-    pending: {
-      text: 'Pending',
-      color: 'warning'
-    }
-  };
-
-  const { text, color } = map[status];
-
-  return <Label color={color}>{text}</Label>;
-};
-
-const applyFilters = (cryptoOrders, filters) => {
-  return cryptoOrders?.filter((cryptoOrder) => {
-    let matches = true;
-
-    if (filters.status && cryptoOrder.status !== filters.status) {
-      matches = false;
-    }
-
-    return matches;
-  });
-};
-
-const LoansTable = () => {
-  const [filters, setFilters] = useState({
-    status: null
-  });
-
+const EmiTable = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
-  const { data, count, loading } = useSelector((state) => state.loan);
+  const { data, count, loading } = useSelector((state) => state.emi);
 
   const handleClickAddPayment = (row) => {
     navigate(`/loan/add-payment/${row._id}`);
@@ -66,28 +21,13 @@ const LoansTable = () => {
 
   const fetchData = (page, limit, search) => {
     dispatch(
-      getLoanListAsync({
+      getEmiListAsync({
         search,
         page,
         perpage: limit
       })
     );
   };
-
-  const statusOptions = [
-    {
-      id: 'all',
-      name: 'All'
-    },
-    {
-      id: 'pending',
-      name: 'Pending'
-    },
-    {
-      id: 'Loan closed',
-      name: 'Closed'
-    }
-  ];
 
   const columns = [
     {
@@ -142,14 +82,6 @@ const LoansTable = () => {
       }
     },
     {
-      id: 'status',
-      header: 'Status',
-      accessor: 'status',
-      cell: ({ value }) => {
-        return getStatusLabel(value);
-      }
-    },
-    {
       id: 'actions',
       header: 'Actions',
       accessor: 'actions',
@@ -170,20 +102,6 @@ const LoansTable = () => {
       }
     }
   ];
-  const handleStatusChange = (e) => {
-    let value = null;
-
-    if (e.target.value !== 'all') {
-      value = e.target.value;
-    }
-
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      status: value
-    }));
-  };
-
-  const filteredData = applyFilters(data, filters);
 
   return (
     <Card>
@@ -206,6 +124,7 @@ const LoansTable = () => {
           <Stack
             direction="row"
             gap={2}
+            justifyContent="flex-end"
             sx={{
               width: {
                 xs: 250,
@@ -213,21 +132,6 @@ const LoansTable = () => {
               }
             }}
           >
-            <FormControl fullWidth variant="outlined">
-              <InputLabel>Payment</InputLabel>
-              <Select
-                value={filters.status || 'all'}
-                onChange={handleStatusChange}
-                label="Payment"
-                fullWidth
-              >
-                {statusOptions.map((statusOption) => (
-                  <MenuItem key={statusOption.id} value={statusOption.id}>
-                    {statusOption.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
             <Link to="/loan/add">
               <Button
                 variant="contained"
@@ -247,7 +151,7 @@ const LoansTable = () => {
       <Divider />
       <CustomTable
         columns={columns}
-        data={filteredData}
+        data={data}
         loading={loading}
         fetchData={fetchData}
         count={count}
@@ -257,4 +161,4 @@ const LoansTable = () => {
   );
 };
 
-export default LoansTable;
+export default EmiTable;
