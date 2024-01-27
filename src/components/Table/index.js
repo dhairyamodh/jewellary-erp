@@ -13,6 +13,8 @@ import {
 import React, { useEffect, useState } from 'react';
 import SearchComponent from '../Search';
 import { useQuery } from 'src/hooks/useQuery';
+import DateRange from '../DateRange';
+import moment from 'moment';
 
 const CustomTable = ({
   columns,
@@ -20,11 +22,23 @@ const CustomTable = ({
   loading,
   count,
   searchPlaceholder,
-  fetchData
+  fetchData,
+  isDateFilter = false,
+  actions
 }) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
   const [search, setSearch] = useState('');
+  const [startDate, setStartDate] = useState(moment().subtract(1, 'year'));
+  const [endDate, setEndDate] = useState(moment());
+
+  const handleStartDateChange = (date) => {
+    setStartDate(date);
+  };
+
+  const handleEndDateChange = (date) => {
+    setEndDate(date);
+  };
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage + 1);
@@ -36,15 +50,17 @@ const CustomTable = ({
 
   useEffect(() => {
     const fetchServerData = async () => {
-      await fetchData(page, limit, search);
+      await fetchData(page, limit, search, startDate, endDate);
     };
     const url = new URL(window.location);
     url.searchParams.set('page', page);
     url.searchParams.set('limit', limit);
     url.searchParams.set('search', search || '');
+    url.searchParams.set('startDate', startDate);
+    url.searchParams.set('endDate', endDate);
     window.history.pushState(null, '', url.toString());
     fetchServerData();
-  }, [page, limit, search]);
+  }, [page, limit, search, startDate, endDate]);
 
   const query = useQuery();
 
@@ -53,6 +69,10 @@ const CustomTable = ({
       setSearch(query.get('search') || '');
       setPage(parseInt(query.get('page')) || 1);
       setLimit(parseInt(query.get('limit')) || 5);
+      setStartDate(
+        parseInt(query.get('startDate')) || moment().subtract(1, 'year')
+      );
+      setEndDate(parseInt(query.get('endDate')) || moment());
     }
   }, [query]);
 
@@ -64,20 +84,38 @@ const CustomTable = ({
 
   return (
     <div>
-      <Box display="flex" justifyContent="end" pt={2} px={1}>
+      <Stack
+        direction="row"
+        gap={2}
+        justifyContent="end"
+        pt={2}
+        px={1}
+        sx={{
+          minWidth: {
+            xs: 200,
+            md: 250
+          }
+        }}
+      >
         <SearchComponent
           fetchData={(data) => setSearch(data)}
           label="Search"
           value={search}
           placeholder={searchPlaceholder}
-          sx={{
-            minWidth: {
-              xs: 200,
-              md: 250
-            }
-          }}
         />
-      </Box>
+        {isDateFilter && (
+          <DateRange
+            startDate={startDate}
+            endDate={endDate}
+            handleStartDateChange={handleStartDateChange}
+            handleEndDateChange={handleEndDateChange}
+          />
+        )}
+        {actions &&
+          actions?.map((Action, index) => {
+            return <Action key={index} />;
+          })}
+      </Stack>
       <TableContainer>
         <Table>
           <TableHead>

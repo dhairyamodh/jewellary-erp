@@ -1,5 +1,6 @@
 // reportSlice.js
 import { createSlice } from '@reduxjs/toolkit';
+import { getOrderReportAsyncCase } from './reportThunk';
 
 // Define the initial state for the slice
 const initialState = {
@@ -14,7 +15,9 @@ const reportSlice = createSlice({
   name: 'api',
   initialState,
   reducers: {},
-  extraReducers: () => {}
+  extraReducers: (builder) => {
+    getOrderReportAsyncCase(builder);
+  }
 });
 
 export default reportSlice.reducer;

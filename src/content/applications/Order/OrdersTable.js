@@ -160,7 +160,7 @@ const OrdersTable = () => {
     },
     {
       id: 'status',
-      header: 'Payment',
+      header: 'Status',
       accessor: 'status',
       cell: ({ value }) => {
         return getStatusLabel(value);
