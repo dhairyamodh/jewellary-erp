@@ -1,6 +1,6 @@
 // emiSlice.js
 import { createSlice } from '@reduxjs/toolkit';
-import { getEmiListAsyncCase } from './emiThunk';
+import { createEMIAsyncCase, getEmiListAsyncCase } from './emiThunk';
 
 // Define the initial state for the slice
 const initialState = {
@@ -17,6 +17,7 @@ const emiSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     getEmiListAsyncCase(builder);
+    createEMIAsyncCase(builder);
   }
 });
 

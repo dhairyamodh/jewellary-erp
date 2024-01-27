@@ -160,7 +160,7 @@ function SidebarMenu() {
 
   const sidebarMenuItems = [
     {
-      title: 'Purchase',
+      title: 'Sales and Orders',
       menuItems: [
         {
           title: 'Order',
@@ -171,7 +171,12 @@ function SidebarMenu() {
           title: 'Transactions',
           disableRipple: false,
           to: '/transaction'
-        },
+        }
+      ]
+    },
+    {
+      title: 'Financial Management',
+      menuItems: [
         {
           title: 'Loans',
           disableRipple: false,
@@ -181,7 +186,12 @@ function SidebarMenu() {
           title: 'EMI',
           disableRipple: false,
           to: '/emi'
-        },
+        }
+      ]
+    },
+    {
+      title: 'Analytics Reports',
+      menuItems: [
         {
           title: 'Reports',
           disableRipple: false,

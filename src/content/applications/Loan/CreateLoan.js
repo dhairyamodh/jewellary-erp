@@ -280,7 +280,7 @@ const CreateLoan = () => {
                                 </Typography>
                               </Grid>
                               <Grid item xs={6}>
-                                <Typography variant="h4">Loan Cost</Typography>
+                                <Typography>Loan Cost</Typography>
                               </Grid>
                               <Grid item xs={6}>
                                 <TextField
@@ -295,7 +295,7 @@ const CreateLoan = () => {
                                 />
                               </Grid>
                               <Grid item xs={6}>
-                                <Typography variant="h4">
+                                <Typography>
                                   Interest Rate{' '}
                                   <Typography variant="caption">
                                     (percentage %)

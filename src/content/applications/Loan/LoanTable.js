@@ -15,10 +15,11 @@ import CustomTable from 'src/components/Table';
 import Label from 'src/components/Label';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLoanListAsync } from 'src/redux/Loan/loanThunk';
-import { RUPEE_SYMBOL } from 'src/utils/constants';
+import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { AddTwoTone } from '@mui/icons-material';
+import moment from 'moment';
 
 const getStatusLabel = (status) => {
   const map = {
@@ -147,6 +148,14 @@ const LoansTable = () => {
       accessor: 'status',
       cell: ({ value }) => {
         return getStatusLabel(value);
+      }
+    },
+    {
+      id: 'createdAt',
+      header: 'Created Date',
+      accessor: 'createdAt',
+      cell: ({ value }) => {
+        return moment(value).format(DATE_FORMAT);
       }
     },
     {

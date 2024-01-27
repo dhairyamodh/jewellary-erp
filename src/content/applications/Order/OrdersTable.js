@@ -160,7 +160,7 @@ const OrdersTable = () => {
     },
     {
       id: 'status',
-      header: 'Payment',
+      header: 'Status',
       accessor: 'status',
       cell: ({ value }) => {
         return getStatusLabel(value);
@@ -171,7 +171,6 @@ const OrdersTable = () => {
       header: 'Created Date',
       accessor: 'createdAt',
       cell: ({ value }) => {
-        console.log(value);
         return moment(value).format(DATETIME_FORMAT);
       }
     },
