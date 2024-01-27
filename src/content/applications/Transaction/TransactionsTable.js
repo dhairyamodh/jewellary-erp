@@ -4,7 +4,7 @@ import { Divider, Card, CardHeader, Stack, Button } from '@mui/material';
 import CustomTable from 'src/components/Table';
 import Label from 'src/components/Label';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrdersAsync } from 'src/redux/Order/orderThunk';
+import { getPendingOrdersAsync } from 'src/redux/Order/orderThunk';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
 import { useNavigate } from 'react-router';
 import DiscountDialog from 'src/components/Dialogs/DiscountDialog';
@@ -39,7 +39,11 @@ const TransactionsTable = () => {
 
   const dispatch = useDispatch();
 
-  const { data, count, loading } = useSelector((state) => state.order);
+  const {
+    pendingOrders: data,
+    pendingOrderCount: count,
+    loading
+  } = useSelector((state) => state.order);
 
   const [openDiscount, setOpenDiscount] = useState({
     id: undefined,
@@ -72,7 +76,7 @@ const TransactionsTable = () => {
 
   const fetchData = (page, limit, search) => {
     dispatch(
-      getOrdersAsync({
+      getPendingOrdersAsync({
         search,
         page,
         perpage: limit

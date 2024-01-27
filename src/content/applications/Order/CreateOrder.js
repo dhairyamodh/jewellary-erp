@@ -95,9 +95,9 @@ const AddEntry = () => {
               };
             })
           : [],
-        transactions: [{ amount: parseFloat(data.advancedPayment) }],
+        transactions: [{ amount: parseFloat(data.advancedPayment) || 0 }],
         total_amount: parseFloat(data.total),
-        advance_payment: parseFloat(data.advancedPayment)
+        advance_payment: parseFloat(data.advancedPayment) || 0
       };
       const res = await dispatch(createOrderAsync(request));
       if (res?.payload?.data?.success) {
@@ -475,9 +475,7 @@ const AddEntry = () => {
                                       type="number"
                                       fullWidth
                                       name="price"
-                                      {...register('advancedPayment', {
-                                        required: !watch('isFullPayment')
-                                      })}
+                                      {...register('advancedPayment')}
                                       error={Boolean(errors?.advancedPayment)}
                                     />
                                   </Grid>

@@ -20,11 +20,68 @@ export const getEmiListAsync = createAsyncThunk(
   }
 );
 
-export const createLoanAsync = createAsyncThunk(
-  '/loan/create',
+export const createEMIAsync = createAsyncThunk(
+  '/emi/add-emitransaction',
   async (req, { dispatch }) => {
     try {
-      const response = await axiosClient.post('/loan/add-loan', req);
+      const response = await axiosClient.post('/emi/add-emitransaction', req);
+      if (response.data.success) {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg,
+            severity: 'success'
+          })
+        );
+      } else {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.error,
+            severity: 'error'
+          })
+        );
+      }
+      return response;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+);
+
+export const addEMIPaymentAsync = createAsyncThunk(
+  '/emi/update-emi',
+  async (req, { dispatch }) => {
+    try {
+      const response = await axiosClient.put(
+        `/emi/update-emi/${req.id}`,
+        req.data
+      );
+      if (response.data.success) {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg,
+            severity: 'success'
+          })
+        );
+      } else {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.error,
+            severity: 'error'
+          })
+        );
+      }
+      return response;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+);
+
+export const withdrawEMIAsync = createAsyncThunk(
+  `/emi/withdraw`,
+  async ({ id }, { dispatch }) => {
+    try {
+      const response = await axiosClient.put(`/emi/withdraw/${id}`);
       if (response.data.success) {
         dispatch(
           openSnackbar({
@@ -66,16 +123,16 @@ export const getEmiListAsyncCase = (builder) => {
     });
 };
 
-export const createLoanAsyncCase = (builder) => {
+export const createEMIAsyncCase = (builder) => {
   builder
-    .addCase(createLoanAsync.pending, (state) => {
+    .addCase(createEMIAsync.pending, (state) => {
       state.loading = true;
       state.error = null;
     })
-    .addCase(createLoanAsync.fulfilled, (state) => {
+    .addCase(createEMIAsync.fulfilled, (state) => {
       state.loading = false;
     })
-    .addCase(createLoanAsync.rejected, (state, action) => {
+    .addCase(createEMIAsync.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     });

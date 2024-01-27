@@ -33,6 +33,22 @@ export const getOrdersAsync = createAsyncThunk(
   }
 );
 
+export const getPendingOrdersAsync = createAsyncThunk(
+  '/transaction/pendingstatus',
+  async (data) => {
+    try {
+      const response = await axiosClient.request({
+        method: 'get',
+        url: `/transaction/pendingstatus`,
+        params: data
+      });
+      return response;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+);
+
 export const createOrderAsync = createAsyncThunk(
   '/transaction/create',
   async (req, { dispatch }) => {
@@ -122,9 +138,12 @@ export const cancelOrderAsync = createAsyncThunk(
 
 export const discountTransactionAsync = createAsyncThunk(
   `/cancel-order`,
-  async ({ id }, { dispatch }) => {
+  async (req, { dispatch }) => {
     try {
-      const response = await axiosClient.put(`/transaction/discount/${id}`);
+      const response = await axiosClient.put(
+        `/transaction/discount/${req.id}`,
+        req.data
+      );
       if (response.data.success) {
         dispatch(
           openSnackbar({
@@ -192,6 +211,23 @@ export const getOrdersAsyncCase = (builder) => {
       state.count = action.payload?.data.count;
     })
     .addCase(getOrdersAsync.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    });
+};
+
+export const getPendingOrdersAsyncCase = (builder) => {
+  builder
+    .addCase(getPendingOrdersAsync.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(getPendingOrdersAsync.fulfilled, (state, action) => {
+      state.loading = false;
+      state.pendingOrders = action.payload?.data?.results;
+      state.pendingOrderCount = action.payload?.data.count;
+    })
+    .addCase(getPendingOrdersAsync.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     });

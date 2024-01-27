@@ -50,6 +50,9 @@ const AddLoanAmount = Loader(
 
 // EMI
 const EMIs = Loader(lazy(() => import('./content/applications/EMI')));
+const CreateEMI = Loader(
+  lazy(() => import('./content/applications/EMI/CreateEMI'))
+);
 
 // const Overview = Loader(lazy(() => import('src/content/overview')));
 
@@ -187,6 +190,10 @@ const routes = [
           {
             path: 'list',
             element: <EMIs />
+          },
+          {
+            path: 'add',
+            element: <CreateEMI />
           }
         ]
       },

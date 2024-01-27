@@ -109,7 +109,7 @@ const AddLoanAmount = () => {
                         <Grid item xs={6}>
                           <Typography variant="h6">Customer Address</Typography>
                           <Typography variant="h4" mt={1}>
-                            {details?.address}
+                            {details?.customerAddress}
                           </Typography>
                         </Grid>
                       </Grid>
@@ -150,7 +150,8 @@ const AddLoanAmount = () => {
                                   <TableCell>{row.quantity}</TableCell>
                                   <TableCell>{row.weight}</TableCell>
                                   <TableCell align="right">
-                                    {RUPEE_SYMBOL} {row.price?.toLocaleString()}
+                                    {RUPEE_SYMBOL}{' '}
+                                    {row.itemCost?.toLocaleString()}
                                   </TableCell>
                                 </TableRow>
                               ))}

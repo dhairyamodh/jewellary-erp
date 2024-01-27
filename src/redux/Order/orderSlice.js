@@ -3,12 +3,14 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   createOrderAsyncCase,
   getOrderByIdCase,
-  getOrdersAsyncCase
+  getOrdersAsyncCase,
+  getPendingOrdersAsyncCase
 } from './orderThunk';
 
 // Define the initial state for the slice
 const initialState = {
   data: [],
+  pendingOrders: [],
   details: {},
   loading: false,
   error: null
@@ -21,6 +23,7 @@ const orderSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     getOrderByIdCase(builder);
+    getPendingOrdersAsyncCase(builder);
     createOrderAsyncCase(builder);
     getOrdersAsyncCase(builder);
   }
