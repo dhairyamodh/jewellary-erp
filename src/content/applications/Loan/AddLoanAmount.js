@@ -86,21 +86,27 @@ const AddLoanAmount = () => {
                     <Divider />
                     <CardContent>
                       <Grid container spacing={2}>
-                        <Grid item xs={3}>
-                          <Typography variant="h6">Customer Name</Typography>
-                          <Typography variant="h4" mt={1}>
+                        <Grid item md={3} xs={12}>
+                          <Typography variant="caption">
+                            Customer Name
+                          </Typography>
+                          <Typography mt={1}>
                             {details?.customerName}
                           </Typography>
                         </Grid>
-                        <Grid item xs={3}>
-                          <Typography variant="h6">Customer Mobile</Typography>
-                          <Typography variant="h4" mt={1}>
+                        <Grid item md={3} xs={12}>
+                          <Typography variant="caption">
+                            Customer Mobile
+                          </Typography>
+                          <Typography mt={1}>
                             {details?.customerMobile}
                           </Typography>
                         </Grid>
-                        <Grid item xs={6}>
-                          <Typography variant="h6">Customer Address</Typography>
-                          <Typography variant="h4" mt={1}>
+                        <Grid item md={6} xs={12}>
+                          <Typography variant="caption">
+                            Customer Address
+                          </Typography>
+                          <Typography mt={1}>
                             {details?.customerAddress}
                           </Typography>
                         </Grid>
