@@ -1,11 +1,9 @@
 import { LoadingButton } from '@mui/lab';
 import {
-  Backdrop,
   Box,
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   Container,
   Divider,
   Grid,
@@ -24,6 +22,7 @@ import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
+import SuspenseLoader from 'src/components/SuspenseLoader';
 import {
   addLoanAmountAsync,
   updateInterestAsync
@@ -67,14 +66,7 @@ const AddLoanAmount = () => {
   }, [id]);
 
   if (loading) {
-    return (
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
-    );
+    return <SuspenseLoader />;
   }
   return (
     <>

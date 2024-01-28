@@ -20,9 +20,8 @@ const DateRange = ({
         <MobileDatePicker
           label="Start Date"
           value={startDate}
-          onChange={(date) => {
-            handleStartDateChange(date);
-          }}
+          onAccept={handleStartDateChange}
+          onChange={() => {}}
           format="dd/MM/yyyy"
           renderInput={(props) => {
             return (
@@ -43,7 +42,8 @@ const DateRange = ({
         <MobileDatePicker
           label="End Date"
           value={endDate}
-          onChange={handleEndDateChange}
+          onAccept={handleEndDateChange}
+          onChange={() => {}}
           format="dd/MM/yyyy"
           renderInput={(props) => {
             return (

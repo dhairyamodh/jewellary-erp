@@ -1,7 +1,8 @@
-import { Backdrop, Box, CircularProgress } from '@mui/material';
+import { Box } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
+import SuspenseLoader from 'src/components/SuspenseLoader';
 import { profileAsync } from 'src/redux/auth/authThunk';
 
 const Auth = ({ children }) => {
@@ -29,14 +30,7 @@ const Auth = ({ children }) => {
   }, [error]);
 
   if (loading) {
-    return (
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
-    );
+    return <SuspenseLoader />;
   }
   return (
     <Box

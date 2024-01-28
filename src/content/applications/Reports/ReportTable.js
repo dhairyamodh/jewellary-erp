@@ -4,7 +4,7 @@ import { Divider, Card, CardHeader } from '@mui/material';
 import CustomTable from 'src/components/Table';
 import Label from 'src/components/Label';
 import { useDispatch, useSelector } from 'react-redux';
-import { DATETIME_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
+import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
 import moment from 'moment';
 import {
   exportExcelAsync,
@@ -35,9 +35,6 @@ const getStatusLabel = (status) => {
 };
 
 const ReportTable = () => {
-  const [selectedCryptoOrders] = useState([]);
-  const selectedBulkActions = selectedCryptoOrders.length > 0;
-
   const dispatch = useDispatch();
 
   const { data, count, loading } = useSelector((state) => state.report);
@@ -99,7 +96,7 @@ const ReportTable = () => {
       header: 'Created Date',
       accessor: 'createdAt',
       cell: ({ value }) => {
-        return moment(value).format(DATETIME_FORMAT);
+        return moment(value).format(DATE_FORMAT);
       }
     }
   ];
@@ -128,32 +125,14 @@ const ReportTable = () => {
         variant="outlined"
         onClick={handleExportExcel}
       >
-        Export
+        Export Excel
       </LoadingButton>
     );
   };
 
   return (
     <Card>
-      {!selectedBulkActions && (
-        <CardHeader
-          sx={{
-            alignItems: {
-              xs: 'flex-start',
-              md: 'center'
-            },
-            gap: {
-              xs: 3,
-              md: 0
-            },
-            flexDirection: {
-              xs: 'column',
-              md: 'row'
-            }
-          }}
-          title="Order Report"
-        />
-      )}
+      <CardHeader title="Order Report" />
       <Divider />
       <CustomTable
         columns={columns}

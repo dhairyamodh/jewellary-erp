@@ -31,7 +31,7 @@ const SearchComponent = ({ fetchData, sx, label, placeholder, value }) => {
       <TextField
         type="text"
         placeholder={placeholder || 'Search...'}
-        label={label || 'Search'}
+        label={label}
         value={searchTerm}
         onChange={handleSearch}
         fullWidth
