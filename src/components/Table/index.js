@@ -29,9 +29,9 @@ const CustomTable = ({
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
   const [search, setSearch] = useState('');
-  const [startDate, setStartDate] = useState(moment().subtract(1, 'year'));
+  const [startDate, setStartDate] = useState(moment().subtract(1, 'month'));
   const [endDate, setEndDate] = useState(moment());
-
+  const [isMounted, setIsMounted] = useState(false);
   const handleStartDateChange = (date) => {
     setStartDate(date);
   };
@@ -45,22 +45,28 @@ const CustomTable = ({
   };
 
   const handleLimitChange = (event) => {
+    setPage(1);
     setLimit(parseInt(event.target.value));
   };
 
   useEffect(() => {
-    const fetchServerData = async () => {
-      await fetchData(page, limit, search, startDate, endDate);
-    };
-    const url = new URL(window.location);
-    url.searchParams.set('page', page);
-    url.searchParams.set('limit', limit);
-    url.searchParams.set('search', search || '');
-    url.searchParams.set('startDate', startDate);
-    url.searchParams.set('endDate', endDate);
-    window.history.pushState(null, '', url.toString());
-    fetchServerData();
-  }, [page, limit, search, startDate, endDate]);
+    if (isMounted) {
+      const fetchServerData = async () => {
+        await fetchData(page, limit, search, startDate, endDate);
+      };
+      console.log('first');
+      const url = new URL(window.location);
+      url.searchParams.set('page', page);
+      url.searchParams.set('limit', limit);
+      url.searchParams.set('search', search || '');
+      url.searchParams.set('startDate', startDate);
+      url.searchParams.set('endDate', endDate);
+      window.history.pushState(null, '', url.toString());
+      fetchServerData();
+    } else {
+      setIsMounted(true);
+    }
+  }, [isMounted, page, limit, search, startDate, endDate]);
 
   const query = useQuery();
 
@@ -70,7 +76,7 @@ const CustomTable = ({
       setPage(parseInt(query.get('page')) || 1);
       setLimit(parseInt(query.get('limit')) || 5);
       setStartDate(
-        parseInt(query.get('startDate')) || moment().subtract(1, 'year')
+        parseInt(query.get('startDate')) || moment().subtract(1, 'month')
       );
       setEndDate(parseInt(query.get('endDate')) || moment());
     }
@@ -88,18 +94,20 @@ const CustomTable = ({
         direction="row"
         gap={2}
         justifyContent="end"
-        pt={2}
-        px={1}
+        p={2}
         sx={{
+          flexDirection: {
+            xs: 'column',
+            md: 'row'
+          },
           minWidth: {
-            xs: 200,
+            xs: '100%',
             md: 250
           }
         }}
       >
         <SearchComponent
           fetchData={(data) => setSearch(data)}
-          label="Search"
           value={search}
           placeholder={searchPlaceholder}
         />
@@ -119,15 +127,18 @@ const CustomTable = ({
       <TableContainer>
         <Table>
           <TableHead>
-            {columns.map((header) => (
-              <TableCell
-                sx={{
-                  whiteSpace: 'nowrap'
-                }}
-              >
-                {header.header}
-              </TableCell>
-            ))}
+            <TableRow>
+              {columns.map((header, hIdx) => (
+                <TableCell
+                  key={hIdx}
+                  sx={{
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  {header.header}
+                </TableCell>
+              ))}
+            </TableRow>
           </TableHead>
           <TableBody>
             {!loading ? (
@@ -135,9 +146,10 @@ const CustomTable = ({
                 data?.map((item, index) => {
                   return (
                     <TableRow key={index}>
-                      {columns.map((header) => {
+                      {columns.map((header, hIndex) => {
                         return (
                           <TableCell
+                            key={hIndex}
                             sx={{
                               whiteSpace: 'nowrap'
                             }}
@@ -177,11 +189,12 @@ const CustomTable = ({
                 </TableRow>
               )
             ) : (
-              [...Array(limit)]?.map(() => (
-                <TableRow>
-                  {[...Array(columns?.length)]?.map(() => {
+              [...Array(limit)]?.map((_, rIdx) => (
+                <TableRow key={rIdx}>
+                  {[...Array(columns?.length)]?.map((_, cIdx) => {
                     return (
                       <TableCell
+                        key={cIdx}
                         sx={{
                           textAlign: 'center'
                         }}

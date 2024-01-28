@@ -5,10 +5,11 @@ import CustomTable from 'src/components/Table';
 import Label from 'src/components/Label';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPendingOrdersAsync } from 'src/redux/Order/orderThunk';
-import { RUPEE_SYMBOL } from 'src/utils/constants';
+import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
 import { useNavigate } from 'react-router';
 import DiscountDialog from 'src/components/Dialogs/DiscountDialog';
 import { useQuery } from 'src/hooks/useQuery';
+import moment from 'moment';
 
 const getStatusLabel = (status) => {
   const map = {
@@ -133,6 +134,14 @@ const TransactionsTable = () => {
       }
     },
     {
+      id: 'createdAt',
+      header: 'Created Date',
+      accessor: 'createdAt',
+      cell: ({ value }) => {
+        return moment(value).format(DATE_FORMAT);
+      }
+    },
+    {
       id: 'actions',
       header: 'Actions',
       accessor: 'actions',
@@ -175,6 +184,7 @@ const TransactionsTable = () => {
         loading={loading}
         fetchData={fetchData}
         count={count}
+        searchPlaceholder="Search by names"
       />
       <DiscountDialog
         open={openDiscount?.open}

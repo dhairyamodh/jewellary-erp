@@ -1,21 +1,11 @@
 import { useState } from 'react';
-import {
-  Divider,
-  FormControl,
-  InputLabel,
-  Card,
-  Select,
-  MenuItem,
-  CardHeader,
-  Stack,
-  Button
-} from '@mui/material';
+import { Divider, Card, CardHeader, Stack, Button } from '@mui/material';
 
 import CustomTable from 'src/components/Table';
 import Label from 'src/components/Label';
 import { useDispatch, useSelector } from 'react-redux';
 import { cancelOrderAsync, getOrdersAsync } from 'src/redux/Order/orderThunk';
-import { DATETIME_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
+import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { AddTwoTone } from '@mui/icons-material';
@@ -44,24 +34,9 @@ const getStatusLabel = (status) => {
   return <Label color={color}>{text}</Label>;
 };
 
-const applyFilters = (cryptoOrders, filters) => {
-  return cryptoOrders?.filter((cryptoOrder) => {
-    let matches = true;
-
-    if (filters.status && cryptoOrder.status !== filters.status) {
-      matches = false;
-    }
-
-    return matches;
-  });
-};
-
 const OrdersTable = () => {
   const [selectedCryptoOrders] = useState([]);
   const selectedBulkActions = selectedCryptoOrders.length > 0;
-  const [filters, setFilters] = useState({
-    status: null
-  });
 
   const [openCancel, setOpenCancel] = useState({
     open: false,
@@ -109,25 +84,6 @@ const OrdersTable = () => {
     handleCloseCancelDialog();
   };
 
-  const statusOptions = [
-    {
-      id: 'all',
-      name: 'All'
-    },
-    {
-      id: 'Payment_Completed',
-      name: 'Completed'
-    },
-    {
-      id: 'Payment_Pending',
-      name: 'Pending'
-    },
-    {
-      id: 'cancel_order',
-      name: 'Canceled'
-    }
-  ];
-
   const columns = [
     {
       header: 'Customer Name',
@@ -171,7 +127,7 @@ const OrdersTable = () => {
       header: 'Created Date',
       accessor: 'createdAt',
       cell: ({ value }) => {
-        return moment(value).format(DATETIME_FORMAT);
+        return moment(value).format(DATE_FORMAT);
       }
     },
     {
@@ -202,65 +158,13 @@ const OrdersTable = () => {
       }
     }
   ];
-  const handleStatusChange = (e) => {
-    let value = null;
-
-    if (e.target.value !== 'all') {
-      value = e.target.value;
-    }
-
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      status: value
-    }));
-  };
-
-  const filteredData = applyFilters(data, filters);
 
   return (
     <Card>
       {!selectedBulkActions && (
         <CardHeader
-          sx={{
-            alignItems: {
-              xs: 'flex-start',
-              md: 'center'
-            },
-            gap: {
-              xs: 3,
-              md: 0
-            },
-            flexDirection: {
-              xs: 'column',
-              md: 'row'
-            }
-          }}
           action={
-            <Stack
-              direction="row"
-              gap={2}
-              sx={{
-                width: {
-                  xs: 250,
-                  md: 300
-                }
-              }}
-            >
-              <FormControl fullWidth variant="outlined">
-                <InputLabel>Payment</InputLabel>
-                <Select
-                  value={filters.status || 'all'}
-                  onChange={handleStatusChange}
-                  label="Payment"
-                  fullWidth
-                >
-                  {statusOptions.map((statusOption) => (
-                    <MenuItem key={statusOption.id} value={statusOption.id}>
-                      {statusOption.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+            <Stack direction="row" gap={2}>
               <Link to="/order/add">
                 <Button
                   variant="contained"
@@ -281,7 +185,7 @@ const OrdersTable = () => {
       <Divider />
       <CustomTable
         columns={columns}
-        data={filteredData}
+        data={data}
         loading={loading}
         fetchData={fetchData}
         count={count}

@@ -188,32 +188,8 @@ const EmiTable = () => {
       />
       <Card>
         <CardHeader
-          sx={{
-            alignItems: {
-              xs: 'flex-start',
-              md: 'center'
-            },
-            gap: {
-              xs: 3,
-              md: 0
-            },
-            flexDirection: {
-              xs: 'column',
-              md: 'row'
-            }
-          }}
           action={
-            <Stack
-              direction="row"
-              gap={2}
-              justifyContent="flex-end"
-              sx={{
-                width: {
-                  xs: 250,
-                  md: 300
-                }
-              }}
-            >
+            <Stack direction="row" gap={2} justifyContent="flex-end">
               <Link to="/emi/add">
                 <Button
                   variant="contained"
