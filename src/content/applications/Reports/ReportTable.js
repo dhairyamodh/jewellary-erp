@@ -10,7 +10,6 @@ import {
   exportExcelAsync,
   getOrderReportAsync
 } from 'src/redux/Report/reportThunk';
-import { useQuery } from 'src/hooks/useQuery';
 import { LoadingButton } from '@mui/lab';
 
 const getStatusLabel = (status) => {
@@ -101,11 +100,10 @@ const ReportTable = () => {
     }
   ];
 
-  const query = useQuery();
-
   const handleExportExcel = () => {
-    const startDate = moment(query.get('startDate')).format('yy-MM-DD');
-    const endDate = moment(query.get('endDate')).format('yy-MM-DD');
+    let params = new URL(document.location).searchParams;
+    const startDate = moment(params.get('startDate')).format('yy-MM-DD');
+    const endDate = moment(params.get('endDate')).format('yy-MM-DD');
     (async () => {
       setExcelLoading(true);
       await dispatch(

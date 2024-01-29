@@ -33,9 +33,7 @@ function Login() {
     handleSubmit,
     register,
     formState: { errors }
-  } = useForm({
-    defaultValues: { email: 'admin@gmail.com', password: '123456' }
-  });
+  } = useForm();
 
   const dispatch = useDispatch();
 

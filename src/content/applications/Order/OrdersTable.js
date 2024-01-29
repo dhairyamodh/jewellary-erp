@@ -9,9 +9,9 @@ import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { AddTwoTone } from '@mui/icons-material';
-import { useQuery } from 'src/hooks/useQuery';
 import DeleteDialog from 'src/components/Dialogs/DeleteDialog';
 import moment from 'moment';
+import useQuery from 'src/hooks/useQuery';
 
 const getStatusLabel = (status) => {
   const map = {
