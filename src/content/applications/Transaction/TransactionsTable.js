@@ -2,35 +2,13 @@ import { useState } from 'react';
 import { Divider, Card, CardHeader, Stack, Button } from '@mui/material';
 
 import CustomTable from 'src/components/Table';
-import Label from 'src/components/Label';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPendingOrdersAsync } from 'src/redux/Order/orderThunk';
 import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
 import { useNavigate } from 'react-router';
 import DiscountDialog from 'src/components/Dialogs/DiscountDialog';
-import { useQuery } from 'src/hooks/useQuery';
 import moment from 'moment';
-
-const getStatusLabel = (status) => {
-  const map = {
-    Payment_Completed: {
-      text: 'Completed',
-      color: 'success'
-    },
-    cancel_order: {
-      text: 'Canceled',
-      color: 'error'
-    },
-    Payment_Pending: {
-      text: 'Pending',
-      color: 'warning'
-    }
-  };
-
-  const { text, color } = map[status];
-
-  return <Label color={color}>{text}</Label>;
-};
+import useQuery from 'src/hooks/useQuery';
 
 const TransactionsTable = () => {
   const [selectedCryptoOrders] = useState([]);
@@ -123,14 +101,6 @@ const TransactionsTable = () => {
             {RUPEE_SYMBOL} {value}
           </>
         );
-      }
-    },
-    {
-      id: 'status',
-      header: 'Payment',
-      accessor: 'status',
-      cell: ({ value }) => {
-        return getStatusLabel(value);
       }
     },
     {

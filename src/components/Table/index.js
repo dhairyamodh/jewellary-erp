@@ -12,9 +12,9 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import SearchComponent from '../Search';
-import { useQuery } from 'src/hooks/useQuery';
 import DateRange from '../DateRange';
 import moment from 'moment';
+import useQuery from 'src/hooks/useQuery';
 
 const CustomTable = ({
   columns,
@@ -54,13 +54,14 @@ const CustomTable = ({
       const fetchServerData = async () => {
         await fetchData(page, limit, search, startDate, endDate);
       };
-      console.log('first');
       const url = new URL(window.location);
       url.searchParams.set('page', page);
       url.searchParams.set('limit', limit);
       url.searchParams.set('search', search || '');
-      url.searchParams.set('startDate', startDate);
-      url.searchParams.set('endDate', endDate);
+      if (isDateFilter) {
+        url.searchParams.set('startDate', startDate);
+        url.searchParams.set('endDate', endDate);
+      }
       window.history.pushState(null, '', url.toString());
       fetchServerData();
     } else {

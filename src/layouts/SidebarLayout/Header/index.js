@@ -7,7 +7,8 @@ import {
   IconButton,
   Tooltip,
   styled,
-  useTheme
+  useTheme,
+  Typography
 } from '@mui/material';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import { SidebarContext } from 'src/contexts/SidebarContext';
@@ -35,6 +36,25 @@ const HeaderWrapper = styled(Box)(
 `
 );
 
+const TitleWrapper = styled(Box)(
+  ({ theme }) => `
+        img {
+          width: 70px;
+        }
+
+        @media (min-width: ${theme.breakpoints.values.md}px) {
+          img {
+            display: none;
+          }
+        }
+        @media (max-width: ${theme.breakpoints.values.md}px) {
+          .MuiTypography-root {
+            display: none;
+          }
+        }
+`
+);
+
 function Header() {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   const theme = useTheme();
@@ -44,7 +64,7 @@ function Header() {
       display="flex"
       alignItems="center"
       sx={{
-        justifyContent: 'end',
+        justifyContent: 'space-between',
         boxShadow:
           theme.palette.mode === 'dark'
             ? `0 1px 0 ${alpha(
@@ -60,6 +80,10 @@ function Header() {
               )}`
       }}
     >
+      <TitleWrapper>
+        <Typography variant="h3">Jewellery ERP</Typography>
+        <img src="/logo-transparent-png.png" alt="logo" />
+      </TitleWrapper>
       <Box display="flex" alignItems="center" justifyContent="end">
         <HeaderUserbox />
         <Box

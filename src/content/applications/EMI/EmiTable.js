@@ -10,8 +10,8 @@ import Label from 'src/components/Label';
 import moment from 'moment';
 import { useState } from 'react';
 import AddEMIAmountDialog from 'src/components/Dialogs/AddEMIAmountDialog';
-import { useQuery } from 'src/hooks/useQuery';
 import WithdrawEMIDialog from 'src/components/Dialogs/WithdrawEMIDialog';
+import useQuery from 'src/hooks/useQuery';
 
 const EmiTable = () => {
   const getStatusLabel = (status) => {
