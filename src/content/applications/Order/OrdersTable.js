@@ -12,6 +12,8 @@ import { AddTwoTone } from '@mui/icons-material';
 import DeleteDialog from 'src/components/Dialogs/DeleteDialog';
 import moment from 'moment';
 import useQuery from 'src/hooks/useQuery';
+import PrintDialog from 'src/components/Dialogs/PrintDialog';
+import OrderInvoice from './OrderInvoice';
 
 const getStatusLabel = (status) => {
   const map = {
@@ -46,6 +48,18 @@ const OrdersTable = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+
+  const [openPrintModal, setOpenPrintModal] = useState({
+    open: false,
+    data: {}
+  });
+
+  const handlePrint = (data) => {
+    setOpenPrintModal({
+      open: true,
+      data
+    });
+  };
 
   const { data, count, loading } = useSelector((state) => state.order);
 
@@ -144,6 +158,13 @@ const OrdersTable = () => {
             >
               View details
             </Button>
+            <Button
+              variant="outlined"
+              color={'primary'}
+              onClick={() => handlePrint(row)}
+            >
+              Print Bill
+            </Button>
             {row.status === 'Payment_Pending' && (
               <Button
                 variant="contained"
@@ -160,43 +181,56 @@ const OrdersTable = () => {
   ];
 
   return (
-    <Card>
-      {!selectedBulkActions && (
-        <CardHeader
-          action={
-            <Stack direction="row" gap={2}>
-              <Link to="/order/add">
-                <Button
-                  variant="contained"
-                  sx={{
-                    whiteSpace: 'nowrap',
-                    height: '100%'
-                  }}
-                  startIcon={<AddTwoTone fontSize="small" />}
-                >
-                  Create
-                </Button>
-              </Link>
-            </Stack>
-          }
-          title="Order List"
+    <>
+      <Card>
+        {!selectedBulkActions && (
+          <CardHeader
+            action={
+              <Stack direction="row" gap={2}>
+                <Link to="/order/add">
+                  <Button
+                    variant="contained"
+                    sx={{
+                      whiteSpace: 'nowrap',
+                      height: '100%'
+                    }}
+                    startIcon={<AddTwoTone fontSize="small" />}
+                  >
+                    Create
+                  </Button>
+                </Link>
+              </Stack>
+            }
+            title="Order List"
+          />
+        )}
+        <Divider />
+        <CustomTable
+          columns={columns}
+          data={data}
+          loading={loading}
+          fetchData={fetchData}
+          count={count}
+          searchPlaceholder="Search by names"
         />
-      )}
-      <Divider />
-      <CustomTable
-        columns={columns}
-        data={data}
-        loading={loading}
-        fetchData={fetchData}
-        count={count}
-        searchPlaceholder="Search by names"
-      />
+      </Card>
       <DeleteDialog
         onAccept={handleCancelOrder}
         open={openCancel.open}
         onClose={handleCloseCancelDialog}
       />
-    </Card>
+      <PrintDialog
+        open={openPrintModal?.open}
+        onClose={() =>
+          setOpenPrintModal({
+            ...openPrintModal,
+            open: false
+          })
+        }
+      >
+        <OrderInvoice data={openPrintModal?.data} />
+      </PrintDialog>
+    </>
   );
 };
 
