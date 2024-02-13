@@ -4,10 +4,10 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
-  TextField
+  TextField,
+  Typography
 } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { addEMIPaymentAsync } from 'src/redux/EMI/emiThunk';
@@ -47,8 +47,10 @@ const AddEMIAmountDialog = ({ open, onClose, onClick, id }) => {
       aria-describedby="alert-dialog-description"
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogTitle variant="h4">Add EMI payment</DialogTitle>
         <DialogContent>
+          <Typography variant="h4" mb={2}>
+            Add EMI payment
+          </Typography>
           <TextField
             name="amount"
             placeholder="Enter amount"

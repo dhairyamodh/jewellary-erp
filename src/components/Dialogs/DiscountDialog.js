@@ -4,11 +4,10 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   TextField,
   Typography
 } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { discountTransactionAsync } from 'src/redux/Order/orderThunk';
@@ -43,8 +42,10 @@ const DiscountDialog = ({ open, onClose, onClick, id }) => {
       aria-describedby="alert-dialog-description"
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogTitle variant="h4">Add Discount</DialogTitle>
         <DialogContent>
+          <Typography mb={2} variant="h4">
+            Add Discount
+          </Typography>
           <Typography variant="h6" mb={2}>
             Enter discounted amount to complete this transaction
           </Typography>

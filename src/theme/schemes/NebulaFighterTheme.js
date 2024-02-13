@@ -349,7 +349,7 @@ export const NebulaFighterTheme = createTheme({
       styleOverrides: {
         paper: {
           backgroundColor: themeColors.primaryAlt,
-          boxShadow: 'none'
+          boxShadow: colors.shadows.card
         }
       }
     },

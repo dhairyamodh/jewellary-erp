@@ -25,6 +25,10 @@ const getStatusLabel = (status) => {
     Payment_Pending: {
       text: 'Pending',
       color: 'warning'
+    },
+    'complete with discount': {
+      text: 'Completed with discount',
+      color: 'info'
     }
   };
 

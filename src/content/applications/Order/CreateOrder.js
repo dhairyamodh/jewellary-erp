@@ -32,10 +32,13 @@ const AddEntry = () => {
     register,
     watch,
     reset,
+    setValue,
     formState: { errors }
   } = useForm({
     defaultValues: {
       isFullPayment: true,
+      taxRate: 3,
+      discount: 0,
       item: [
         {
           name: '',
@@ -61,7 +64,6 @@ const AddEntry = () => {
   const dispatch = useDispatch();
 
   const { loading } = useSelector((state) => state.order);
-  const [itemsTotal, setItemsTotal] = useState(0);
   const [replaceItemsTotal, setReplaceItemsTotal] = useState(0);
 
   const onSubmit = (data) => {
@@ -71,8 +73,11 @@ const AddEntry = () => {
         customerMobile: data.customerMobile,
         address: data.address,
         isFullPayment: data.isFullPayment,
-        dueDate: data.dueDate,
         paymentType: data.paymentType,
+        taxAmount: data.taxAmount || 0,
+        taxRate: data.taxRate || 0,
+        discount_amount: parseFloat(data.discount) || 0,
+        subTotal: data.subTotal,
         items: data.item.map((i) => {
           return {
             name: i?.name,
@@ -126,13 +131,22 @@ const AddEntry = () => {
     name: 'replaceItems'
   });
 
+  const taxRate = watch('taxRate');
+  const discount = watch('discount');
+
   useEffect(() => {
     let total = 0;
     item.forEach((field) => {
       const price = parseFloat(field.price) || field?.target?.value || 0;
       total += price;
     });
-    setItemsTotal(total);
+    const taxAmount = parseFloat(
+      (parseFloat(total) * parseFloat(taxRate)) / 100
+    );
+    const grandTotal = taxAmount + parseFloat(total);
+    setValue('taxAmount', taxAmount);
+    setValue('subTotal', total);
+    setValue('total', grandTotal);
   }, [item]);
 
   useEffect(() => {
@@ -143,6 +157,23 @@ const AddEntry = () => {
     });
     setReplaceItemsTotal(total);
   }, [replaceItem]);
+
+  useEffect(() => {
+    const totalAmount = watch('subTotal');
+    const taxAmount =
+      (parseFloat(totalAmount) * (parseFloat(taxRate) || 0)) / 100;
+    const total = taxAmount + parseFloat(totalAmount);
+    setValue('taxAmount', taxAmount);
+    setValue('total', total);
+  }, [taxRate]);
+
+  useEffect(() => {
+    const total =
+      parseFloat(watch('subTotal')) +
+      watch('taxAmount') -
+      (parseFloat(discount) || 0);
+    setValue('total', total);
+  }, [discount]);
 
   return (
     <>
@@ -471,26 +502,17 @@ const AddEntry = () => {
                                   </Grid>
                                   <Grid item xs={6}>
                                     <TextField
-                                      label="Price"
                                       type="number"
                                       fullWidth
                                       name="price"
+                                      placeholder="Enter amount"
                                       {...register('advancedPayment')}
                                       error={Boolean(errors?.advancedPayment)}
                                     />
                                   </Grid>
                                 </>
                               )}
-                              <Grid item xs={6}>
-                                <Typography variant="h4">
-                                  Items Total
-                                </Typography>
-                              </Grid>
-                              <Grid item xs={6}>
-                                <Typography textAlign="right" variant="h4">
-                                  {RUPEE_SYMBOL} {itemsTotal?.toLocaleString()}
-                                </Typography>
-                              </Grid>
+
                               <Grid item xs={6}>
                                 <Typography variant="h4">
                                   Replacement Items Total
@@ -503,19 +525,55 @@ const AddEntry = () => {
                                 </Typography>
                               </Grid>
                               <Grid item xs={6}>
-                                <Typography variant="h4">Total</Typography>
+                                <Typography variant="h4">Sub Total</Typography>
+                              </Grid>
+                              <Grid item xs={6}>
+                                <Typography textAlign="right" variant="h4">
+                                  {RUPEE_SYMBOL}{' '}
+                                  {watch('subTotal')?.toLocaleString()}
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={6}>
+                                <Typography variant="h4">
+                                  Tax Rate{' '}
+                                  <Typography variant="caption">
+                                    (in percentage)
+                                  </Typography>
+                                </Typography>
                               </Grid>
                               <Grid item xs={6}>
                                 <TextField
-                                  label="Total"
                                   type="number"
                                   fullWidth
-                                  name="total"
-                                  {...register('total', {
+                                  name="taxRate"
+                                  {...register('taxRate', {
                                     required: true
                                   })}
-                                  error={Boolean(errors?.total)}
+                                  error={Boolean(errors?.taxRate)}
                                 />
+                              </Grid>
+                              <Grid item xs={6}>
+                                <Typography variant="h4">Discount</Typography>
+                              </Grid>
+                              <Grid item xs={6}>
+                                <TextField
+                                  type="number"
+                                  fullWidth
+                                  name="discount"
+                                  {...register('discount', {
+                                    required: true
+                                  })}
+                                  error={Boolean(errors?.discount)}
+                                />
+                              </Grid>
+                              <Grid item xs={6}>
+                                <Typography variant="h4">Total</Typography>
+                              </Grid>
+                              <Grid item xs={6}>
+                                <Typography textAlign="right" variant="h4">
+                                  {RUPEE_SYMBOL}{' '}
+                                  {watch('total')?.toLocaleString()}
+                                </Typography>
                               </Grid>
                             </Grid>
                           </CardContent>

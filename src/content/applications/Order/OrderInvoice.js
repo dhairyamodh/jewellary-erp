@@ -12,36 +12,33 @@ const OrderInvoice = ({ data }) => {
             <div className="invoice-inner" id="invoice_wrapper">
               <div className="invoice-top">
                 <Grid container>
-                  <Grid item sm={6}>
+                  <Grid item sm={12}>
                     <div className="logo">
                       {/* <img src="/icon-512x512.png" alt="logo" /> */}
-                      <Typography variant="h2">Mahalaxmi Jewellers</Typography>
+                      <Typography variant="h2" textAlign="center">
+                        Shree Mahakali Jewellers
+                      </Typography>
                     </div>
-                  </Grid>
-                  <Grid item sm={6}>
-                    <Box textAlign="end" className="invoice">
-                      <Typography variant="h2">Invoice</Typography>
-                    </Box>
                   </Grid>
                 </Grid>
               </div>
               <div className="invoice-titel">
-                <Grid container>
-                  <Grid item sm={6}>
+                {/* <Grid container> */}
+                {/* <Grid item sm={6}>
                     <div className="invoice-number">
                       <Typography variant="h4">
                         Invoice Number: #45613
                       </Typography>
                     </div>
-                  </Grid>
-                  <Grid item sm={6} textAlign="end">
-                    <div className="invoice-date">
-                      <Typography variant="h4">
-                        Invoice Date: {moment().format('DD MMM yy')}
-                      </Typography>
-                    </div>
-                  </Grid>
-                </Grid>
+                  </Grid> */}
+                {/* <Grid item sm={6} textAlign="end"> */}
+                <div className="invoice-date">
+                  <Typography variant="h4">
+                    Date: {moment().format('DD MMM, yy')}
+                  </Typography>
+                </div>
+                {/* </Grid> */}
+                {/* </Grid> */}
               </div>
               <div className="invoice-info">
                 <Grid container spacing={2}>
@@ -63,9 +60,7 @@ const OrderInvoice = ({ data }) => {
                         Bill To
                       </Typography>
                       <Typography className="invo-addr-1">
-                        Mahalaxmi Jewellers <br />
-                        billing@apexo.com <br />
-                        Jagana, palanpur <br />
+                        Shree Mahakali Jewellers
                       </Typography>
                     </Box>
                   </Grid>
@@ -76,7 +71,7 @@ const OrderInvoice = ({ data }) => {
                       GST No.
                     </Typography>
                     <Typography className="inv-from-1">
-                      873AJFGHDJHJF90
+                      24ATHPP8469Q1ZM
                     </Typography>
                   </Grid>
                   <Grid item sm={6} mb={2} textAlign="end">
@@ -116,13 +111,25 @@ const OrderInvoice = ({ data }) => {
                       <td colSpan="5" style={{ textAlign: 'end' }}>
                         SubTotal
                       </td>
-                      <td className="text-right">{`${RUPEE_SYMBOL} ${data.total_amount}`}</td>
+                      <td className="text-right">
+                        {RUPEE_SYMBOL}&nbsp;{data.subTotal}
+                      </td>
                     </tr>
                     <tr>
                       <td colSpan="5" style={{ textAlign: 'end' }}>
                         Tax
                       </td>
-                      <td className="text-right">{`${RUPEE_SYMBOL} ${data.tax}`}</td>
+                      <td className="text-right">
+                        {RUPEE_SYMBOL}&nbsp;{data.taxAmount}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan="5" style={{ textAlign: 'end' }}>
+                        Discount
+                      </td>
+                      <td className="text-right">
+                        {RUPEE_SYMBOL}&nbsp;{data.discount_amount}
+                      </td>
                     </tr>
                     <tr>
                       <td
@@ -132,7 +139,9 @@ const OrderInvoice = ({ data }) => {
                       >
                         Grand Total
                       </td>
-                      <td className="text-right fw-bold">{`${RUPEE_SYMBOL} ${data.grandTotal}`}</td>
+                      <td className="text-right fw-bold">
+                        {RUPEE_SYMBOL}&nbsp;{data.total_amount}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -199,17 +208,10 @@ const OrderInvoice = ({ data }) => {
 
               <div className="invoice-contact clearfix">
                 <div className="contact-info">
-                  <a href="tel:+55-4XX-634-7071">
-                    <i className="fa fa-phone" /> +00 123 647 840
-                  </a>
-                  <a href="tel:info@themevessel.com">
-                    <i className="fa fa-envelope" /> info@themevessel.com
-                  </a>
-                  <a
-                    href="tel:info@themevessel.com"
-                    className="mr-0 d-none-580"
-                  >
-                    <i className="fa fa-map-marker" /> Jagana, palanpur - 385001
+                  <a href="tel:9424138655">Mo. 94241 38655</a>
+                  <a className="mr-0 d-none-580">
+                    Ugamani Street, Near Guru Maharaj Mandir, Jagana, Palanpur,
+                    Banaskantha
                   </a>
                 </div>
               </div>
