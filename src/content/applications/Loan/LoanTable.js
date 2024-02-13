@@ -19,6 +19,10 @@ const getStatusLabel = (status) => {
     pending: {
       text: 'Pending',
       color: 'warning'
+    },
+    'complete with discount': {
+      text: 'Completed with discount',
+      color: 'info'
     }
   };
 

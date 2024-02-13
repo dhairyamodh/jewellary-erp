@@ -28,6 +28,10 @@ const getStatusLabel = (status) => {
     Payment_Pending: {
       text: 'Pending',
       color: 'warning'
+    },
+    'complete with discount': {
+      text: 'Completed with discount',
+      color: 'info'
     }
   };
 
@@ -111,13 +115,6 @@ const OrdersTable = () => {
       }
     },
     {
-      header: 'Items',
-      accessor: 'items',
-      cell: ({ value }) => {
-        return value?.length;
-      }
-    },
-    {
       header: 'total',
       accessor: 'total_amount',
       cell: ({ value }) => {
@@ -159,11 +156,11 @@ const OrdersTable = () => {
               View details
             </Button>
             <Button
-              variant="outlined"
-              color={'primary'}
+              variant="contained"
+              color="info"
               onClick={() => handlePrint(row)}
             >
-              Print Bill
+              Print Invoice
             </Button>
             {row.status === 'Payment_Pending' && (
               <Button

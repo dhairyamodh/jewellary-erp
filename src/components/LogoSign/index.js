@@ -1,10 +1,7 @@
 import {
   Box,
-  // Tooltip,
-  Badge,
   // tooltipClasses,
-  styled,
-  useTheme
+  styled
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 
@@ -28,26 +25,11 @@ const LogoSignWrapper = styled(Box)(
 );
 
 function Logo() {
-  const theme = useTheme();
-
   return (
     <LogoWrapper to="/">
-      <Badge
-        sx={{
-          '.MuiBadge-badge': {
-            fontSize: theme.typography.pxToRem(11),
-            right: -2,
-            top: 8
-          }
-        }}
-        overlap="circular"
-        color="success"
-        badgeContent="1.0"
-      >
-        <LogoSignWrapper>
-          <img src="/logo-transparent-png.png" alt="logo" />
-        </LogoSignWrapper>
-      </Badge>
+      <LogoSignWrapper>
+        <img src="/logo-transparent-png.png" alt="logo" />
+      </LogoSignWrapper>
     </LogoWrapper>
   );
 }

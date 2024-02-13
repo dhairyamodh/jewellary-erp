@@ -23,8 +23,8 @@ const PrintDialog = ({ open, children, onClose }) => {
     <Dialog open={open} onClose={onClose} fullScreen>
       <AppBar sx={{ position: 'relative', p: 2 }}>
         <Toolbar>
-          <Typography sx={{ ml: 2, flex: 1 }} variant="h4" component="div">
-            Print Bill
+          <Typography sx={{ ml: 2, flex: 1 }} variant="h3" component="div">
+            Print Invoice
           </Typography>
           <IconButton
             edge="start"

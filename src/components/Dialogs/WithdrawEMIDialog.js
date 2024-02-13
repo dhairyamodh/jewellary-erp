@@ -5,9 +5,9 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  Typography
 } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { withdrawEMIAsync } from 'src/redux/EMI/emiThunk';
 
@@ -25,8 +25,10 @@ const WithdrawEMIDialog = ({ open, onClose, onClick, id }) => {
   };
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
-      <DialogTitle ariant="h4">{'Are you sure want withdraw EMI?'}</DialogTitle>
       <DialogContent>
+        <Typography mb={2} ariant="h4">
+          {'Are you sure want withdraw EMI?'}
+        </Typography>
         <DialogContentText id="alert-dialog-description">
           You won't be able to revert this!
         </DialogContentText>
