@@ -4,6 +4,11 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
   TextField,
   Typography
 } from '@mui/material';
@@ -29,7 +34,7 @@ const AddEMIAmountDialog = ({ open, onClose, onClick, id }) => {
         addEMIPaymentAsync({
           id: id,
           data: {
-            transactions: [{ amount: parseFloat(data.amount) }]
+            transactions: [{ ...data, amount: parseFloat(data.amount) }]
           }
         })
       );
@@ -51,15 +56,40 @@ const AddEMIAmountDialog = ({ open, onClose, onClick, id }) => {
           <Typography variant="h4" mb={2}>
             Add EMI payment
           </Typography>
-          <TextField
-            name="amount"
-            placeholder="Enter amount"
-            fullWidth
-            {...register('amount', {
-              required: true
-            })}
-            error={Boolean(errors?.amount)}
-          />
+          <Stack spacing={2}>
+            <TextField
+              name="amount"
+              label="Amount"
+              fullWidth
+              {...register('amount', {
+                required: true
+              })}
+              error={Boolean(errors?.amount)}
+            />
+            <FormControl fullWidth>
+              <InputLabel id="paymentType">Payment Type</InputLabel>
+              <Select
+                labelId="paymentType"
+                label="Payment Type"
+                defaultValue="cash"
+                name="type"
+                {...register('paymentType', {
+                  required: true
+                })}
+              >
+                <MenuItem value="cash">Cash</MenuItem>
+                <MenuItem value="upi">UPI</MenuItem>
+                <MenuItem value="card">Card</MenuItem>
+              </Select>
+            </FormControl>
+            <TextField
+              name="remark"
+              label="Remark"
+              fullWidth
+              {...register('remark')}
+              error={Boolean(errors?.remark)}
+            />
+          </Stack>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} type="button">

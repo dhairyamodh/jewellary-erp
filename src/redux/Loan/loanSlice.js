@@ -1,6 +1,10 @@
 // loanSlice.js
 import { createSlice } from '@reduxjs/toolkit';
-import { getLoanListAsyncCase, updateInterestAsyncCase } from './loanThunk';
+import {
+  addLoanAmountAsyncCase,
+  getLoanListAsyncCase,
+  updateInterestAsyncCase
+} from './loanThunk';
 
 // Define the initial state for the slice
 const initialState = {
@@ -18,6 +22,7 @@ const loanSlice = createSlice({
   extraReducers: (builder) => {
     getLoanListAsyncCase(builder);
     updateInterestAsyncCase(builder);
+    addLoanAmountAsyncCase(builder);
   }
 });
 

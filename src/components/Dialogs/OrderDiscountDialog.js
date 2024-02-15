@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { discountTransactionAsync } from 'src/redux/Order/orderThunk';
 
-const DiscountDialog = ({ open, onClose, onClick, id }) => {
+const OrderDiscountDialog = ({ open, onClose, onClick, id }) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -79,4 +79,4 @@ const DiscountDialog = ({ open, onClose, onClick, id }) => {
   );
 };
 
-export default DiscountDialog;
+export default OrderDiscountDialog;

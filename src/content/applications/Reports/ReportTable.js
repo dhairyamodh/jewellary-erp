@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Divider, Card, CardHeader } from '@mui/material';
+import { Divider, Card, CardHeader, Tooltip, IconButton } from '@mui/material';
 
 import CustomTable from 'src/components/Table';
 import Label from 'src/components/Label';
@@ -11,6 +11,8 @@ import {
   getOrderReportAsync
 } from 'src/redux/Report/reportThunk';
 import { LoadingButton } from '@mui/lab';
+import { DescriptionTwoTone } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 const getStatusLabel = (status) => {
   const map = {
@@ -56,6 +58,8 @@ const ReportTable = () => {
     );
   };
 
+  const navigate = useNavigate();
+
   const columns = [
     {
       header: 'Customer Name',
@@ -100,6 +104,23 @@ const ReportTable = () => {
       accessor: 'createdAt',
       cell: ({ value }) => {
         return moment(value).format(DATE_FORMAT);
+      }
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+      accessor: 'actions',
+      cell: ({ row }) => {
+        return (
+          <Tooltip title="View details" arrow>
+            <IconButton
+              color={'primary'}
+              onClick={() => navigate(`/order/view-details/${row._id}`)}
+            >
+              <DescriptionTwoTone />
+            </IconButton>
+          </Tooltip>
+        );
       }
     }
   ];

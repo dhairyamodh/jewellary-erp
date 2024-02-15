@@ -1,14 +1,26 @@
 import { useState } from 'react';
-import { Divider, Card, CardHeader, Stack, Button } from '@mui/material';
+import {
+  Divider,
+  Card,
+  CardHeader,
+  Stack,
+  IconButton,
+  Tooltip
+} from '@mui/material';
 
 import CustomTable from 'src/components/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPendingOrdersAsync } from 'src/redux/Order/orderThunk';
 import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
 import { useNavigate } from 'react-router';
-import DiscountDialog from 'src/components/Dialogs/DiscountDialog';
+import OrderDiscountDialog from 'src/components/Dialogs/OrderDiscountDialog';
 import moment from 'moment';
 import useQuery from 'src/hooks/useQuery';
+import {
+  DescriptionTwoTone,
+  DiscountTwoTone,
+  PaymentTwoTone
+} from '@mui/icons-material';
 
 const TransactionsTable = () => {
   const [selectedCryptoOrders] = useState([]);
@@ -118,25 +130,36 @@ const TransactionsTable = () => {
       cell: ({ row }) => {
         return (
           <Stack spacing={1} direction="row">
-            <Button
-              variant="contained"
-              color={
-                row?.status !== 'Payment_Pending' ? 'secondary' : 'primary'
+            <Tooltip
+              title={
+                row?.status !== 'Payment_Pending'
+                  ? 'View Details'
+                  : 'Add Payment'
               }
-              onClick={() => navigate(`/transaction/add-payment/${row._id}`)}
+              arrow
             >
-              {row?.status !== 'Payment_Pending'
-                ? 'View details'
-                : 'Add Payment'}
-            </Button>
-            {row?.status === 'Payment_Pending' && (
-              <Button
-                variant="contained"
-                color="warning"
-                onClick={() => handleOpenDiscount(row?._id)}
+              <IconButton
+                color={
+                  row?.status !== 'Payment_Pending' ? 'secondary' : 'primary'
+                }
+                onClick={() => navigate(`/transaction/add-payment/${row._id}`)}
               >
-                Add Discount
-              </Button>
+                {row?.status !== 'Payment_Pending' ? (
+                  <DescriptionTwoTone />
+                ) : (
+                  <PaymentTwoTone />
+                )}
+              </IconButton>
+            </Tooltip>
+            {row?.status === 'Payment_Pending' && (
+              <Tooltip title="Add Discount" arrow>
+                <IconButton
+                  color="warning"
+                  onClick={() => handleOpenDiscount(row?._id)}
+                >
+                  <DiscountTwoTone />
+                </IconButton>
+              </Tooltip>
             )}
           </Stack>
         );
@@ -156,7 +179,7 @@ const TransactionsTable = () => {
         count={count}
         searchPlaceholder="Search by names"
       />
-      <DiscountDialog
+      <OrderDiscountDialog
         open={openDiscount?.open}
         onClose={handleCloseDiscount}
         onClick={handleAddDiscount}
