@@ -137,7 +137,7 @@ export const cancelOrderAsync = createAsyncThunk(
 );
 
 export const discountTransactionAsync = createAsyncThunk(
-  `/cancel-order`,
+  `/transaction/discount`,
   async (req, { dispatch }) => {
     try {
       const response = await axiosClient.put(
@@ -228,6 +228,21 @@ export const getPendingOrdersAsyncCase = (builder) => {
       state.pendingOrderCount = action.payload?.data.count;
     })
     .addCase(getPendingOrdersAsync.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    });
+};
+
+export const addPaymentAsyncCase = (builder) => {
+  builder
+    .addCase(addPaymentAsync.pending, (state) => {
+      state.error = null;
+    })
+    .addCase(addPaymentAsync.fulfilled, (state, action) => {
+      state.loading = false;
+      state.details = action.payload?.data?.results;
+    })
+    .addCase(addPaymentAsync.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     });

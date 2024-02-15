@@ -1,12 +1,6 @@
 {
-  "name": "tokyo-free-black-react-admin-dashboard-js",
-  "version": "2.0.0",
-  "title": "Tokyo Free Black React Javascript Admin Dashboard",
-  "description": "Tokyo Free Black React Javascript Admin Dashboard features an all dark color scheme which makes it stand out giving your projects a sleek unique look.",
-  "author": {
-    "name": "BloomUI.com",
-    "url": "https://bloomui.com"
-  },
+  "name": "Jewellery ERP",
+  "version": "1.0.0",
   "private": false,
   "dependencies": {
     "@emotion/react": "11.9.0",

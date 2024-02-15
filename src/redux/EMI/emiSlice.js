@@ -14,11 +14,17 @@ const initialState = {
 const emiSlice = createSlice({
   name: 'api',
   initialState,
-  reducers: {},
+  reducers: {
+    setEmiDetails: (state, action) => {
+      state.details = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     getEmiListAsyncCase(builder);
     createEMIAsyncCase(builder);
   }
 });
+
+export const { setEmiDetails } = emiSlice.actions;
 
 export default emiSlice.reducer;

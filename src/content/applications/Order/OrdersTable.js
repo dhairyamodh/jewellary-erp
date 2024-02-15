@@ -1,5 +1,13 @@
 import { useState } from 'react';
-import { Divider, Card, CardHeader, Stack, Button } from '@mui/material';
+import {
+  Divider,
+  Card,
+  CardHeader,
+  Stack,
+  Button,
+  Tooltip,
+  IconButton
+} from '@mui/material';
 
 import CustomTable from 'src/components/Table';
 import Label from 'src/components/Label';
@@ -8,7 +16,12 @@ import { cancelOrderAsync, getOrdersAsync } from 'src/redux/Order/orderThunk';
 import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import { AddTwoTone } from '@mui/icons-material';
+import {
+  AddTwoTone,
+  CancelTwoTone,
+  DescriptionTwoTone,
+  PrintTwoTone
+} from '@mui/icons-material';
 import DeleteDialog from 'src/components/Dialogs/DeleteDialog';
 import moment from 'moment';
 import useQuery from 'src/hooks/useQuery';
@@ -105,7 +118,14 @@ const OrdersTable = () => {
   const columns = [
     {
       header: 'Customer Name',
-      accessor: 'customerName'
+      accessor: 'customerName',
+      cell: ({ row }) => {
+        return (
+          <>
+            {row.customerName} {`${row.remark ? `(${row.remark})` : ''}`}
+          </>
+        );
+      }
     },
     {
       header: 'Mobile',
@@ -148,28 +168,28 @@ const OrdersTable = () => {
       cell: ({ row }) => {
         return (
           <Stack spacing={1} direction="row">
-            <Button
-              variant="contained"
-              color={'primary'}
-              onClick={() => navigate(`/order/view-details/${row._id}`)}
-            >
-              View details
-            </Button>
-            <Button
-              variant="contained"
-              color="info"
-              onClick={() => handlePrint(row)}
-            >
-              Print Invoice
-            </Button>
-            {row.status === 'Payment_Pending' && (
-              <Button
-                variant="contained"
-                color="error"
-                onClick={() => handleOpenCancelDialog(row._id)}
+            <Tooltip title="View details" arrow>
+              <IconButton
+                color={'primary'}
+                onClick={() => navigate(`/order/view-details/${row._id}`)}
               >
-                Cancel Order
-              </Button>
+                <DescriptionTwoTone />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Print Invoice" arrow>
+              <IconButton color="info" onClick={() => handlePrint(row)}>
+                <PrintTwoTone />
+              </IconButton>
+            </Tooltip>
+            {row.status === 'Payment_Pending' && (
+              <Tooltip title="Cancel Order" arrow>
+                <IconButton
+                  color="error"
+                  onClick={() => handleOpenCancelDialog(row._id)}
+                >
+                  <CancelTwoTone />
+                </IconButton>
+              </Tooltip>
             )}
           </Stack>
         );

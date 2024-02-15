@@ -196,7 +196,7 @@ const AddEntry = () => {
                   <Divider />
                   <CardContent>
                     <Grid container spacing={2}>
-                      <Grid item xs={12} md={3}>
+                      <Grid item xs={12} md={4}>
                         <TextField
                           name="customerName"
                           label="Customer Name"
@@ -207,7 +207,16 @@ const AddEntry = () => {
                           error={Boolean(errors?.customerName)}
                         />
                       </Grid>
-                      <Grid item xs={12} md={3}>
+                      <Grid item xs={12} md={4}>
+                        <TextField
+                          name="remark"
+                          label="Remark"
+                          fullWidth
+                          {...register('remark')}
+                          error={Boolean(errors?.remark)}
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={4}>
                         <TextField
                           name="customerMobile"
                           label="Customer Mobile"
@@ -216,7 +225,7 @@ const AddEntry = () => {
                           error={Boolean(errors?.customerMobile)}
                         />
                       </Grid>
-                      <Grid item xs={12} md={6}>
+                      <Grid item xs={12}>
                         <TextField
                           name="address"
                           label="Customer Address"
@@ -228,7 +237,9 @@ const AddEntry = () => {
                         />
                       </Grid>
                       <Grid item xs={12}>
-                        <h3>Items</h3>
+                        <Typography variant="h4" mb={2}>
+                          Items
+                        </Typography>
                         <Grid container spacing={2}>
                           {fields.map((field, index) => (
                             <Grid item xs={12} key={field.id}>
@@ -371,7 +382,9 @@ const AddEntry = () => {
                         </Grid>
                       </Grid>
                       <Grid item xs={12}>
-                        <h3>Replacement Items</h3>
+                        <Typography variant="h4" mb={2}>
+                          Replacement Items
+                        </Typography>
                         <Grid container spacing={2}>
                           {replaceFieldArr?.fields?.map((field, index) => (
                             <Grid item xs={12} key={field.id}>

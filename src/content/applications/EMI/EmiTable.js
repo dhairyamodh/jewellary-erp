@@ -1,10 +1,23 @@
-import { Divider, Card, CardHeader, Stack, Button } from '@mui/material';
+import {
+  Divider,
+  Card,
+  CardHeader,
+  Stack,
+  Button,
+  Tooltip,
+  IconButton
+} from '@mui/material';
 
 import CustomTable from 'src/components/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
-import { Link } from 'react-router-dom';
-import { AddTwoTone } from '@mui/icons-material';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  AddTwoTone,
+  CardMembershipTwoTone,
+  DescriptionTwoTone,
+  PaymentTwoTone
+} from '@mui/icons-material';
 import { getEmiListAsync } from 'src/redux/EMI/emiThunk';
 import Label from 'src/components/Label';
 import moment from 'moment';
@@ -12,6 +25,7 @@ import { useState } from 'react';
 import AddEMIAmountDialog from 'src/components/Dialogs/AddEMIAmountDialog';
 import WithdrawEMIDialog from 'src/components/Dialogs/WithdrawEMIDialog';
 import useQuery from 'src/hooks/useQuery';
+import { setEmiDetails } from 'src/redux/EMI/emiSlice';
 
 const EmiTable = () => {
   const getStatusLabel = (status) => {
@@ -27,6 +41,8 @@ const EmiTable = () => {
   };
 
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const { data, count, loading } = useSelector((state) => state.emi);
 
@@ -118,7 +134,7 @@ const EmiTable = () => {
     },
     {
       header: 'EMI amount',
-      accessor: 'total_creditamount',
+      accessor: 'fixed_Emi',
       cell: ({ value }) => {
         return (
           <>
@@ -151,20 +167,33 @@ const EmiTable = () => {
         return (
           row.status !== 'withdraw' && (
             <Stack spacing={1} direction="row">
-              <Button
-                variant="contained"
-                color={'primary'}
-                onClick={() => handleClickAddPayment(row)}
-              >
-                Add EMI Payment
-              </Button>
-              <Button
-                variant="contained"
-                color="warning"
-                onClick={() => handleWithdraw(row?._id)}
-              >
-                Withdraw EMI
-              </Button>
+              <Tooltip title="View details" arrow>
+                <IconButton
+                  color={'primary'}
+                  onClick={() => {
+                    dispatch(setEmiDetails(row));
+                    navigate(`/emi/view-details`);
+                  }}
+                >
+                  <DescriptionTwoTone />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Add EMI Payment" arrow>
+                <IconButton
+                  color="info"
+                  onClick={() => handleClickAddPayment(row)}
+                >
+                  <PaymentTwoTone />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Withdraw EMI" arrow>
+                <IconButton
+                  color="warning"
+                  onClick={() => handleWithdraw(row?._id)}
+                >
+                  <CardMembershipTwoTone />
+                </IconButton>
+              </Tooltip>
             </Stack>
           )
         );

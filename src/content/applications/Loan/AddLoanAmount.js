@@ -6,7 +6,10 @@ import {
   CardHeader,
   Container,
   Divider,
+  FormControl,
   Grid,
+  MenuItem,
+  Select,
   Table,
   TableBody,
   TableCell,
@@ -48,7 +51,13 @@ const AddLoanAmount = () => {
       const res = await dispatch(
         addLoanAmountAsync({
           id,
-          transaction: [{ amount: data.amount }]
+          transaction: [
+            {
+              amount: parseFloat(data.amount),
+              paymentType: data.paymentType,
+              remark: data.remark
+            }
+          ]
         })
       );
       if (res?.payload.data.success) {
@@ -170,6 +179,8 @@ const AddLoanAmount = () => {
                           <TableHead>
                             <TableRow>
                               <TableCell>Amount</TableCell>
+                              <TableCell>Payment Type</TableCell>
+                              <TableCell>Remark</TableCell>
                               <TableCell>Date</TableCell>
                             </TableRow>
                           </TableHead>
@@ -185,6 +196,12 @@ const AddLoanAmount = () => {
                               >
                                 <TableCell component="th" scope="row">
                                   {row.amount}
+                                </TableCell>
+                                <TableCell component="th" scope="row">
+                                  {row.paymentType}
+                                </TableCell>
+                                <TableCell component="th" scope="row">
+                                  {row.remark}
                                 </TableCell>
                                 <TableCell>
                                   {moment(row.date).format('DD/MM/YY hh:mm a')}
@@ -218,25 +235,79 @@ const AddLoanAmount = () => {
                           </Grid>
                           <Grid item xs={12}>
                             <Grid container spacing={2}>
-                              <Grid item xs={6} md={4}>
-                                Amount
+                              <Grid item xs={12}>
+                                <Grid container spacing={2}>
+                                  <Grid item xs={6} md={4}>
+                                    Amount
+                                  </Grid>
+                                  <Grid item xs={6} md={4}>
+                                    <TextField
+                                      name="amount"
+                                      label="Amount"
+                                      fullWidth
+                                      {...register('amount', {
+                                        required: true,
+                                        validate: (value) => {
+                                          const parsedValue = Number(value);
+                                          const remainingAmount = Number(
+                                            details?.remainingAmount
+                                          );
+
+                                          if (parsedValue > remainingAmount) {
+                                            return 'Amount should not be greater than remaining amount';
+                                          }
+
+                                          return undefined;
+                                        }
+                                      })}
+                                      error={Boolean(
+                                        errors?.amount &&
+                                          errors?.amount?.message !== ''
+                                      )}
+                                      helperText={errors?.amount?.message}
+                                    />
+                                  </Grid>
+                                </Grid>
                               </Grid>
-                              <Grid item xs={6} md={4}>
-                                <TextField
-                                  name="amount"
-                                  label="Amount"
-                                  fullWidth
-                                  {...register('amount', {
-                                    required: true
-                                  })}
-                                  error={Boolean(
-                                    errors?.amount &&
-                                      errors?.amount?.message !== ''
-                                  )}
-                                  helperText={errors?.amount?.message}
-                                />
+                              <Grid item xs={12}>
+                                <Grid container spacing={2}>
+                                  <Grid item xs={6} md={4}>
+                                    Payment Type
+                                  </Grid>
+                                  <Grid item xs={6} md={4}>
+                                    <FormControl fullWidth>
+                                      <Select
+                                        defaultValue="cash"
+                                        name="type"
+                                        {...register('paymentType', {
+                                          required: true
+                                        })}
+                                      >
+                                        <MenuItem value="cash">Cash</MenuItem>
+                                        <MenuItem value="upi">UPI</MenuItem>
+                                        <MenuItem value="card">Card</MenuItem>
+                                      </Select>
+                                    </FormControl>
+                                  </Grid>
+                                </Grid>
                               </Grid>
-                              <Grid item xs={6} md={4}>
+                              <Grid item xs={12}>
+                                <Grid container spacing={2}>
+                                  <Grid item xs={6} md={4}>
+                                    Remark
+                                  </Grid>
+                                  <Grid item xs={6} md={4}>
+                                    <TextField
+                                      name="remark"
+                                      label="Remark"
+                                      fullWidth
+                                      {...register('remark')}
+                                      error={Boolean(errors?.remark)}
+                                    />
+                                  </Grid>
+                                </Grid>
+                              </Grid>
+                              <Grid item xs={12}>
                                 <LoadingButton
                                   loading={paymentLoading}
                                   variant="contained"

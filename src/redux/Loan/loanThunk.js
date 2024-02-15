@@ -89,6 +89,36 @@ export const addLoanAmountAsync = createAsyncThunk(
   }
 );
 
+export const discountLoanAsync = createAsyncThunk(
+  `/loan/discountLoan`,
+  async (req, { dispatch }) => {
+    try {
+      const response = await axiosClient.put(
+        `/loan/discountLoan/${req.id}`,
+        req.data
+      );
+      if (response.data.success) {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg,
+            severity: 'success'
+          })
+        );
+      } else {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg,
+            severity: 'error'
+          })
+        );
+      }
+      return response;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+);
+
 // Builder Cases
 
 export const getLoanListAsyncCase = (builder) => {
@@ -134,6 +164,21 @@ export const updateInterestAsyncCase = (builder) => {
       state.details = action.payload?.data?.results;
     })
     .addCase(updateInterestAsync.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    });
+};
+
+export const addLoanAmountAsyncCase = (builder) => {
+  builder
+    .addCase(addLoanAmountAsync.pending, (state) => {
+      state.error = null;
+    })
+    .addCase(addLoanAmountAsync.fulfilled, (state, action) => {
+      state.loading = false;
+      state.details = action.payload?.data?.results;
+    })
+    .addCase(addLoanAmountAsync.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     });

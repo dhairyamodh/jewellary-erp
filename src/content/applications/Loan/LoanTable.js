@@ -1,4 +1,12 @@
-import { Divider, Card, CardHeader, Stack, Button } from '@mui/material';
+import {
+  Divider,
+  Card,
+  CardHeader,
+  Stack,
+  Button,
+  Tooltip,
+  IconButton
+} from '@mui/material';
 
 import CustomTable from 'src/components/Table';
 import Label from 'src/components/Label';
@@ -7,8 +15,15 @@ import { getLoanListAsync } from 'src/redux/Loan/loanThunk';
 import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import { AddTwoTone } from '@mui/icons-material';
+import {
+  AddTwoTone,
+  DiscountTwoTone,
+  PaymentTwoTone
+} from '@mui/icons-material';
 import moment from 'moment';
+import { useState } from 'react';
+import LoanDiscountDialog from 'src/components/Dialogs/LoanDiscountDialog';
+import useQuery from 'src/hooks/useQuery';
 
 const getStatusLabel = (status) => {
   const map = {
@@ -21,7 +36,7 @@ const getStatusLabel = (status) => {
       color: 'warning'
     },
     'complete with discount': {
-      text: 'Completed with discount',
+      text: 'Closed with discount',
       color: 'info'
     }
   };
@@ -50,6 +65,35 @@ const LoansTable = () => {
         perpage: limit
       })
     );
+  };
+
+  const query = useQuery();
+
+  const [openDiscount, setOpenDiscount] = useState({
+    id: undefined,
+    open: false
+  });
+
+  const handleOpenDiscount = (id) => {
+    setOpenDiscount({
+      open: true,
+      id: id
+    });
+  };
+
+  const handleCloseDiscount = () => {
+    setOpenDiscount({
+      open: false,
+      id: undefined
+    });
+  };
+
+  const handleAddDiscount = () => {
+    const page = query.get('page');
+    const limit = query.get('limit');
+    const search = query.get('search') || '';
+    fetchData(page, limit, search);
+    handleCloseDiscount();
   };
 
   const columns = [
@@ -128,13 +172,24 @@ const LoansTable = () => {
         return (
           <Stack spacing={1} direction="row">
             {row.status !== 'Loan closed' && (
-              <Button
-                variant="contained"
-                color={'primary'}
-                onClick={() => handleClickAddPayment(row)}
-              >
-                Add payment
-              </Button>
+              <Tooltip title="Add payment" arrow>
+                <IconButton
+                  color={'primary'}
+                  onClick={() => handleClickAddPayment(row)}
+                >
+                  <PaymentTwoTone />
+                </IconButton>
+              </Tooltip>
+            )}
+            {row?.status === 'pending' && (
+              <Tooltip title="Add Discount" arrow>
+                <IconButton
+                  color="warning"
+                  onClick={() => handleOpenDiscount(row?._id)}
+                >
+                  <DiscountTwoTone />
+                </IconButton>
+              </Tooltip>
             )}
           </Stack>
         );
@@ -171,6 +226,12 @@ const LoansTable = () => {
         fetchData={fetchData}
         count={count}
         searchPlaceholder="Search by names"
+      />
+      <LoanDiscountDialog
+        open={openDiscount?.open}
+        onClose={handleCloseDiscount}
+        onClick={handleAddDiscount}
+        id={openDiscount?.id}
       />
     </Card>
   );

@@ -38,7 +38,11 @@ const CreateEMI = () => {
         customerMobile: data.customerMobile,
         address: data.address,
         transactions: [
-          { amount: parseFloat(data.amount), paymentType: data.paymentType }
+          {
+            amount: parseFloat(data.amount),
+            paymentType: data.paymentType,
+            remark: data.remark
+          }
         ],
         fixed_Emi: parseFloat(data.fixed_Emi)
       };
@@ -70,7 +74,7 @@ const CreateEMI = () => {
                   <Divider />
                   <CardContent>
                     <Grid container spacing={2}>
-                      <Grid item xs={12} md={3}>
+                      <Grid item xs={12} md={4}>
                         <TextField
                           name="customerName"
                           label="Customer Name"
@@ -81,7 +85,16 @@ const CreateEMI = () => {
                           error={Boolean(errors?.customerName)}
                         />
                       </Grid>
-                      <Grid item xs={12} md={3}>
+                      <Grid item xs={12} md={4}>
+                        <TextField
+                          name="remark"
+                          label="Remark"
+                          fullWidth
+                          {...register('remark')}
+                          error={Boolean(errors?.remark)}
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={4}>
                         <TextField
                           name="customerMobile"
                           label="Customer Mobile"
@@ -90,7 +103,7 @@ const CreateEMI = () => {
                           error={Boolean(errors?.customerMobile)}
                         />
                       </Grid>
-                      <Grid item xs={12} md={6}>
+                      <Grid item xs={12} md={12}>
                         <TextField
                           name="address"
                           label="Customer Address"

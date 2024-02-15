@@ -1,6 +1,7 @@
 // orderSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 import {
+  addPaymentAsyncCase,
   createOrderAsyncCase,
   getOrderByIdCase,
   getOrdersAsyncCase,
@@ -26,6 +27,7 @@ const orderSlice = createSlice({
     getPendingOrdersAsyncCase(builder);
     createOrderAsyncCase(builder);
     getOrdersAsyncCase(builder);
+    addPaymentAsyncCase(builder);
   }
 });
 

@@ -53,6 +53,9 @@ const EMIs = Loader(lazy(() => import('./content/applications/EMI')));
 const CreateEMI = Loader(
   lazy(() => import('./content/applications/EMI/CreateEMI'))
 );
+const EmiViewDetails = Loader(
+  lazy(() => import('./content/applications/EMI/ViewDetails'))
+);
 
 // Report
 const OrderReport = Loader(
@@ -199,6 +202,10 @@ const routes = [
           {
             path: 'add',
             element: <CreateEMI />
+          },
+          {
+            path: 'view-details',
+            element: <EmiViewDetails />
           }
         ]
       },
