@@ -170,8 +170,8 @@ const LoansTable = () => {
       accessor: 'actions',
       cell: ({ row }) => {
         return (
-          <Stack spacing={1} direction="row">
-            {row.status !== 'Loan closed' && (
+          row?.status === 'pending' && (
+            <Stack spacing={1} direction="row">
               <Tooltip title="Add payment" arrow>
                 <IconButton
                   color={'primary'}
@@ -180,8 +180,6 @@ const LoansTable = () => {
                   <PaymentTwoTone />
                 </IconButton>
               </Tooltip>
-            )}
-            {row?.status === 'pending' && (
               <Tooltip title="Add Discount" arrow>
                 <IconButton
                   color="warning"
@@ -190,8 +188,8 @@ const LoansTable = () => {
                   <DiscountTwoTone />
                 </IconButton>
               </Tooltip>
-            )}
-          </Stack>
+            </Stack>
+          )
         );
       }
     }
