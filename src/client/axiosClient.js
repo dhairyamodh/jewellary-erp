@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const axiosClient = axios.create({
-  baseURL: 'https://jewellery-app.onrender.com/api/' // Default API URL
+  baseURL: process.env.REACT_APP_API_URL // Default API URL
 });
 
 axiosClient.interceptors.request.use(function (config) {
