@@ -178,14 +178,16 @@ const EmiTable = () => {
                   <DescriptionTwoTone />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Add EMI Payment" arrow>
-                <IconButton
-                  color="info"
-                  onClick={() => handleClickAddPayment(row)}
-                >
-                  <PaymentTwoTone />
-                </IconButton>
-              </Tooltip>
+              {row.fixed_Emi > row.total_creditamount && (
+                <Tooltip title="Add EMI Payment" arrow>
+                  <IconButton
+                    color="info"
+                    onClick={() => handleClickAddPayment(row)}
+                  >
+                    <PaymentTwoTone />
+                  </IconButton>
+                </Tooltip>
+              )}
               <Tooltip title="Withdraw EMI" arrow>
                 <IconButton
                   color="warning"
