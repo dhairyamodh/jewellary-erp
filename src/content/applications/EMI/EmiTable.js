@@ -33,6 +33,10 @@ const EmiTable = () => {
       withdraw: {
         text: 'Withdrawed',
         color: 'success'
+      },
+      mature: {
+        text: 'Matured',
+        color: 'info'
       }
     };
     const { text, color } = map[status] || {};
@@ -186,14 +190,16 @@ const EmiTable = () => {
                   <PaymentTwoTone />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Withdraw EMI" arrow>
-                <IconButton
-                  color="warning"
-                  onClick={() => handleWithdraw(row?._id)}
-                >
-                  <CardMembershipTwoTone />
-                </IconButton>
-              </Tooltip>
+              {row.status === 'mature' && (
+                <Tooltip title="Withdraw EMI" arrow>
+                  <IconButton
+                    color="warning"
+                    onClick={() => handleWithdraw(row?._id)}
+                  >
+                    <CardMembershipTwoTone />
+                  </IconButton>
+                </Tooltip>
+              )}
             </Stack>
           )
         );
