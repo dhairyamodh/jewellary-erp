@@ -138,7 +138,7 @@ const LoansTable = () => {
       }
     },
     {
-      header: 'Remaining loan amount',
+      header: 'Remaining amount',
       accessor: 'updatedLoanCost',
       cell: ({ value }) => {
         return (

@@ -17,6 +17,7 @@ import {
 import moment from 'moment';
 import { Helmet } from 'react-helmet-async';
 import { useSelector } from 'react-redux';
+import BackButton from 'src/components/BackButton';
 
 const ViewDetails = () => {
   const { details } = useSelector((state) => state.emi);
@@ -29,7 +30,7 @@ const ViewDetails = () => {
       <Container maxWidth="xl">
         <Box py={4}>
           <Card>
-            <CardHeader title="View Details" />
+            <CardHeader avatar={<BackButton />} title="View Details" />
             <Divider />
             <CardContent>
               <Grid container spacing={2}>

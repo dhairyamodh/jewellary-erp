@@ -25,6 +25,7 @@ import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
+import BackButton from 'src/components/BackButton';
 import SuspenseLoader from 'src/components/SuspenseLoader';
 import {
   addLoanAmountAsync,
@@ -84,7 +85,7 @@ const AddLoanAmount = () => {
       <Container maxWidth="xl">
         <Box py={4}>
           <Card>
-            <CardHeader title="Add Payment" />
+            <CardHeader avatar={<BackButton />} title="Add Payment" />
             <Divider />
             <CardContent>
               <Grid container spacing={2}>

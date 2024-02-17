@@ -38,7 +38,7 @@ const getStatusLabel = (status) => {
       text: 'Canceled',
       color: 'error'
     },
-    Payment_Pending: {
+    Pending: {
       text: 'Pending',
       color: 'warning'
     },
@@ -140,7 +140,7 @@ const OrdersTable = () => {
       cell: ({ value }) => {
         return (
           <>
-            {RUPEE_SYMBOL} {value}
+            {RUPEE_SYMBOL} {value.toLocaleString()}
           </>
         );
       }
@@ -176,12 +176,14 @@ const OrdersTable = () => {
                 <DescriptionTwoTone />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Print Invoice" arrow>
-              <IconButton color="info" onClick={() => handlePrint(row)}>
-                <PrintTwoTone />
-              </IconButton>
-            </Tooltip>
-            {row.status === 'Payment_Pending' && (
+            {row.status === 'Payment_Completed' && (
+              <Tooltip title="Print Invoice" arrow>
+                <IconButton color="info" onClick={() => handlePrint(row)}>
+                  <PrintTwoTone />
+                </IconButton>
+              </Tooltip>
+            )}
+            {row.status === 'Pending' && (
               <Tooltip title="Cancel Order" arrow>
                 <IconButton
                   color="error"
