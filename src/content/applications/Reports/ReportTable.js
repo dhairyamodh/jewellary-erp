@@ -24,7 +24,7 @@ const getStatusLabel = (status) => {
       text: 'Canceled',
       color: 'error'
     },
-    Payment_Pending: {
+    Pending: {
       text: 'Pending',
       color: 'warning'
     },

@@ -4,7 +4,6 @@
 
 .invoice-content {
   color: #535353;
-  font-size: 14px;
 }
 
 .invoice-content a {
@@ -52,7 +51,7 @@ h6,
 }
 
 .container {
-  max-width: 1000px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -79,7 +78,6 @@ h6,
 
 /** BTN LG **/
 .btn-lg {
-  font-size: 14px;
   height: 50px;
   padding: 0 30px;
   line-height: 50px;
@@ -138,10 +136,6 @@ h6,
   font-weight: 500 !important;
 }
 
-.invoice-content .text-14 {
-  font-size: 14px;
-}
-
 .invoice-content .invoice-table th:first-child,
 .invoice-content .invoice-table td:first-child {
   text-align: left;
@@ -154,22 +148,18 @@ h6,
 .invoice-content .inv-header-1 {
   text-transform: uppercase;
   font-weight: 700;
-  font-size: 24px;
 }
 
 .invoice-content .inv-header-2 {
   text-transform: uppercase;
   font-weight: 600;
-  font-size: 20px;
 }
 
 .invoice-content .inv-title-1 {
   font-weight: 500;
-  font-size: 16px;
 }
 
 .invoice-content .invo-addr-1 {
-  font-size: 14px;
   margin-bottom: 20px;
   line-height: 23px;
 }
@@ -187,7 +177,6 @@ h6,
 }
 
 .invoice-content .important-notes-list-1 {
-  font-size: 14px !important;
   padding-left: 15px;
   margin-bottom: 15px;
 }
@@ -197,12 +186,7 @@ h6,
 }
 
 .invoice-content .bank-transfer-list-1 {
-  font-size: 13px !important;
   padding-left: 0px;
-}
-
-.invoice-content .important-notes {
-  font-size: 12px !important;
 }
 
 .invoice-content .invoice-btn-section {
@@ -246,11 +230,11 @@ h6,
 }
 
 .invoice-4 .invoice-inner {
+  padding: 20px 0;
   background: #fff;
 }
 
 .invoice-4 .item-desc-1 span {
-  font-size: 14px;
   font-weight: 500;
   color: #535353;
 }
@@ -294,7 +278,6 @@ h6,
 }
 
 .invoice-4 .item-desc-1 small {
-  font-size: 13px;
   color: #535353;
 }
 
@@ -310,7 +293,6 @@ h6,
   font-weight: 600;
   margin-bottom: 0;
   text-transform: uppercase;
-  font-size: 28px;
   color: #262525;
 }
 
@@ -329,7 +311,6 @@ h6,
 .invoice-4 .invoice-titel h3 {
   margin-bottom: 5px;
   font-weight: 400;
-  font-size: 16px;
   color: #262525;
 }
 
@@ -338,17 +319,20 @@ h6,
 }
 
 .invoice-4 .order-summary .table {
+  table-layout: fixed;
   margin-bottom: 0;
 }
 
 .invoice-4 .table th {
   white-space: nowrap;
   font-weight: 600;
+  vertical-align: middle;
 }
 
 .invoice-4 .table td,
 .invoice-4 .table th {
-  padding: 13px 20px;
+  white-space: nowrap;
+  padding: 10px 15px;
   border-top: 1px solid #e9ecef;
   border-right: 1px solid #e9ecef;
   text-align: center;
@@ -360,7 +344,6 @@ h6,
 
 .invoice-4 .table tr,
 .invoice-4 .table tr strong {
-  font-size: 15px;
   text-transform: initial !important;
 }
 
@@ -377,12 +360,9 @@ h6,
   color: #535353 !important;
 }
 
-.invoice-4 .invoice-informeshon p {
-  font-size: 14px;
-}
-
 .invoice-4 .inv-title-1 {
   margin-bottom: 7px;
+  font-weight: 600;
 }
 
 .invoice-4 thead th {
@@ -403,12 +383,10 @@ h6,
 .invoice-4 .bank-transfer-list-1 {
   list-style: none;
   padding: 0;
-  font-size: 14px !important;
 }
 
 .invoice-4 .invoice-contact a {
   color: #343434;
-  font-size: 14px;
 }
 
 .invoice-4 .mr-0 {
@@ -437,10 +415,6 @@ h6,
     margin-bottom: 5px;
   }
 
-  .invoice-4 .invoice-top .invoice h1 {
-    font-size: 24px;
-  }
-
   .invoice-4 .invoice-titel {
     padding: 20px 30px 15px;
   }
@@ -451,10 +425,6 @@ h6,
 
   .invoice-4 .invoice-titel:after {
     display: none;
-  }
-
-  .invoice-4 .invoice-titel h3 {
-    font-size: 16px;
   }
 
   .invoice-4 .invoice-info {
@@ -488,7 +458,6 @@ h6,
 
 @media (max-width: 768px) {
   .btn-lg {
-    font-size: 13px;
     height: 40px;
     padding: 0 20px;
     line-height: 40px;
@@ -498,54 +467,6 @@ h6,
 
 /** Print **/
 @media print {
-  .col-sm-12 {
-    width: 100%;
-  }
-
-  .col-sm-11 {
-    width: 91.66666667%;
-  }
-
-  .col-sm-10 {
-    width: 83.33333333%;
-  }
-
-  .col-sm-9 {
-    width: 75%;
-  }
-
-  .col-sm-8 {
-    width: 66.66666667%;
-  }
-
-  .col-sm-7 {
-    width: 58.33333333%;
-  }
-
-  .col-sm-6 {
-    width: 50%;
-  }
-
-  .col-sm-5 {
-    width: 41.66666667%;
-  }
-
-  .col-sm-4 {
-    width: 33.33333333%;
-  }
-
-  .col-sm-3 {
-    width: 25%;
-  }
-
-  .col-sm-2 {
-    width: 16.66666667%;
-  }
-
-  .col-sm-1 {
-    width: 8.33333333%;
-  }
-
   .text-end {
     text-align: right !important;
   }

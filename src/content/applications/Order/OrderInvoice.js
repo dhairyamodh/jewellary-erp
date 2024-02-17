@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import moment from 'moment';
 import 'src/assets/css/style.css';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
@@ -6,7 +6,7 @@ import { RUPEE_SYMBOL } from 'src/utils/constants';
 const OrderInvoice = ({ data }) => {
   return (
     <div className="invoice-4 invoice-content">
-      <Container>
+      <div className="container">
         <Grid container>
           <Grid item lg={12}>
             <div className="invoice-inner" id="invoice_wrapper">
@@ -15,7 +15,7 @@ const OrderInvoice = ({ data }) => {
                   <Grid item sm={12}>
                     <div className="logo">
                       {/* <img src="/icon-512x512.png" alt="logo" /> */}
-                      <Typography variant="h2" textAlign="center">
+                      <Typography variant="h1" textAlign="center">
                         Shree Mahakali Jewellers
                       </Typography>
                     </div>
@@ -44,7 +44,7 @@ const OrderInvoice = ({ data }) => {
                 <Grid container spacing={2}>
                   <Grid item sm={6} mb={2}>
                     <div className="invoice-number">
-                      <Typography variant="h4" className="inv-title-1">
+                      <Typography variant="h5" className="inv-title-1">
                         Invoice To
                       </Typography>
                       <Typography className="invo-addr-1">
@@ -56,7 +56,7 @@ const OrderInvoice = ({ data }) => {
                   </Grid>
                   <Grid item sm={6} mb={2}>
                     <Box textAlign="end" className="invoice-number">
-                      <Typography variant="h4" className="inv-title-1">
+                      <Typography variant="h5" className="inv-title-1">
                         Bill To
                       </Typography>
                       <Typography className="invo-addr-1">
@@ -67,7 +67,7 @@ const OrderInvoice = ({ data }) => {
                 </Grid>
                 <Grid container spacing={2}>
                   <Grid item sm={6} mb={2}>
-                    <Typography variant="h4" className="inv-title-1">
+                    <Typography variant="h5" className="inv-title-1">
                       GST No.
                     </Typography>
                     <Typography className="inv-from-1">
@@ -75,7 +75,7 @@ const OrderInvoice = ({ data }) => {
                     </Typography>
                   </Grid>
                   <Grid item sm={6} mb={2} textAlign="end">
-                    <Typography variant="h4" className="inv-title-1">
+                    <Typography variant="h5" className="inv-title-1">
                       Payment Method
                     </Typography>
                     <Typography className="inv-from-1">
@@ -88,11 +88,15 @@ const OrderInvoice = ({ data }) => {
                 <table className="table invoice-table">
                   <thead className="bg-active">
                     <tr>
-                      <th width="100%">Description</th>
+                      <th width="40%">Description</th>
                       <th width="10%">Type</th>
-                      <th width="10%">Quantity</th>
-                      <th width="10%">Weight/gm</th>
-                      <th width="15%">Labour Charge</th>
+                      <th width="10%">Qty.</th>
+                      <th width="10%">Wt.</th>
+                      <th width="15%">Rate</th>
+                      <th width="15%">
+                        Labour <br />
+                        Rate
+                      </th>
                       <th width="15%">Price</th>
                     </tr>
                   </thead>
@@ -103,44 +107,46 @@ const OrderInvoice = ({ data }) => {
                         <td className="text-center">{item.type}</td>
                         <td className="text-center">{item.quantity}</td>
                         <td className="text-center">{item.weight}</td>
-                        <td className="text-center">{`${RUPEE_SYMBOL} ${item.labour}`}</td>
-                        <td className="text-center">{`${RUPEE_SYMBOL} ${item.price}`}</td>
+                        <td className="text-center">{`${RUPEE_SYMBOL} ${item?.price?.toLocaleString()}`}</td>
+                        <td className="text-center">{`${RUPEE_SYMBOL} ${item.labour.toLocaleString()}`}</td>
+                        <td className="text-center">{`${RUPEE_SYMBOL} ${item.price.toLocaleString()}`}</td>
                       </tr>
                     ))}
                     <tr>
-                      <td colSpan="5" style={{ textAlign: 'end' }}>
+                      <td colSpan="6" style={{ textAlign: 'end' }}>
                         SubTotal
                       </td>
                       <td className="text-right">
-                        {RUPEE_SYMBOL}&nbsp;{data.subTotal}
+                        {RUPEE_SYMBOL}&nbsp;{data.subTotal.toLocaleString()}
                       </td>
                     </tr>
                     <tr>
-                      <td colSpan="5" style={{ textAlign: 'end' }}>
+                      <td colSpan="6" style={{ textAlign: 'end' }}>
                         Tax
                       </td>
                       <td className="text-right">
-                        {RUPEE_SYMBOL}&nbsp;{data.taxAmount}
+                        {RUPEE_SYMBOL}&nbsp;{data.taxAmount.toLocaleString()}
                       </td>
                     </tr>
                     <tr>
-                      <td colSpan="5" style={{ textAlign: 'end' }}>
+                      <td colSpan="6" style={{ textAlign: 'end' }}>
                         Discount
                       </td>
                       <td className="text-right">
-                        {RUPEE_SYMBOL}&nbsp;{data.discount_amount}
+                        {RUPEE_SYMBOL}&nbsp;
+                        {data.discount_amount.toLocaleString()}
                       </td>
                     </tr>
                     <tr>
                       <td
-                        colSpan="5"
+                        colSpan="6"
                         style={{ textAlign: 'end' }}
                         className="fw-bold"
                       >
                         Grand Total
                       </td>
                       <td className="text-right fw-bold">
-                        {RUPEE_SYMBOL}&nbsp;{data.total_amount}
+                        {RUPEE_SYMBOL}&nbsp;{data.total_amount.toLocaleString()}
                       </td>
                     </tr>
                   </tbody>
@@ -218,7 +224,7 @@ const OrderInvoice = ({ data }) => {
             </div>
           </Grid>
         </Grid>
-      </Container>
+      </div>
     </div>
   );
 };

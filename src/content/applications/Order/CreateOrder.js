@@ -39,6 +39,7 @@ const AddEntry = () => {
       isFullPayment: true,
       taxRate: 3,
       discount: 0,
+      advancedPayment: 0,
       item: [
         {
           name: '',
@@ -85,6 +86,7 @@ const AddEntry = () => {
             quantity: parseInt(i.qauntity || 1),
             weight: parseFloat(i.weight),
             price: parseFloat(i.price),
+            itemRate: parseFloat(i.itemRate),
             item_no: i?.design,
             labour: i?.labour
           };
@@ -244,7 +246,7 @@ const AddEntry = () => {
                           {fields.map((field, index) => (
                             <Grid item xs={12} key={field.id}>
                               <Grid container spacing={2}>
-                                <Grid item xs={12} md={3}>
+                                <Grid item xs={12} md={2}>
                                   <TextField
                                     name={`item.${index}.name`}
                                     label="Item Name"
@@ -255,7 +257,7 @@ const AddEntry = () => {
                                     error={Boolean(errors?.item?.[index]?.name)}
                                   />
                                 </Grid>
-                                <Grid item xs={12} md={1.5}>
+                                <Grid item xs={12} md={1}>
                                   <FormControl fullWidth>
                                     <InputLabel>Item type</InputLabel>
                                     <Select
@@ -304,20 +306,6 @@ const AddEntry = () => {
                                 </Grid>
                                 <Grid item xs={12} md={1.5}>
                                   <TextField
-                                    label="Price"
-                                    type="number"
-                                    fullWidth
-                                    name={`item.${index}.price`}
-                                    {...register(`item.${index}.price`, {
-                                      required: true
-                                    })}
-                                    error={Boolean(
-                                      errors?.item?.[index]?.price
-                                    )}
-                                  />
-                                </Grid>
-                                <Grid item xs={12} md={1.5}>
-                                  <TextField
                                     label="Design"
                                     type="text"
                                     fullWidth
@@ -330,6 +318,21 @@ const AddEntry = () => {
                                 </Grid>
                                 <Grid item xs={12} md={1.5}>
                                   <TextField
+                                    label="Rate"
+                                    type="number"
+                                    fullWidth
+                                    name={`item.${index}.itemRate`}
+                                    {...register(`item.${index}.itemRate`, {
+                                      required: true
+                                    })}
+                                    error={Boolean(
+                                      errors?.item?.[index]?.itemRate
+                                    )}
+                                  />
+                                </Grid>
+
+                                <Grid item xs={12} md={1.5}>
+                                  <TextField
                                     label="Labour Charge"
                                     type="number"
                                     fullWidth
@@ -337,6 +340,20 @@ const AddEntry = () => {
                                     {...register(`item.${index}.labour`)}
                                     error={Boolean(
                                       errors?.item?.[index]?.labour
+                                    )}
+                                  />
+                                </Grid>
+                                <Grid item xs={12} md={1.5}>
+                                  <TextField
+                                    label="Price"
+                                    type="number"
+                                    fullWidth
+                                    name={`item.${index}.price`}
+                                    {...register(`item.${index}.price`, {
+                                      required: true
+                                    })}
+                                    error={Boolean(
+                                      errors?.item?.[index]?.price
                                     )}
                                   />
                                 </Grid>
@@ -517,7 +534,7 @@ const AddEntry = () => {
                                     <TextField
                                       type="number"
                                       fullWidth
-                                      name="price"
+                                      name="advancedPayment"
                                       placeholder="Enter amount"
                                       {...register('advancedPayment')}
                                       error={Boolean(errors?.advancedPayment)}
@@ -565,20 +582,26 @@ const AddEntry = () => {
                                   error={Boolean(errors?.taxRate)}
                                 />
                               </Grid>
-                              <Grid item xs={6}>
-                                <Typography variant="h4">Discount</Typography>
-                              </Grid>
-                              <Grid item xs={6}>
-                                <TextField
-                                  type="number"
-                                  fullWidth
-                                  name="discount"
-                                  {...register('discount', {
-                                    required: true
-                                  })}
-                                  error={Boolean(errors?.discount)}
-                                />
-                              </Grid>
+                              {watch('isFullPayment') && (
+                                <>
+                                  <Grid item xs={6}>
+                                    <Typography variant="h4">
+                                      Discount
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item xs={6}>
+                                    <TextField
+                                      type="number"
+                                      fullWidth
+                                      name="discount"
+                                      {...register('discount', {
+                                        required: true
+                                      })}
+                                      error={Boolean(errors?.discount)}
+                                    />
+                                  </Grid>
+                                </>
+                              )}
                               <Grid item xs={6}>
                                 <Typography variant="h4">Total</Typography>
                               </Grid>
