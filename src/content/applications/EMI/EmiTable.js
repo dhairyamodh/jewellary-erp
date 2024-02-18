@@ -186,17 +186,16 @@ const EmiTable = () => {
                   <DescriptionTwoTone />
                 </IconButton>
               </Tooltip>
-              {row.status !== 'mature' ||
-                (row.status === 'withdraw' && (
-                  <Tooltip title="Add EMI Payment" arrow>
-                    <IconButton
-                      color="info"
-                      onClick={() => handleClickAddPayment(row)}
-                    >
-                      <PaymentTwoTone />
-                    </IconButton>
-                  </Tooltip>
-                ))}
+              {row.status === 'pending' && (
+                <Tooltip title="Add EMI Payment" arrow>
+                  <IconButton
+                    color="info"
+                    onClick={() => handleClickAddPayment(row)}
+                  >
+                    <PaymentTwoTone />
+                  </IconButton>
+                </Tooltip>
+              )}
               {row.status === 'mature' && (
                 <Tooltip title="Withdraw EMI" arrow>
                   <IconButton
