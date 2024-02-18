@@ -30,6 +30,10 @@ import { setEmiDetails } from 'src/redux/EMI/emiSlice';
 const EmiTable = () => {
   const getStatusLabel = (status) => {
     const map = {
+      pending: {
+        text: 'Pending',
+        color: 'warning'
+      },
       withdraw: {
         text: 'Withdrawed',
         color: 'success'
