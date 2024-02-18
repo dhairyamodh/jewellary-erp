@@ -62,6 +62,7 @@ const AddLoanAmount = () => {
         })
       );
       if (res?.payload.data.success) {
+        dispatch(updateInterestAsync({ id }));
         reset();
       }
       setPaymentLoading(false);

@@ -40,7 +40,6 @@ const AddEntry = () => {
       isFullPayment: true,
       taxRate: 3,
       discount: 0,
-      advancedPayment: 0,
       item: [
         {
           name: '',

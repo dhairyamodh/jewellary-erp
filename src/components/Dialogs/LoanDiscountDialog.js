@@ -25,8 +25,10 @@ const LoanDiscountDialog = ({ open, onClose, onClick, id }) => {
   const onSubmit = (data) => {
     (async () => {
       setLoading(true);
-      await dispatch(discountLoanAsync({ id: id, data: data }));
-      onClick();
+      const res = await dispatch(discountLoanAsync({ id: id, data: data }));
+      if (res?.payload?.data?.success) {
+        onClick();
+      }
       setLoading(false);
     })();
   };
