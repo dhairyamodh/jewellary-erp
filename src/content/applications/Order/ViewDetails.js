@@ -131,6 +131,86 @@ const ViewDetails = () => {
                                 </TableCell>
                               </TableRow>
                             ))}
+                            <TableRow>
+                              <TableCell colSpan="7" sx={{ textAlign: 'end' }}>
+                                SubTotal
+                              </TableCell>
+                              <TableCell
+                                sx={{
+                                  textAlign: 'end'
+                                }}
+                              >
+                                {RUPEE_SYMBOL}&nbsp;
+                                {details?.subTotal.toLocaleString()}
+                              </TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell colSpan="7" sx={{ textAlign: 'end' }}>
+                                Tax
+                              </TableCell>
+                              <TableCell
+                                sx={{
+                                  textAlign: 'end'
+                                }}
+                              >
+                                {RUPEE_SYMBOL}&nbsp;
+                                {details?.taxAmount.toLocaleString()}
+                              </TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell colSpan="7" sx={{ textAlign: 'end' }}>
+                                Tax Rate
+                              </TableCell>
+                              <TableCell
+                                sx={{
+                                  textAlign: 'end'
+                                }}
+                              >
+                                {details?.taxRate}%
+                              </TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell colSpan="7" sx={{ textAlign: 'end' }}>
+                                Discount
+                              </TableCell>
+                              <TableCell
+                                sx={{
+                                  textAlign: 'end'
+                                }}
+                              >
+                                {RUPEE_SYMBOL}&nbsp;
+                                {details?.discount_amount.toLocaleString()}
+                              </TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell colSpan="7" sx={{ textAlign: 'end' }}>
+                                Is Full Payment
+                              </TableCell>
+                              <TableCell
+                                sx={{
+                                  textAlign: 'end'
+                                }}
+                              >
+                                {details?.isFullPayment ? 'Yes' : 'No'}
+                              </TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell
+                                colSpan="7"
+                                sx={{ textAlign: 'end', fontWeight: 600 }}
+                              >
+                                Grand Total
+                              </TableCell>
+                              <TableCell
+                                sx={{
+                                  textAlign: 'end',
+                                  fontWeight: 600
+                                }}
+                              >
+                                {RUPEE_SYMBOL}&nbsp;
+                                {details?.total_amount.toLocaleString()}
+                              </TableCell>
+                            </TableRow>
                           </TableBody>
                         </Table>
                       </TableContainer>
