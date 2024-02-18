@@ -85,11 +85,7 @@ const TransactionsTable = () => {
       accessor: 'remainingAmount',
       cell: ({ value, row }) => {
         return (
-          <>
-            {row.status !== 'Payment_Completed'
-              ? `${RUPEE_SYMBOL} ${value}`
-              : '-'}
-          </>
+          <>{row.status !== 'Completed' ? `${RUPEE_SYMBOL} ${value}` : '-'}</>
         );
       }
     },
