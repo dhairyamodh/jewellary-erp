@@ -131,27 +131,21 @@ const TransactionsTable = () => {
         return (
           <Stack spacing={1} direction="row">
             <Tooltip
-              title={
-                row?.status !== 'Payment_Pending'
-                  ? 'View Details'
-                  : 'Add Payment'
-              }
+              title={row?.status !== 'Pending' ? 'View Details' : 'Add Payment'}
               arrow
             >
               <IconButton
-                color={
-                  row?.status !== 'Payment_Pending' ? 'secondary' : 'primary'
-                }
+                color={row?.status !== 'Pending' ? 'secondary' : 'primary'}
                 onClick={() => navigate(`/transaction/add-payment/${row._id}`)}
               >
-                {row?.status !== 'Payment_Pending' ? (
+                {row?.status !== 'Pending' ? (
                   <DescriptionTwoTone />
                 ) : (
                   <PaymentTwoTone />
                 )}
               </IconButton>
             </Tooltip>
-            {row?.status === 'Payment_Pending' && (
+            {row?.status === 'Pending' && (
               <Tooltip title="Add Discount" arrow>
                 <IconButton
                   color="warning"
