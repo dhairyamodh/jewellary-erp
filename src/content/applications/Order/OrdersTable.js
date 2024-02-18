@@ -80,8 +80,8 @@ const OrdersTable = () => {
 
   const { data, count, loading } = useSelector((state) => state.order);
 
-  const fetchData = (page, limit, search) => {
-    dispatch(
+  const fetchData = async (page, limit, search) => {
+    await dispatch(
       getOrdersAsync({
         search,
         page,
@@ -106,12 +106,12 @@ const OrdersTable = () => {
     });
   };
 
-  const handleCancelOrder = () => {
-    dispatch(cancelOrderAsync({ id: openCancel?.id }));
+  const handleCancelOrder = async () => {
+    await dispatch(cancelOrderAsync({ id: openCancel?.id }));
     const page = query.get('page');
     const limit = query.get('limit');
     const search = query.get('search') || '';
-    fetchData(page, limit, search);
+    await fetchData(page, limit, search);
     handleCloseCancelDialog();
   };
 

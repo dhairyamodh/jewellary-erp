@@ -35,7 +35,7 @@ const getStatusLabel = (status) => {
       text: 'Pending',
       color: 'warning'
     },
-    'complete with discount': {
+    'closed with discount': {
       text: 'Closed with discount',
       color: 'info'
     }
