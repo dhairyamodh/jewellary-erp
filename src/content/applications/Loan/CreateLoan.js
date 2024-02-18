@@ -20,6 +20,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import BackButton from 'src/components/BackButton';
 import { createLoanAsync } from 'src/redux/Loan/loanThunk';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
 
@@ -111,7 +112,7 @@ const CreateLoan = () => {
             >
               <Grid item xs={12}>
                 <Card>
-                  <CardHeader title="Create Loan" />
+                  <CardHeader avatar={<BackButton />} title="Create Loan" />
                   <Divider />
                   <CardContent>
                     <Grid container spacing={2}>

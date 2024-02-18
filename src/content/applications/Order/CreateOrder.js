@@ -22,6 +22,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import BackButton from 'src/components/BackButton';
 import { createOrderAsync } from 'src/redux/Order/orderThunk';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
 
@@ -194,7 +195,7 @@ const AddEntry = () => {
             >
               <Grid item xs={12}>
                 <Card>
-                  <CardHeader title="Create Order" />
+                  <CardHeader avatar={<BackButton />} title="Create Order" />
                   <Divider />
                   <CardContent>
                     <Grid container spacing={2}>
