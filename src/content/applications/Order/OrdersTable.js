@@ -30,11 +30,11 @@ import OrderInvoice from './OrderInvoice';
 
 const getStatusLabel = (status) => {
   const map = {
-    Payment_Completed: {
+    Completed: {
       text: 'Completed',
       color: 'success'
     },
-    cancel_order: {
+    Cancelled: {
       text: 'Canceled',
       color: 'error'
     },
@@ -176,7 +176,7 @@ const OrdersTable = () => {
                 <DescriptionTwoTone />
               </IconButton>
             </Tooltip>
-            {row.status === 'Payment_Completed' && (
+            {row.status === 'Completed' && (
               <Tooltip title="Print Invoice" arrow>
                 <IconButton color="info" onClick={() => handlePrint(row)}>
                   <PrintTwoTone />

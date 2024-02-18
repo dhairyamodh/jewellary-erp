@@ -16,11 +16,11 @@ import { useNavigate } from 'react-router-dom';
 
 const getStatusLabel = (status) => {
   const map = {
-    Payment_Completed: {
+    Completed: {
       text: 'Completed',
       color: 'success'
     },
-    cancel_order: {
+    Cancelled: {
       text: 'Canceled',
       color: 'error'
     },

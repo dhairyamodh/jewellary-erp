@@ -25,10 +25,12 @@ const OrderDiscountDialog = ({ open, onClose, onClick, id }) => {
   const onSubmit = (data) => {
     (async () => {
       setLoading(true);
-      await dispatch(
+      const res = await dispatch(
         discountTransactionAsync({ id: id, data: { amount: data?.amount } })
       );
-      onClick();
+      if (res?.payload?.data?.success) {
+        onClick();
+      }
       setLoading(false);
     })();
   };
