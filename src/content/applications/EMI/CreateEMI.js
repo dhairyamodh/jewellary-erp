@@ -17,6 +17,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import BackButton from 'src/components/BackButton';
 import { createEMIAsync } from 'src/redux/EMI/emiThunk';
 
 const CreateEMI = () => {
@@ -70,7 +71,7 @@ const CreateEMI = () => {
             >
               <Grid item xs={12}>
                 <Card>
-                  <CardHeader title="Create EMI" />
+                  <CardHeader avatar={<BackButton />} title="Create EMI" />
                   <Divider />
                   <CardContent>
                     <Grid container spacing={2}>
