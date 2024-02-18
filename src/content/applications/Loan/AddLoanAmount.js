@@ -223,16 +223,49 @@ const AddLoanAmount = () => {
                     <CardContent>
                       <form onSubmit={handleSubmit(onSubmit)}>
                         <Grid container spacing={2}>
-                          <Grid item xs={6} md={4}>
-                            <Typography variant="h4" fontWeight="bold">
-                              Remaining Loan Amount
-                            </Typography>
+                          <Grid item xs={12}>
+                            <Grid container spacing={2}>
+                              <Grid item xs={6} md={4}>
+                                <Typography variant="h5">
+                                  Total Item Cost
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={6} md={8}>
+                                <Typography variant="h5">
+                                  {RUPEE_SYMBOL}{' '}
+                                  {details?.totalItemCost?.toLocaleString()}
+                                </Typography>
+                              </Grid>
+                            </Grid>
                           </Grid>
-                          <Grid item xs={6} md={8}>
-                            <Typography variant="h4" fontWeight="bold">
-                              {RUPEE_SYMBOL}{' '}
-                              {details?.updatedLoanCost?.toLocaleString()}
-                            </Typography>
+                          <Grid item xs={12}>
+                            <Grid container spacing={2}>
+                              <Grid item xs={6} md={4}>
+                                <Typography variant="h5">
+                                  Interest Rate
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={6} md={8}>
+                                <Typography variant="h5">
+                                  {details?.interestRate}%
+                                </Typography>
+                              </Grid>
+                            </Grid>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Grid container spacing={2}>
+                              <Grid item xs={6} md={4}>
+                                <Typography variant="h4" fontWeight="bold">
+                                  Remaining Loan Amount
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={6} md={8}>
+                                <Typography variant="h4" fontWeight="bold">
+                                  {RUPEE_SYMBOL}{' '}
+                                  {details?.updatedLoanCost?.toLocaleString()}
+                                </Typography>
+                              </Grid>
+                            </Grid>
                           </Grid>
                           <Grid item xs={12}>
                             <Grid container spacing={2}>

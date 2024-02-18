@@ -16,10 +16,10 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import BackButton from 'src/components/BackButton';
 import { createLoanAsync } from 'src/redux/Loan/loanThunk';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
@@ -47,11 +47,12 @@ const CreateLoan = () => {
 
   const dispatch = useDispatch();
 
-  const { loading } = useSelector((state) => state.loan);
+  const [submitLoading, setSubmitLoading] = useState(false);
   const [itemsTotal, setItemsTotal] = useState(0);
 
   const onSubmit = (data) => {
     (async () => {
+      setSubmitLoading(true);
       const request = {
         customerName: data.customerName,
         customerMobile: data.customerMobile,
@@ -73,6 +74,7 @@ const CreateLoan = () => {
       if (res?.payload?.data?.success) {
         reset();
       }
+      setSubmitLoading(false);
     })();
   };
 
@@ -322,7 +324,7 @@ const CreateLoan = () => {
                       <Grid item xs={12}>
                         <Box display="flex" justifyContent="end">
                           <LoadingButton
-                            loading={loading}
+                            loading={submitLoading}
                             variant="contained"
                             type="submit"
                           >

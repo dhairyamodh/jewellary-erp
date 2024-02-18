@@ -102,7 +102,13 @@ const AddEntry = () => {
               };
             })
           : [],
-        transactions: [{ amount: parseFloat(data.advancedPayment) || 0 }],
+        transactions: [
+          {
+            amount: parseFloat(data.advancedPayment) || 0,
+            paymentType: data.paymentType,
+            remark: data.remark
+          }
+        ],
         total_amount: parseFloat(data.total),
         advance_payment: parseFloat(data.advancedPayment) || 0
       };
@@ -603,7 +609,12 @@ const AddEntry = () => {
                                 </>
                               )}
                               <Grid item xs={6}>
-                                <Typography variant="h4">Total</Typography>
+                                <Typography variant="h4">
+                                  Total
+                                  <Typography variant="caption">
+                                    &nbsp;(* Tax included)
+                                  </Typography>
+                                </Typography>
                               </Grid>
                               <Grid item xs={6}>
                                 <Typography textAlign="right" variant="h4">
