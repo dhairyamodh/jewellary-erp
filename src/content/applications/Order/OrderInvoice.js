@@ -89,9 +89,8 @@ const OrderInvoice = ({ data }) => {
                   <thead className="bg-active">
                     <tr>
                       <th width="40%">Description</th>
-                      <th width="10%">Type</th>
                       <th width="10%">Qty.</th>
-                      <th width="10%">Wt.</th>
+                      <th width="10%">Weight</th>
                       <th width="15%">Rate</th>
                       <th width="15%">
                         Labour <br />
@@ -104,16 +103,15 @@ const OrderInvoice = ({ data }) => {
                     {data?.items?.map((item, index) => (
                       <tr key={index}>
                         <td>{item.name}</td>
-                        <td className="text-center">{item.type}</td>
                         <td className="text-center">{item.quantity}</td>
                         <td className="text-center">{item.weight}</td>
-                        <td className="text-center">{`${RUPEE_SYMBOL} ${item?.price?.toLocaleString()}`}</td>
+                        <td className="text-center">{`${RUPEE_SYMBOL} ${item?.itemRate?.toLocaleString()}`}</td>
                         <td className="text-center">{`${RUPEE_SYMBOL} ${item.labour.toLocaleString()}`}</td>
                         <td className="text-center">{`${RUPEE_SYMBOL} ${item.price.toLocaleString()}`}</td>
                       </tr>
                     ))}
                     <tr>
-                      <td colSpan="6" style={{ textAlign: 'end' }}>
+                      <td colSpan="5" style={{ textAlign: 'end' }}>
                         SubTotal
                       </td>
                       <td className="text-right">
@@ -121,7 +119,7 @@ const OrderInvoice = ({ data }) => {
                       </td>
                     </tr>
                     <tr>
-                      <td colSpan="6" style={{ textAlign: 'end' }}>
+                      <td colSpan="5" style={{ textAlign: 'end' }}>
                         Tax
                       </td>
                       <td className="text-right">
@@ -129,7 +127,7 @@ const OrderInvoice = ({ data }) => {
                       </td>
                     </tr>
                     <tr>
-                      <td colSpan="6" style={{ textAlign: 'end' }}>
+                      <td colSpan="5" style={{ textAlign: 'end' }}>
                         Discount
                       </td>
                       <td className="text-right">
@@ -139,7 +137,7 @@ const OrderInvoice = ({ data }) => {
                     </tr>
                     <tr>
                       <td
-                        colSpan="6"
+                        colSpan="5"
                         style={{ textAlign: 'end' }}
                         className="fw-bold"
                       >
