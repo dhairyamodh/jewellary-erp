@@ -13,7 +13,7 @@ import {
 import React, { useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 
-const PrintDialog = ({ open, children, onClose }) => {
+const PrintDialog = ({ open, title = 'Print Invoice', children, onClose }) => {
   const componentRef = useRef(null);
 
   const printBill = useReactToPrint({
@@ -24,7 +24,7 @@ const PrintDialog = ({ open, children, onClose }) => {
       <AppBar sx={{ position: 'relative', p: 2 }}>
         <Toolbar>
           <Typography sx={{ ml: 2, flex: 1 }} variant="h3" component="div">
-            Print Invoice
+            {title}
           </Typography>
           <IconButton
             edge="start"

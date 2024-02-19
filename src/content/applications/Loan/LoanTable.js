@@ -27,7 +27,7 @@ import useQuery from 'src/hooks/useQuery';
 
 const getStatusLabel = (status) => {
   const map = {
-    'Loan closed': {
+    closed: {
       text: 'Closed',
       color: 'success'
     },
@@ -170,26 +170,28 @@ const LoansTable = () => {
       accessor: 'actions',
       cell: ({ row }) => {
         return (
-          row?.status === 'pending' && (
-            <Stack spacing={1} direction="row">
-              <Tooltip title="Add payment" arrow>
-                <IconButton
-                  color={'primary'}
-                  onClick={() => handleClickAddPayment(row)}
-                >
-                  <PaymentTwoTone />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Add Discount" arrow>
-                <IconButton
-                  color="warning"
-                  onClick={() => handleOpenDiscount(row?._id)}
-                >
-                  <DiscountTwoTone />
-                </IconButton>
-              </Tooltip>
-            </Stack>
-          )
+          <Stack spacing={1} direction="row">
+            {row?.status === 'pending' && (
+              <>
+                <Tooltip title="Add payment" arrow>
+                  <IconButton
+                    color={'primary'}
+                    onClick={() => handleClickAddPayment(row)}
+                  >
+                    <PaymentTwoTone />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Add Discount" arrow>
+                  <IconButton
+                    color="warning"
+                    onClick={() => handleOpenDiscount(row?._id)}
+                  >
+                    <DiscountTwoTone />
+                  </IconButton>
+                </Tooltip>
+              </>
+            )}
+          </Stack>
         );
       }
     }

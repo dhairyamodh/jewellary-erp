@@ -67,7 +67,7 @@ export const createOrderAsync = createAsyncThunk(
       } else {
         dispatch(
           openSnackbar({
-            message: response?.data?.msg,
+            message: response?.data?.msg || response?.data?.error,
             severity: 'error'
           })
         );
@@ -97,7 +97,7 @@ export const addPaymentAsync = createAsyncThunk(
       } else {
         dispatch(
           openSnackbar({
-            message: response?.data?.msg,
+            message: response?.data?.msg || response?.data?.error,
             severity: 'error'
           })
         );
@@ -124,7 +124,7 @@ export const cancelOrderAsync = createAsyncThunk(
       } else {
         dispatch(
           openSnackbar({
-            message: response?.data?.msg,
+            message: response?.data?.msg || response?.data?.error,
             severity: 'error'
           })
         );
@@ -154,7 +154,7 @@ export const discountTransactionAsync = createAsyncThunk(
       } else {
         dispatch(
           openSnackbar({
-            message: response?.data?.msg,
+            message: response?.data?.msg || response?.data?.error,
             severity: 'error'
           })
         );

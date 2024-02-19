@@ -76,10 +76,8 @@ const CustomTable = ({
       setSearch(query.get('search') || '');
       setPage(parseInt(query.get('page')) || 1);
       setLimit(parseInt(query.get('limit')) || 5);
-      setStartDate(
-        parseInt(query.get('startDate')) || moment().subtract(1, 'month')
-      );
-      setEndDate(parseInt(query.get('endDate')) || moment());
+      setStartDate(query.get('startDate') || moment().subtract(1, 'month'));
+      setEndDate(query.get('endDate') || moment());
     }
   }, [query]);
 

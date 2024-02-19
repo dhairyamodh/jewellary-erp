@@ -1,18 +1,18 @@
+import { Card, CardHeader, Divider, IconButton, Tooltip } from '@mui/material';
 import { useState } from 'react';
-import { Divider, Card, CardHeader, Tooltip, IconButton } from '@mui/material';
 
-import CustomTable from 'src/components/Table';
-import Label from 'src/components/Label';
-import { useDispatch, useSelector } from 'react-redux';
-import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
+import { LoadingButton } from '@mui/lab';
 import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import Label from 'src/components/Label';
+import CustomTable from 'src/components/Table';
 import {
   exportExcelAsync,
   getOrderReportAsync
 } from 'src/redux/Report/reportThunk';
-import { LoadingButton } from '@mui/lab';
-import { DescriptionTwoTone } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
+import { VisibilityTwoTone } from '@mui/icons-material';
 
 const getStatusLabel = (status) => {
   const map = {
@@ -117,7 +117,7 @@ const ReportTable = () => {
               color={'primary'}
               onClick={() => navigate(`/order/view-details/${row._id}`)}
             >
-              <DescriptionTwoTone />
+              <VisibilityTwoTone />
             </IconButton>
           </Tooltip>
         );

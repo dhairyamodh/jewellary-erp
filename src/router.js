@@ -204,7 +204,7 @@ const routes = [
             element: <CreateEMI />
           },
           {
-            path: 'view-details',
+            path: 'view-details/:id',
             element: <EmiViewDetails />
           }
         ]

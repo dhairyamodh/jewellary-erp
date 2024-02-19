@@ -17,7 +17,7 @@ export const loginAsync = createAsyncThunk(
       } else {
         dispatch(
           openSnackbar({
-            message: response?.data?.msg,
+            message: response?.data?.msg || response?.data?.error,
             severity: 'error'
           })
         );

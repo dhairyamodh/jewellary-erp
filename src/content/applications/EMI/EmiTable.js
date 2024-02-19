@@ -1,31 +1,30 @@
 import {
-  Divider,
+  Button,
   Card,
   CardHeader,
+  Divider,
+  IconButton,
   Stack,
-  Button,
-  Tooltip,
-  IconButton
+  Tooltip
 } from '@mui/material';
 
-import CustomTable from 'src/components/Table';
-import { useDispatch, useSelector } from 'react-redux';
-import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
-import { Link, useNavigate } from 'react-router-dom';
 import {
   AddTwoTone,
   CardMembershipTwoTone,
-  DescriptionTwoTone,
-  PaymentTwoTone
+  PaymentTwoTone,
+  VisibilityTwoTone
 } from '@mui/icons-material';
-import { getEmiListAsync } from 'src/redux/EMI/emiThunk';
-import Label from 'src/components/Label';
 import moment from 'moment';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import AddEMIAmountDialog from 'src/components/Dialogs/AddEMIAmountDialog';
 import WithdrawEMIDialog from 'src/components/Dialogs/WithdrawEMIDialog';
+import Label from 'src/components/Label';
+import CustomTable from 'src/components/Table';
 import useQuery from 'src/hooks/useQuery';
-import { setEmiDetails } from 'src/redux/EMI/emiSlice';
+import { getEmiListAsync } from 'src/redux/EMI/emiThunk';
+import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
 
 const EmiTable = () => {
   const getStatusLabel = (status) => {
@@ -173,41 +172,38 @@ const EmiTable = () => {
       accessor: 'actions',
       cell: ({ row }) => {
         return (
-          row.status !== 'withdraw' && (
-            <Stack spacing={1} direction="row">
-              <Tooltip title="View details" arrow>
+          <Stack spacing={1} direction="row">
+            <Tooltip title="View details" arrow>
+              <IconButton
+                color={'primary'}
+                onClick={() => {
+                  navigate(`/emi/view-details/${row?._id}`);
+                }}
+              >
+                <VisibilityTwoTone />
+              </IconButton>
+            </Tooltip>
+            {row.status === 'pending' && (
+              <Tooltip title="Add EMI Payment" arrow>
                 <IconButton
-                  color={'primary'}
-                  onClick={() => {
-                    dispatch(setEmiDetails(row));
-                    navigate(`/emi/view-details`);
-                  }}
+                  color="info"
+                  onClick={() => handleClickAddPayment(row)}
                 >
-                  <DescriptionTwoTone />
+                  <PaymentTwoTone />
                 </IconButton>
               </Tooltip>
-              {row.status === 'pending' && (
-                <Tooltip title="Add EMI Payment" arrow>
-                  <IconButton
-                    color="info"
-                    onClick={() => handleClickAddPayment(row)}
-                  >
-                    <PaymentTwoTone />
-                  </IconButton>
-                </Tooltip>
-              )}
-              {row.status === 'mature' && (
-                <Tooltip title="Withdraw EMI" arrow>
-                  <IconButton
-                    color="warning"
-                    onClick={() => handleWithdraw(row?._id)}
-                  >
-                    <CardMembershipTwoTone />
-                  </IconButton>
-                </Tooltip>
-              )}
-            </Stack>
-          )
+            )}
+            {row.status === 'mature' && (
+              <Tooltip title="Withdraw EMI" arrow>
+                <IconButton
+                  color="warning"
+                  onClick={() => handleWithdraw(row?._id)}
+                >
+                  <CardMembershipTwoTone />
+                </IconButton>
+              </Tooltip>
+            )}
+          </Stack>
         );
       }
     }

@@ -6,7 +6,7 @@ function Orders() {
   return (
     <>
       <Helmet>
-        <title>Orders</title>
+        <title>Reports</title>
       </Helmet>
       <Container maxWidth="lg">
         <Box py={4}>

@@ -252,7 +252,7 @@ const AddEntry = () => {
                           {fields.map((field, index) => (
                             <Grid item xs={12} key={field.id}>
                               <Grid container spacing={2}>
-                                <Grid item xs={12} md={2}>
+                                <Grid item xs={8} md={2}>
                                   <TextField
                                     name={`item.${index}.name`}
                                     label="Item Name"
@@ -263,7 +263,7 @@ const AddEntry = () => {
                                     error={Boolean(errors?.item?.[index]?.name)}
                                   />
                                 </Grid>
-                                <Grid item xs={12} md={1}>
+                                <Grid item xs={4} md={1}>
                                   <FormControl fullWidth>
                                     <InputLabel>Item type</InputLabel>
                                     <Select
@@ -282,7 +282,7 @@ const AddEntry = () => {
                                     </Select>
                                   </FormControl>
                                 </Grid>
-                                <Grid item xs={12} md={1}>
+                                <Grid item xs={3} md={1}>
                                   <TextField
                                     label="Quantity"
                                     fullWidth
@@ -296,7 +296,7 @@ const AddEntry = () => {
                                     )}
                                   />
                                 </Grid>
-                                <Grid item xs={12} md={1}>
+                                <Grid item xs={3} md={1}>
                                   <TextField
                                     label="Weight/gm"
                                     fullWidth
@@ -310,7 +310,7 @@ const AddEntry = () => {
                                     )}
                                   />
                                 </Grid>
-                                <Grid item xs={12} md={1.5}>
+                                <Grid item xs={6} md={1.5}>
                                   <TextField
                                     label="Design"
                                     type="text"
@@ -322,7 +322,7 @@ const AddEntry = () => {
                                     )}
                                   />
                                 </Grid>
-                                <Grid item xs={12} md={1.5}>
+                                <Grid item xs={4} md={1.5}>
                                   <TextField
                                     label="Rate"
                                     type="number"
@@ -337,7 +337,7 @@ const AddEntry = () => {
                                   />
                                 </Grid>
 
-                                <Grid item xs={12} md={1.5}>
+                                <Grid item xs={4} md={1.5}>
                                   <TextField
                                     label="Labour Charge"
                                     type="number"
@@ -349,7 +349,7 @@ const AddEntry = () => {
                                     )}
                                   />
                                 </Grid>
-                                <Grid item xs={12} md={1.5}>
+                                <Grid item xs={4} md={1.5}>
                                   <TextField
                                     label="Price"
                                     type="number"
@@ -412,7 +412,7 @@ const AddEntry = () => {
                           {replaceFieldArr?.fields?.map((field, index) => (
                             <Grid item xs={12} key={field.id}>
                               <Grid container spacing={2}>
-                                <Grid item xs={12} md={4}>
+                                <Grid item xs={8} md={4}>
                                   <TextField
                                     name={`replaceItems.${index}.name`}
                                     label="Item Name"
@@ -420,7 +420,7 @@ const AddEntry = () => {
                                     {...register(`replaceItems.${index}.name`)}
                                   />
                                 </Grid>
-                                <Grid item xs={12} md={2}>
+                                <Grid item xs={4} md={2}>
                                   <FormControl fullWidth>
                                     <InputLabel>Item type</InputLabel>
                                     <Select
@@ -436,7 +436,7 @@ const AddEntry = () => {
                                     </Select>
                                   </FormControl>
                                 </Grid>
-                                <Grid item xs={12} md={2}>
+                                <Grid item xs={4} md={2}>
                                   <TextField
                                     label="Weight/gm"
                                     fullWidth
@@ -447,7 +447,7 @@ const AddEntry = () => {
                                     )}
                                   />
                                 </Grid>
-                                <Grid item xs={12} md={3}>
+                                <Grid item xs={8} md={3}>
                                   <TextField
                                     label="Price"
                                     type="number"
@@ -550,27 +550,25 @@ const AddEntry = () => {
                               )}
 
                               <Grid item xs={6}>
-                                <Typography variant="h4">
-                                  Replacement Items Total
-                                </Typography>
+                                <Typography>Replacement Items Total</Typography>
                               </Grid>
                               <Grid item xs={6}>
-                                <Typography textAlign="right" variant="h4">
+                                <Typography textAlign="right">
                                   {RUPEE_SYMBOL}{' '}
                                   {replaceItemsTotal?.toLocaleString()}
                                 </Typography>
                               </Grid>
                               <Grid item xs={6}>
-                                <Typography variant="h4">Sub Total</Typography>
+                                <Typography>Sub Total</Typography>
                               </Grid>
                               <Grid item xs={6}>
-                                <Typography textAlign="right" variant="h4">
+                                <Typography textAlign="right">
                                   {RUPEE_SYMBOL}{' '}
                                   {watch('subTotal')?.toLocaleString()}
                                 </Typography>
                               </Grid>
                               <Grid item xs={6}>
-                                <Typography variant="h4">
+                                <Typography>
                                   Tax Rate{' '}
                                   <Typography variant="caption">
                                     (in percentage)
@@ -591,9 +589,7 @@ const AddEntry = () => {
                               {watch('isFullPayment') && (
                                 <>
                                   <Grid item xs={6}>
-                                    <Typography variant="h4">
-                                      Discount
-                                    </Typography>
+                                    <Typography>Discount</Typography>
                                   </Grid>
                                   <Grid item xs={6}>
                                     <TextField
@@ -612,7 +608,7 @@ const AddEntry = () => {
                                 <Typography variant="h4">
                                   Total
                                   <Typography variant="caption">
-                                    &nbsp;(* Tax included)
+                                    &nbsp;(Tax included)
                                   </Typography>
                                 </Typography>
                               </Grid>

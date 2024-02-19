@@ -35,7 +35,7 @@ export const createLoanAsync = createAsyncThunk(
       } else {
         dispatch(
           openSnackbar({
-            message: response?.data?.msg,
+            message: response?.data?.msg || response?.data?.error,
             severity: 'error'
           })
         );
@@ -77,7 +77,7 @@ export const addLoanAmountAsync = createAsyncThunk(
       } else {
         dispatch(
           openSnackbar({
-            message: response?.data?.msg,
+            message: response?.data?.msg || response?.data?.error,
             severity: 'error'
           })
         );
@@ -107,7 +107,7 @@ export const discountLoanAsync = createAsyncThunk(
       } else {
         dispatch(
           openSnackbar({
-            message: response?.data?.msg,
+            message: response?.data?.msg || response?.data?.error,
             severity: 'error'
           })
         );
