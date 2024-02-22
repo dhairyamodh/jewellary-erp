@@ -226,14 +226,12 @@ const AddLoanAmount = () => {
                           <Grid item xs={12}>
                             <Grid container spacing={2}>
                               <Grid item xs={6} md={4}>
-                                <Typography variant="h5">
-                                  Total Item Cost
-                                </Typography>
+                                <Typography>Loan Cost</Typography>
                               </Grid>
                               <Grid item xs={6} md={8}>
-                                <Typography variant="h5">
+                                <Typography>
                                   {RUPEE_SYMBOL}{' '}
-                                  {details?.totalItemCost?.toLocaleString()}
+                                  {details?.loanCost?.toLocaleString()}
                                 </Typography>
                               </Grid>
                             </Grid>
@@ -241,12 +239,10 @@ const AddLoanAmount = () => {
                           <Grid item xs={12}>
                             <Grid container spacing={2}>
                               <Grid item xs={6} md={4}>
-                                <Typography variant="h5">
-                                  Interest Rate
-                                </Typography>
+                                <Typography>Interest Rate</Typography>
                               </Grid>
                               <Grid item xs={6} md={8}>
-                                <Typography variant="h5">
+                                <Typography>
                                   {details?.interestRate}%
                                 </Typography>
                               </Grid>
@@ -255,12 +251,10 @@ const AddLoanAmount = () => {
                           <Grid item xs={12}>
                             <Grid container spacing={2}>
                               <Grid item xs={6} md={4}>
-                                <Typography variant="h4" fontWeight="bold">
-                                  Remaining Loan Amount
-                                </Typography>
+                                <Typography>Remaining Loan Amount</Typography>
                               </Grid>
                               <Grid item xs={6} md={8}>
-                                <Typography variant="h4" fontWeight="bold">
+                                <Typography>
                                   {RUPEE_SYMBOL}{' '}
                                   {details?.updatedLoanCost?.toLocaleString()}
                                 </Typography>

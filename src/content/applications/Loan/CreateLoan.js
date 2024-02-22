@@ -155,7 +155,7 @@ const CreateLoan = () => {
                           {fields.map((field, index) => (
                             <Grid item xs={12} key={field.id}>
                               <Grid container spacing={2}>
-                                <Grid item xs={12} md={3}>
+                                <Grid item xs={8} md={3}>
                                   <TextField
                                     name={`item.${index}.name`}
                                     label="Item Name"
@@ -166,7 +166,7 @@ const CreateLoan = () => {
                                     error={Boolean(errors?.item?.[index]?.name)}
                                   />
                                 </Grid>
-                                <Grid item xs={12} md={2}>
+                                <Grid item xs={4} md={2}>
                                   <FormControl fullWidth>
                                     <InputLabel>Item type</InputLabel>
                                     <Select
@@ -185,7 +185,7 @@ const CreateLoan = () => {
                                     </Select>
                                   </FormControl>
                                 </Grid>
-                                <Grid item xs={12} md={1.5}>
+                                <Grid item xs={3} md={1.5}>
                                   <TextField
                                     label="Quantity"
                                     fullWidth
@@ -199,7 +199,7 @@ const CreateLoan = () => {
                                     )}
                                   />
                                 </Grid>
-                                <Grid item xs={12} md={1.5}>
+                                <Grid item xs={3} md={1.5}>
                                   <TextField
                                     label="Weight/gm"
                                     fullWidth
@@ -213,7 +213,7 @@ const CreateLoan = () => {
                                     )}
                                   />
                                 </Grid>
-                                <Grid item xs={12} md={3}>
+                                <Grid item xs={6} md={3}>
                                   <TextField
                                     label="Price"
                                     type="number"

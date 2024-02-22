@@ -25,6 +25,9 @@ const Order = Loader(lazy(() => import('src/content/applications/Order')));
 const CreateOrder = Loader(
   lazy(() => import('src/content/applications/Order/CreateOrder'))
 );
+const EditOrder = Loader(
+  lazy(() => import('src/content/applications/Order/EditOrder'))
+);
 
 const ViewDetails = Loader(
   lazy(() => import('src/content/applications/Order/ViewDetails'))
@@ -142,6 +145,10 @@ const routes = [
             element: <CreateOrder />
           },
           {
+            path: 'edit/:id',
+            element: <EditOrder />
+          },
+          {
             path: 'view-details/:id',
             element: <ViewDetails />
           }
@@ -204,7 +211,7 @@ const routes = [
             element: <CreateEMI />
           },
           {
-            path: 'view-details',
+            path: 'view-details/:id',
             element: <EmiViewDetails />
           }
         ]

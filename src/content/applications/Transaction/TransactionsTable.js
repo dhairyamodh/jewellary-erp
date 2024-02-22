@@ -1,26 +1,29 @@
-import { useState } from 'react';
 import {
-  Divider,
   Card,
   CardHeader,
-  Stack,
+  Divider,
   IconButton,
+  Stack,
   Tooltip
 } from '@mui/material';
+import { useState } from 'react';
 
-import CustomTable from 'src/components/Table';
+import {
+  DiscountTwoTone,
+  PaymentTwoTone,
+  PrintTwoTone,
+  VisibilityTwoTone
+} from '@mui/icons-material';
+import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPendingOrdersAsync } from 'src/redux/Order/orderThunk';
-import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
 import { useNavigate } from 'react-router';
 import OrderDiscountDialog from 'src/components/Dialogs/OrderDiscountDialog';
-import moment from 'moment';
+import PrintDialog from 'src/components/Dialogs/PrintDialog';
+import CustomTable from 'src/components/Table';
 import useQuery from 'src/hooks/useQuery';
-import {
-  DescriptionTwoTone,
-  DiscountTwoTone,
-  PaymentTwoTone
-} from '@mui/icons-material';
+import { getPendingOrdersAsync } from 'src/redux/Order/orderThunk';
+import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
+import TransactionInvoice from './TransactionInvoice';
 
 const TransactionsTable = () => {
   const [selectedCryptoOrders] = useState([]);
@@ -73,6 +76,18 @@ const TransactionsTable = () => {
         perpage: limit
       })
     );
+  };
+
+  const [openPrintModal, setOpenPrintModal] = useState({
+    open: false,
+    data: undefined
+  });
+
+  const handlePrint = (data) => {
+    setOpenPrintModal({
+      open: true,
+      data
+    });
   };
 
   const columns = [
@@ -135,10 +150,15 @@ const TransactionsTable = () => {
                 onClick={() => navigate(`/transaction/add-payment/${row._id}`)}
               >
                 {row?.status !== 'Pending' ? (
-                  <DescriptionTwoTone />
+                  <VisibilityTwoTone />
                 ) : (
                   <PaymentTwoTone />
                 )}
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Print Invoice" arrow>
+              <IconButton color="info" onClick={() => handlePrint(row)}>
+                <PrintTwoTone />
               </IconButton>
             </Tooltip>
             {row?.status === 'Pending' && (
@@ -175,6 +195,17 @@ const TransactionsTable = () => {
         onClick={handleAddDiscount}
         id={openDiscount?.id}
       />
+      <PrintDialog
+        open={openPrintModal?.open}
+        onClose={() =>
+          setOpenPrintModal({
+            ...openPrintModal,
+            open: false
+          })
+        }
+      >
+        <TransactionInvoice data={openPrintModal?.data} />
+      </PrintDialog>
     </Card>
   );
 };

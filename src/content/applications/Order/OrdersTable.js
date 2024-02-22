@@ -1,32 +1,32 @@
-import { useState } from 'react';
 import {
-  Divider,
+  Button,
   Card,
   CardHeader,
+  Divider,
+  IconButton,
   Stack,
-  Button,
-  Tooltip,
-  IconButton
+  Tooltip
 } from '@mui/material';
+import { useState } from 'react';
 
-import CustomTable from 'src/components/Table';
-import Label from 'src/components/Label';
-import { useDispatch, useSelector } from 'react-redux';
-import { cancelOrderAsync, getOrdersAsync } from 'src/redux/Order/orderThunk';
-import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
-import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
 import {
   AddTwoTone,
   CancelTwoTone,
-  DescriptionTwoTone,
-  PrintTwoTone
+  EditTwoTone,
+  VisibilityTwoTone
 } from '@mui/icons-material';
-import DeleteDialog from 'src/components/Dialogs/DeleteDialog';
 import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
+import DeleteDialog from 'src/components/Dialogs/DeleteDialog';
+// import PrintDialog from 'src/components/Dialogs/PrintDialog';
+import Label from 'src/components/Label';
+import CustomTable from 'src/components/Table';
 import useQuery from 'src/hooks/useQuery';
-import PrintDialog from 'src/components/Dialogs/PrintDialog';
-import OrderInvoice from './OrderInvoice';
+import { cancelOrderAsync, getOrdersAsync } from 'src/redux/Order/orderThunk';
+import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
+// import OrderInvoice from './OrderInvoice';
 
 const getStatusLabel = (status) => {
   const map = {
@@ -45,6 +45,10 @@ const getStatusLabel = (status) => {
     'complete with discount': {
       text: 'Completed with discount',
       color: 'info'
+    },
+    price_not_fixed: {
+      text: 'Price not fixed',
+      color: 'primary'
     }
   };
 
@@ -66,17 +70,17 @@ const OrdersTable = () => {
 
   const dispatch = useDispatch();
 
-  const [openPrintModal, setOpenPrintModal] = useState({
-    open: false,
-    data: {}
-  });
+  // const [openPrintModal, setOpenPrintModal] = useState({
+  //   open: false,
+  //   data: {}
+  // });
 
-  const handlePrint = (data) => {
-    setOpenPrintModal({
-      open: true,
-      data
-    });
-  };
+  // const handlePrint = (data) => {
+  //   setOpenPrintModal({
+  //     open: true,
+  //     data
+  //   });
+  // };
 
   const { data, count, loading } = useSelector((state) => state.order);
 
@@ -173,25 +177,39 @@ const OrdersTable = () => {
                 color={'primary'}
                 onClick={() => navigate(`/order/view-details/${row._id}`)}
               >
-                <DescriptionTwoTone />
+                <VisibilityTwoTone />
               </IconButton>
             </Tooltip>
-            {row.status === 'Completed' && (
+            {/* {row.status === 'Completed' && (
               <Tooltip title="Print Invoice" arrow>
                 <IconButton color="info" onClick={() => handlePrint(row)}>
                   <PrintTwoTone />
                 </IconButton>
               </Tooltip>
-            )}
-            {row.status === 'Pending' && (
-              <Tooltip title="Cancel Order" arrow>
+            )} */}
+            {row.status === 'price_not_fixed' && (
+              <Tooltip title="Edit Order" arrow>
                 <IconButton
-                  color="error"
-                  onClick={() => handleOpenCancelDialog(row._id)}
+                  color="success"
+                  onClick={() => {
+                    navigate(`/order/edit/${row._id}`);
+                  }}
                 >
-                  <CancelTwoTone />
+                  <EditTwoTone />
                 </IconButton>
               </Tooltip>
+            )}
+            {row.status === 'Pending' && (
+              <>
+                <Tooltip title="Cancel Order" arrow>
+                  <IconButton
+                    color="error"
+                    onClick={() => handleOpenCancelDialog(row._id)}
+                  >
+                    <CancelTwoTone />
+                  </IconButton>
+                </Tooltip>
+              </>
             )}
           </Stack>
         );
@@ -238,7 +256,7 @@ const OrdersTable = () => {
         open={openCancel.open}
         onClose={handleCloseCancelDialog}
       />
-      <PrintDialog
+      {/* <PrintDialog
         open={openPrintModal?.open}
         onClose={() =>
           setOpenPrintModal({
@@ -248,7 +266,7 @@ const OrdersTable = () => {
         }
       >
         <OrderInvoice data={openPrintModal?.data} />
-      </PrintDialog>
+      </PrintDialog> */}
     </>
   );
 };

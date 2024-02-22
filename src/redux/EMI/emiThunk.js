@@ -77,6 +77,18 @@ export const addEMIPaymentAsync = createAsyncThunk(
   }
 );
 
+export const getEMIByIdAsync = createAsyncThunk(
+  '/emi/get-emi',
+  async ({ id }) => {
+    try {
+      const response = await axiosClient.get(`/emi/get-emi/${id}`);
+      return response;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+);
+
 export const withdrawEMIAsync = createAsyncThunk(
   `/emi/withdraw`,
   async ({ id }, { dispatch }) => {
@@ -92,7 +104,7 @@ export const withdrawEMIAsync = createAsyncThunk(
       } else {
         dispatch(
           openSnackbar({
-            message: response?.data?.msg,
+            message: response?.data?.msg || response?.data?.error,
             severity: 'error'
           })
         );
@@ -118,6 +130,22 @@ export const getEmiListAsyncCase = (builder) => {
       state.count = action.payload?.data.count;
     })
     .addCase(getEmiListAsync.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    });
+};
+
+export const getEMIByIdAyncCase = (builder) => {
+  builder
+    .addCase(getEMIByIdAsync.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(getEMIByIdAsync.fulfilled, (state, action) => {
+      state.loading = false;
+      state.details = action.payload?.data?.results;
+    })
+    .addCase(getEMIByIdAsync.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     });

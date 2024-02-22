@@ -67,7 +67,37 @@ export const createOrderAsync = createAsyncThunk(
       } else {
         dispatch(
           openSnackbar({
+            message: response?.data?.msg || response?.data?.error,
+            severity: 'error'
+          })
+        );
+      }
+      return response;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+);
+
+export const editOrderAsync = createAsyncThunk(
+  '/transaction/edit',
+  async (req, { dispatch }) => {
+    try {
+      const response = await axiosClient.put(
+        `/transaction/editTransaction/${req.id}`,
+        req?.data
+      );
+      if (response.data.success) {
+        dispatch(
+          openSnackbar({
             message: response?.data?.msg,
+            severity: 'success'
+          })
+        );
+      } else {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg || response?.data?.error,
             severity: 'error'
           })
         );
@@ -97,7 +127,7 @@ export const addPaymentAsync = createAsyncThunk(
       } else {
         dispatch(
           openSnackbar({
-            message: response?.data?.msg,
+            message: response?.data?.msg || response?.data?.error,
             severity: 'error'
           })
         );
@@ -124,7 +154,7 @@ export const cancelOrderAsync = createAsyncThunk(
       } else {
         dispatch(
           openSnackbar({
-            message: response?.data?.msg,
+            message: response?.data?.msg || response?.data?.error,
             severity: 'error'
           })
         );
@@ -154,7 +184,7 @@ export const discountTransactionAsync = createAsyncThunk(
       } else {
         dispatch(
           openSnackbar({
-            message: response?.data?.msg,
+            message: response?.data?.msg || response?.data?.error,
             severity: 'error'
           })
         );

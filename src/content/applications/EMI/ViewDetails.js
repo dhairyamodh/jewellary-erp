@@ -15,12 +15,28 @@ import {
   Typography
 } from '@mui/material';
 import moment from 'moment';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 import BackButton from 'src/components/BackButton';
+import SuspenseLoader from 'src/components/SuspenseLoader';
+import { getEMIByIdAsync } from 'src/redux/EMI/emiThunk';
 
 const ViewDetails = () => {
-  const { details } = useSelector((state) => state.emi);
+  const { id } = useParams();
+  const { details, loading } = useSelector((state) => state.emi);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getEMIByIdAsync({ id }));
+    }
+  }, [id]);
+
+  if (loading) {
+    return <SuspenseLoader />;
+  }
 
   return (
     <>
