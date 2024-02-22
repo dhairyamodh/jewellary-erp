@@ -45,6 +45,10 @@ const getStatusLabel = (status) => {
     'complete with discount': {
       text: 'Completed with discount',
       color: 'info'
+    },
+    price_not_fixed: {
+      text: 'Price not fixed',
+      color: 'primary'
     }
   };
 
@@ -183,13 +187,20 @@ const OrdersTable = () => {
                 </IconButton>
               </Tooltip>
             )} */}
+            {row.status === 'price_not_fixed' && (
+              <Tooltip title="Edit Order" arrow>
+                <IconButton
+                  color="success"
+                  onClick={() => {
+                    navigate(`/order/edit/${row._id}`);
+                  }}
+                >
+                  <EditTwoTone />
+                </IconButton>
+              </Tooltip>
+            )}
             {row.status === 'Pending' && (
               <>
-                <Tooltip title="Edit Order" arrow>
-                  <IconButton color="success">
-                    <EditTwoTone />
-                  </IconButton>
-                </Tooltip>
                 <Tooltip title="Cancel Order" arrow>
                   <IconButton
                     color="error"

@@ -79,6 +79,36 @@ export const createOrderAsync = createAsyncThunk(
   }
 );
 
+export const editOrderAsync = createAsyncThunk(
+  '/transaction/edit',
+  async (req, { dispatch }) => {
+    try {
+      const response = await axiosClient.put(
+        `/transaction/editTransaction/${req.id}`,
+        req?.data
+      );
+      if (response.data.success) {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg,
+            severity: 'success'
+          })
+        );
+      } else {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg || response?.data?.error,
+            severity: 'error'
+          })
+        );
+      }
+      return response;
+    } catch (error) {
+      throw Error(error.message);
+    }
+  }
+);
+
 export const addPaymentAsync = createAsyncThunk(
   `/update-transaction`,
   async (req, { dispatch }) => {
