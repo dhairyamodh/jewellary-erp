@@ -17,9 +17,11 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
 
 const OrderForm = ({ onSubmit, defaultValue }) => {
+  const { id } = useParams();
   const {
     control,
     handleSubmit,
@@ -147,6 +149,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
             {...register('customerName', {
               required: true
             })}
+            disabled={id}
             error={Boolean(errors?.customerName)}
           />
         </Grid>
@@ -157,6 +160,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
             fullWidth
             {...register('remark')}
             error={Boolean(errors?.remark)}
+            disabled={id}
           />
         </Grid>
         <Grid item xs={12} md={4}>
@@ -166,6 +170,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
             fullWidth
             {...register('customerMobile')}
             error={Boolean(errors?.customerMobile)}
+            disabled={id}
           />
         </Grid>
         <Grid item xs={12}>
@@ -177,6 +182,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
               required: true
             })}
             error={Boolean(errors?.address)}
+            disabled={id}
           />
         </Grid>
         <Grid item xs={12}>
