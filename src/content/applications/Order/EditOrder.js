@@ -37,6 +37,7 @@ const EditOrder = () => {
     taxRate: details?.taxRate || 0,
     discount: parseFloat(details?.discount_amount) || 0,
     subTotal: details?.subTotal || 0,
+    remark: details?.remark,
     item: details?.items?.map((i) => {
       return {
         name: i?.name,
