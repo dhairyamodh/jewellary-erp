@@ -173,9 +173,6 @@ const OrdersTable = () => {
       header: 'Actions',
       accessor: 'actions',
       cell: ({ row }) => {
-        console.log(
-          row.status !== 'Cancelled' && row.status !== 'price_not_fixed'
-        );
         return (
           <Stack spacing={1} direction="row">
             <Tooltip title="View details" arrow>
