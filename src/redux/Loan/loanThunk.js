@@ -168,18 +168,3 @@ export const updateInterestAsyncCase = (builder) => {
       state.error = action.error.message;
     });
 };
-
-export const addLoanAmountAsyncCase = (builder) => {
-  builder
-    .addCase(addLoanAmountAsync.pending, (state) => {
-      state.error = null;
-    })
-    .addCase(addLoanAmountAsync.fulfilled, (state, action) => {
-      state.loading = false;
-      state.details = action.payload?.data?.results;
-    })
-    .addCase(addLoanAmountAsync.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.error.message;
-    });
-};
