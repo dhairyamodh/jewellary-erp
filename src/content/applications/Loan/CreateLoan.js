@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import BackButton from 'src/components/BackButton';
 import { createLoanAsync } from 'src/redux/Loan/loanThunk';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
@@ -50,6 +51,8 @@ const CreateLoan = () => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [itemsTotal, setItemsTotal] = useState(0);
 
+  const navigate = useNavigate();
+
   const onSubmit = (data) => {
     (async () => {
       setSubmitLoading(true);
@@ -73,6 +76,7 @@ const CreateLoan = () => {
       const res = await dispatch(createLoanAsync(request));
       if (res?.payload?.data?.success) {
         reset();
+        navigate(-1);
       }
       setSubmitLoading(false);
     })();

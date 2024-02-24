@@ -31,6 +31,10 @@ const getStatusLabel = (status) => {
     'complete with discount': {
       text: 'Completed with discount',
       color: 'info'
+    },
+    price_not_fixed: {
+      text: 'Price not fixed',
+      color: 'primary'
     }
   };
 

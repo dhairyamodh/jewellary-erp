@@ -31,26 +31,26 @@ export const loginAsync = createAsyncThunk(
 
 export const profileAsync = createAsyncThunk(
   'auth/profile',
-  async (_, { rejectWithValue }) => {
+  async (_, { dispatch, rejectWithValue }) => {
     try {
       const response = await axiosClient.get('/auth/profile');
-      // if (response?.data?.success) {
-      //   dispatch(
-      //     openSnackbar({
-      //       message: response?.data?.msg,
-      //       severity: 'success'
-      //     })
-      //   );
-      // } else {
-      //   dispatch(
-      //     openSnackbar({
-      //       message: response?.data?.msg,
-      //       severity: 'error'
-      //     })
-      //   );
-      // }
+      if (!response?.data?.success) {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg,
+            severity: 'error'
+          })
+        );
+      }
       return response;
     } catch (error) {
+      console.log(error);
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg,
+          severity: 'error'
+        })
+      );
       return rejectWithValue('Login failed. Please check your credentials.');
     }
   }

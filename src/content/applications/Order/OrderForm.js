@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
 
 const OrderForm = ({ onSubmit, defaultValue }) => {
@@ -59,12 +59,15 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
 
   const [submitLoading, setSubmitLoading] = useState(false);
 
+  const navigate = useNavigate();
+
   const formSubmit = async (data) => {
     setSubmitLoading(true);
     try {
       const res = await onSubmit(data);
       if (res?.payload?.data?.success) {
         reset();
+        navigate(-1);
       }
     } catch (error) {
       console.log(error);

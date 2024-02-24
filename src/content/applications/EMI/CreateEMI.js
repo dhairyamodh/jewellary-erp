@@ -17,6 +17,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import BackButton from 'src/components/BackButton';
 import { createEMIAsync } from 'src/redux/EMI/emiThunk';
 
@@ -31,6 +32,8 @@ const CreateEMI = () => {
   const dispatch = useDispatch();
 
   const { loading } = useSelector((state) => state.emi);
+
+  const navigate = useNavigate();
 
   const onSubmit = (data) => {
     (async () => {
@@ -50,6 +53,7 @@ const CreateEMI = () => {
       const res = await dispatch(createEMIAsync(request));
       if (res?.payload?.data?.success) {
         reset();
+        navigate(-1);
       }
     })();
   };

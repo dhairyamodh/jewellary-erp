@@ -13,6 +13,7 @@ import {
   AddTwoTone,
   CancelTwoTone,
   EditTwoTone,
+  PrintTwoTone,
   VisibilityTwoTone
 } from '@mui/icons-material';
 import moment from 'moment';
@@ -26,6 +27,8 @@ import CustomTable from 'src/components/Table';
 import useQuery from 'src/hooks/useQuery';
 import { cancelOrderAsync, getOrdersAsync } from 'src/redux/Order/orderThunk';
 import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
+import PrintDialog from 'src/components/Dialogs/PrintDialog';
+import OrderReceipt from './OrderReceipt';
 // import OrderInvoice from './OrderInvoice';
 
 const getStatusLabel = (status) => {
@@ -70,17 +73,17 @@ const OrdersTable = () => {
 
   const dispatch = useDispatch();
 
-  // const [openPrintModal, setOpenPrintModal] = useState({
-  //   open: false,
-  //   data: {}
-  // });
+  const [openPrintModal, setOpenPrintModal] = useState({
+    open: false,
+    data: {}
+  });
 
-  // const handlePrint = (data) => {
-  //   setOpenPrintModal({
-  //     open: true,
-  //     data
-  //   });
-  // };
+  const handlePrint = (data) => {
+    setOpenPrintModal({
+      open: true,
+      data
+    });
+  };
 
   const { data, count, loading } = useSelector((state) => state.order);
 
@@ -170,6 +173,9 @@ const OrdersTable = () => {
       header: 'Actions',
       accessor: 'actions',
       cell: ({ row }) => {
+        console.log(
+          row.status !== 'Cancelled' && row.status !== 'price_not_fixed'
+        );
         return (
           <Stack spacing={1} direction="row">
             <Tooltip title="View details" arrow>
@@ -180,13 +186,13 @@ const OrdersTable = () => {
                 <VisibilityTwoTone />
               </IconButton>
             </Tooltip>
-            {/* {row.status === 'Completed' && (
+            {row.status !== 'Cancelled' && row.status !== 'price_not_fixed' && (
               <Tooltip title="Print Invoice" arrow>
                 <IconButton color="info" onClick={() => handlePrint(row)}>
                   <PrintTwoTone />
                 </IconButton>
               </Tooltip>
-            )} */}
+            )}
             {row.status === 'price_not_fixed' && (
               <Tooltip title="Edit Order" arrow>
                 <IconButton
@@ -256,7 +262,7 @@ const OrdersTable = () => {
         open={openCancel.open}
         onClose={handleCloseCancelDialog}
       />
-      {/* <PrintDialog
+      <PrintDialog
         open={openPrintModal?.open}
         onClose={() =>
           setOpenPrintModal({
@@ -265,8 +271,8 @@ const OrdersTable = () => {
           })
         }
       >
-        <OrderInvoice data={openPrintModal?.data} />
-      </PrintDialog> */}
+        <OrderReceipt data={openPrintModal?.data} />
+      </PrintDialog>
     </>
   );
 };

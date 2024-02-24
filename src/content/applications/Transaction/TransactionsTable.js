@@ -156,7 +156,7 @@ const TransactionsTable = () => {
                 )}
               </IconButton>
             </Tooltip>
-            <Tooltip title="Print Invoice" arrow>
+            <Tooltip title="Print Receipt" arrow>
               <IconButton color="info" onClick={() => handlePrint(row)}>
                 <PrintTwoTone />
               </IconButton>
@@ -196,6 +196,7 @@ const TransactionsTable = () => {
         id={openDiscount?.id}
       />
       <PrintDialog
+        title="Print Receipt"
         open={openPrintModal?.open}
         onClose={() =>
           setOpenPrintModal({
