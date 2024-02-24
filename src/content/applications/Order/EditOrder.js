@@ -51,8 +51,8 @@ const EditOrder = () => {
       };
     }),
     replaceItems:
-      details?.replaceItem?.length > 0
-        ? details?.replaceItem?.map((i) => {
+      details?.replacement?.length > 0
+        ? details?.replacement?.map((i) => {
             return {
               name: i?.name,
               type: i.type,
