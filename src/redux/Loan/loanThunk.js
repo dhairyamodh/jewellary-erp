@@ -6,7 +6,7 @@ import { openSnackbar } from '../Snackbar/snackbarSlice';
 
 export const getLoanListAsync = createAsyncThunk(
   '/loan/getLoanData',
-  async (data) => {
+  async (data, { dispatch }) => {
     try {
       const response = await axiosClient.request({
         method: 'get',
@@ -15,6 +15,12 @@ export const getLoanListAsync = createAsyncThunk(
       });
       return response;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       throw Error(error.message);
     }
   }
@@ -42,6 +48,12 @@ export const createLoanAsync = createAsyncThunk(
       }
       return response;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       throw Error(error.message);
     }
   }
@@ -49,11 +61,17 @@ export const createLoanAsync = createAsyncThunk(
 
 export const updateInterestAsync = createAsyncThunk(
   '/loan/update-interest',
-  async ({ id }) => {
+  async ({ id }, { dispatch }) => {
     try {
       const response = await axiosClient.put(`/loan/update-interest/${id}`);
       return response;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       throw Error(error.message);
     }
   }
@@ -84,6 +102,12 @@ export const addLoanAmountAsync = createAsyncThunk(
       }
       return response;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       throw Error(error.message);
     }
   }
@@ -114,6 +138,12 @@ export const discountLoanAsync = createAsyncThunk(
       }
       return response;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       throw Error(error.message);
     }
   }
