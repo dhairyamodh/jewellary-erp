@@ -49,10 +49,11 @@ function Login() {
     }
   }, [isAuthenticated]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     try {
       setSubmitLoading(true);
-      dispatch(loginAsync(data));
+      await dispatch(loginAsync(data));
+      setSubmitLoading(false);
     } catch (error) {
       setSubmitLoading(false);
     }

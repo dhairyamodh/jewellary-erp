@@ -1,11 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosClient from 'src/client/axiosClient';
 import { downloadExcel } from 'src/utils/downloadExcel';
+import { openSnackbar } from '../Snackbar/snackbarSlice';
 // Create an async thunk for making the API call
 
 export const getOrderReportAsync = createAsyncThunk(
   '/report/customDate-report',
-  async (data) => {
+  async (data, { dispatch }) => {
     try {
       const response = await axiosClient.request({
         method: 'get',
@@ -14,6 +15,12 @@ export const getOrderReportAsync = createAsyncThunk(
       });
       return response;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       throw Error(error.message);
     }
   }

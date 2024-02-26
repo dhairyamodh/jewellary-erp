@@ -24,6 +24,12 @@ export const loginAsync = createAsyncThunk(
       }
       return response.data;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       return rejectWithValue('Login failed. Please check your credentials.');
     }
   }
@@ -44,10 +50,9 @@ export const profileAsync = createAsyncThunk(
       }
       return response;
     } catch (error) {
-      console.log(error);
       dispatch(
         openSnackbar({
-          message: error?.response?.data?.msg,
+          message: error?.response?.data?.msg || 'Something went wrong',
           severity: 'error'
         })
       );

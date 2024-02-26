@@ -5,13 +5,19 @@ import { openSnackbar } from '../Snackbar/snackbarSlice';
 // Create an async thunk for making the API call
 export const getOrderById = createAsyncThunk(
   '/transaction/get-transaction',
-  async ({ id }) => {
+  async ({ id }, { dispatch }) => {
     try {
       const response = await axiosClient.get(
         `/transaction/get-transaction/${id}`
       );
       return response;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       throw Error(error.message);
     }
   }
@@ -19,7 +25,7 @@ export const getOrderById = createAsyncThunk(
 
 export const getOrdersAsync = createAsyncThunk(
   '/transaction/getallorders',
-  async (data) => {
+  async (data, { dispatch }) => {
     try {
       const response = await axiosClient.request({
         method: 'get',
@@ -28,6 +34,12 @@ export const getOrdersAsync = createAsyncThunk(
       });
       return response;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       throw Error(error.message);
     }
   }
@@ -35,7 +47,7 @@ export const getOrdersAsync = createAsyncThunk(
 
 export const getPendingOrdersAsync = createAsyncThunk(
   '/transaction/pendingstatus',
-  async (data) => {
+  async (data, { dispatch }) => {
     try {
       const response = await axiosClient.request({
         method: 'get',
@@ -44,6 +56,12 @@ export const getPendingOrdersAsync = createAsyncThunk(
       });
       return response;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       throw Error(error.message);
     }
   }
@@ -74,6 +92,12 @@ export const createOrderAsync = createAsyncThunk(
       }
       return response;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       throw Error(error.message);
     }
   }
@@ -104,6 +128,12 @@ export const editOrderAsync = createAsyncThunk(
       }
       return response;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       throw Error(error.message);
     }
   }
@@ -134,6 +164,12 @@ export const addPaymentAsync = createAsyncThunk(
       }
       return response;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       throw Error(error.message);
     }
   }
@@ -161,6 +197,12 @@ export const cancelOrderAsync = createAsyncThunk(
       }
       return response;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       throw Error(error.message);
     }
   }
@@ -191,6 +233,12 @@ export const discountTransactionAsync = createAsyncThunk(
       }
       return response;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       throw Error(error.message);
     }
   }

@@ -6,7 +6,7 @@ import { openSnackbar } from '../Snackbar/snackbarSlice';
 
 export const getEmiListAsync = createAsyncThunk(
   '/emi/get-emitransaction',
-  async (data) => {
+  async (data, { dispatch }) => {
     try {
       const response = await axiosClient.request({
         method: 'get',
@@ -15,6 +15,12 @@ export const getEmiListAsync = createAsyncThunk(
       });
       return response;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       throw Error(error.message);
     }
   }
@@ -42,6 +48,12 @@ export const createEMIAsync = createAsyncThunk(
       }
       return response;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       throw Error(error.message);
     }
   }
@@ -72,6 +84,12 @@ export const addEMIPaymentAsync = createAsyncThunk(
       }
       return response;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       throw Error(error.message);
     }
   }
@@ -79,11 +97,17 @@ export const addEMIPaymentAsync = createAsyncThunk(
 
 export const getEMIByIdAsync = createAsyncThunk(
   '/emi/get-emi',
-  async ({ id }) => {
+  async ({ id }, { dispatch }) => {
     try {
       const response = await axiosClient.get(`/emi/get-emi/${id}`);
       return response;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       throw Error(error.message);
     }
   }
@@ -111,6 +135,12 @@ export const withdrawEMIAsync = createAsyncThunk(
       }
       return response;
     } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
       throw Error(error.message);
     }
   }

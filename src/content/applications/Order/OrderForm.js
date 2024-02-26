@@ -69,9 +69,8 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
         reset();
         navigate(-1);
       }
+      setSubmitLoading(false);
     } catch (error) {
-      console.log(error);
-    } finally {
       setSubmitLoading(false);
     }
   };
