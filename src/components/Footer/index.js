@@ -1,4 +1,5 @@
-import { Box, Container, Link, Typography, styled } from '@mui/material';
+import { Box, Container, Typography, styled } from '@mui/material';
+import moment from 'moment';
 
 const FooterWrapper = styled(Container)(
   ({ theme }) => `
@@ -18,10 +19,10 @@ function Footer() {
       >
         <Box>
           <Typography variant="subtitle1">
-            &copy; 2022 - Tokyo Free Black React Javascript Admin Dashboard
+            &copy; {moment().format('YYYY')} - Jewellery ERP Admin Dashboard
           </Typography>
         </Box>
-        <Typography
+        {/* <Typography
           sx={{
             pt: { xs: 2, md: 0 }
           }}
@@ -35,7 +36,7 @@ function Footer() {
           >
             BloomUI.com
           </Link>
-        </Typography>
+        </Typography> */}
       </Box>
     </FooterWrapper>
   );

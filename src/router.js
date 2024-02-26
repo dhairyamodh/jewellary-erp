@@ -67,9 +67,11 @@ const OrderReport = Loader(
 
 // const Overview = Loader(lazy(() => import('src/content/overview')));
 
-// // Dashboards
+// Dashboards
 
-// const Tasks = Loader(lazy(() => import('src/content/dashboards/Tasks')));
+const Analytics = Loader(
+  lazy(() => import('src/content/dashboards/Analytics'))
+);
 
 // // Applications
 
@@ -235,25 +237,21 @@ const routes = [
         element: <Status404 />
       }
     ]
+  },
+  {
+    path: 'dashboards',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <Navigate to="analytics" replace />
+      },
+      {
+        path: 'analytics',
+        element: <Analytics />
+      }
+    ]
   }
-  // {
-  //   path: 'dashboards',
-  //   element: <SidebarLayout />,
-  //   children: [
-  //     {
-  //       path: '',
-  //       element: <Navigate to="tasks" replace />
-  //     },
-  //     {
-  //       path: 'tasks',
-  //       element: <Tasks />
-  //     },
-  //     {
-  //       path: 'messenger',
-  //       element: <Messenger />
-  //     }
-  //   ]
-  // },
   // {
   //   path: 'management',
   //   element: <SidebarLayout />,

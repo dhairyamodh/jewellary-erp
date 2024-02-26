@@ -160,6 +160,16 @@ function SidebarMenu() {
 
   const sidebarMenuItems = [
     {
+      title: 'Dashboards',
+      menuItems: [
+        {
+          title: 'Analytics',
+          disableRipple: false,
+          to: '/dashboards'
+        }
+      ]
+    },
+    {
       title: 'Sales and Orders',
       menuItems: [
         {
