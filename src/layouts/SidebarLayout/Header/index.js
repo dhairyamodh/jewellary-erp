@@ -17,6 +17,8 @@ import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
 // import HeaderButtons from './Buttons';
 import HeaderUserbox from './Userbox';
 import { useSelector } from 'react-redux';
+import { ThemeContext } from 'src/theme/ThemeProvider';
+import { DarkMode, LightMode } from '@mui/icons-material';
 
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `
@@ -58,6 +60,7 @@ const TitleWrapper = styled(Box)(
 
 function Header() {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
+  const { themeName, setThemeName } = useContext(ThemeContext);
   const theme = useTheme();
   const user = useSelector((state) => state.auth.user);
 
@@ -87,6 +90,24 @@ function Header() {
         <img src="/logo-transparent-png.png" alt="logo" />
       </TitleWrapper>
       <Box display="flex" alignItems="center" justifyContent="end">
+        <Tooltip
+          arrow
+          title={`Toggle ${
+            themeName === 'NebulaFighterTheme' ? 'Light' : 'Dark'
+          } Mode`}
+        >
+          <IconButton
+            onClick={() =>
+              setThemeName(
+                themeName === 'NebulaFighterTheme'
+                  ? 'PureLightTheme'
+                  : 'NebulaFighterTheme'
+              )
+            }
+          >
+            {themeName === 'NebulaFighterTheme' ? <LightMode /> : <DarkMode />}
+          </IconButton>
+        </Tooltip>
         <HeaderUserbox />
         <Box
           component="span"
