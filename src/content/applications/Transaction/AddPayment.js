@@ -176,7 +176,7 @@ const AddPayment = () => {
                                 }}
                               >
                                 {RUPEE_SYMBOL}&nbsp;
-                                {details?.subTotal.toLocaleString()}
+                                {details?.subTotal?.toLocaleString()}
                               </TableCell>
                             </TableRow>
                             <TableRow>
@@ -189,7 +189,7 @@ const AddPayment = () => {
                                 }}
                               >
                                 {RUPEE_SYMBOL}&nbsp;
-                                {details?.taxAmount.toLocaleString()}
+                                {details?.taxAmount?.toLocaleString()}
                               </TableCell>
                             </TableRow>
                             <TableRow>
@@ -214,7 +214,7 @@ const AddPayment = () => {
                                 }}
                               >
                                 {RUPEE_SYMBOL}&nbsp;
-                                {details?.discount_amount.toLocaleString()}
+                                {details?.discount_amount?.toLocaleString()}
                               </TableCell>
                             </TableRow>
                             <TableRow>
@@ -243,7 +243,7 @@ const AddPayment = () => {
                                 }}
                               >
                                 {RUPEE_SYMBOL}&nbsp;
-                                {details?.total_amount.toLocaleString()}
+                                {details?.total_amount?.toLocaleString()}
                               </TableCell>
                             </TableRow>
                           </TableBody>
