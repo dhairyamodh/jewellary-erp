@@ -7,6 +7,7 @@ import {
   Divider,
   Hidden,
   Popover,
+  Stack,
   Typography
 } from '@mui/material';
 
@@ -16,6 +17,7 @@ import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from 'src/redux/auth/authSlice';
+import { SettingsTwoTone } from '@mui/icons-material';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -74,7 +76,14 @@ function HeaderUserbox() {
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
         <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
-        <UserBoxText>
+        <UserBoxText
+          sx={{
+            display: {
+              xs: 'none',
+              sm: 'block'
+            }
+          }}
+        >
           <UserBoxLabel variant="body1" textTransform="capitalize">
             {user?.name}
           </UserBoxLabel>
@@ -106,12 +115,30 @@ function HeaderUserbox() {
         </MenuUserBox>
 
         <Divider />
-        <Box sx={{ m: 1 }}>
-          <Button color="primary" fullWidth onClick={handleLogout}>
+        <Stack p={1}>
+          <Button
+            color="secondary"
+            sx={{
+              justifyContent: 'start'
+            }}
+            fullWidth
+            onClick={handleLogout}
+          >
+            <SettingsTwoTone sx={{ mr: 1 }} />
+            Settings
+          </Button>
+          <Button
+            sx={{
+              justifyContent: 'start'
+            }}
+            color="primary"
+            fullWidth
+            onClick={handleLogout}
+          >
             <LockOpenTwoToneIcon sx={{ mr: 1 }} />
             Sign out
           </Button>
-        </Box>
+        </Stack>
       </Popover>
     </>
   );

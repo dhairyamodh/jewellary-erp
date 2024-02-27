@@ -16,7 +16,7 @@ const ThemeProviderWrapper = function (props) {
 
   return (
     <StylesProvider injectFirst>
-      <ThemeContext.Provider value={setThemeName}>
+      <ThemeContext.Provider value={{ themeName, setThemeName }}>
         <ThemeProvider theme={theme}>{props.children}</ThemeProvider>
       </ThemeContext.Provider>
     </StylesProvider>
