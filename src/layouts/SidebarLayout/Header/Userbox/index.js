@@ -74,7 +74,14 @@ function HeaderUserbox() {
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
         <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
-        <UserBoxText>
+        <UserBoxText
+          sx={{
+            display: {
+              xs: 'none',
+              sm: 'block'
+            }
+          }}
+        >
           <UserBoxLabel variant="body1" textTransform="capitalize">
             {user?.name}
           </UserBoxLabel>
