@@ -63,7 +63,7 @@ function Header() {
   const { themeName, setThemeName } = useContext(ThemeContext);
   const theme = useTheme();
   const user = useSelector((state) => state.auth.user);
-
+  const isDark = themeName === 'NebulaFighterTheme';
   return (
     <HeaderWrapper
       display="flex"
@@ -87,32 +87,32 @@ function Header() {
     >
       <TitleWrapper>
         <Typography variant="h3">{user?.shopName}</Typography>
-        <img src="/logo-transparent-png.png" alt="logo" />
+        <img
+          src="/logo-transparent-png.png"
+          alt="logo"
+          style={{
+            filter: isDark ? 'invert(0%)' : 'invert(100%)'
+          }}
+        />
       </TitleWrapper>
       <Box display="flex" alignItems="center" justifyContent="end">
-        <Tooltip
-          arrow
-          title={`Toggle ${
-            themeName === 'NebulaFighterTheme' ? 'Light' : 'Dark'
-          } Mode`}
-        >
+        <Tooltip arrow title={`Toggle ${isDark ? 'Light' : 'Dark'} Mode`}>
           <IconButton
             onClick={() =>
-              setThemeName(
-                themeName === 'NebulaFighterTheme'
-                  ? 'PureLightTheme'
-                  : 'NebulaFighterTheme'
-              )
+              setThemeName(isDark ? 'PureLightTheme' : 'NebulaFighterTheme')
             }
           >
-            {themeName === 'NebulaFighterTheme' ? <LightMode /> : <DarkMode />}
+            {isDark ? <LightMode /> : <DarkMode />}
           </IconButton>
         </Tooltip>
         <HeaderUserbox />
         <Box
           component="span"
           sx={{
-            ml: 2,
+            ml: {
+              xs: 0,
+              sm: 2
+            },
             display: { lg: 'none', xs: 'inline-block' }
           }}
         >
