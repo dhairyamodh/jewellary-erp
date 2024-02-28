@@ -61,9 +61,6 @@ const getStatusLabel = (status) => {
 };
 
 const OrdersTable = () => {
-  const [selectedCryptoOrders] = useState([]);
-  const selectedBulkActions = selectedCryptoOrders.length > 0;
-
   const [openCancel, setOpenCancel] = useState({
     open: false,
     id: undefined
@@ -184,7 +181,7 @@ const OrdersTable = () => {
               </IconButton>
             </Tooltip>
             {row.status !== 'Cancelled' && row.status !== 'price_not_fixed' && (
-              <Tooltip title="Print Invoice" arrow>
+              <Tooltip title="Print Receipt" arrow>
                 <IconButton color="info" onClick={() => handlePrint(row)}>
                   <PrintTwoTone />
                 </IconButton>
@@ -223,27 +220,25 @@ const OrdersTable = () => {
   return (
     <>
       <Card>
-        {!selectedBulkActions && (
-          <CardHeader
-            action={
-              <Stack direction="row" gap={2}>
-                <Link to="/order/add">
-                  <Button
-                    variant="contained"
-                    sx={{
-                      whiteSpace: 'nowrap',
-                      height: '100%'
-                    }}
-                    startIcon={<AddTwoTone fontSize="small" />}
-                  >
-                    Create
-                  </Button>
-                </Link>
-              </Stack>
-            }
-            title="Order List"
-          />
-        )}
+        <CardHeader
+          action={
+            <Stack direction="row" gap={2}>
+              <Link to="/order/add">
+                <Button
+                  variant="contained"
+                  sx={{
+                    whiteSpace: 'nowrap',
+                    height: '100%'
+                  }}
+                  startIcon={<AddTwoTone fontSize="small" />}
+                >
+                  Create
+                </Button>
+              </Link>
+            </Stack>
+          }
+          title="Order List"
+        />
         <Divider />
         <CustomTable
           columns={columns}
