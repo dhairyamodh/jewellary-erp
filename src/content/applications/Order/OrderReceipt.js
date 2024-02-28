@@ -103,7 +103,7 @@ const OrderReceipt = ({ data }) => {
                         {RUPEE_SYMBOL}&nbsp;{data.subTotal.toLocaleString()}
                       </td>
                     </tr>
-                    {data?.advance_payment && data?.advance_payment > 0 && (
+                    {data?.advance_payment && data?.advance_payment > 0 ? (
                       <tr>
                         <td colSpan="5" style={{ textAlign: 'end' }}>
                           Advanced Payment
@@ -113,6 +113,8 @@ const OrderReceipt = ({ data }) => {
                           {data.advance_payment.toLocaleString()}
                         </td>
                       </tr>
+                    ) : (
+                      ''
                     )}
                     <tr>
                       <td colSpan="5" style={{ textAlign: 'end' }}>
