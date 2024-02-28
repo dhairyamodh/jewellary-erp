@@ -13,12 +13,12 @@ import {
 import { Helmet } from 'react-helmet-async';
 import Footer from 'src/components/Footer';
 
+import { ExpandMoreTwoTone } from '@mui/icons-material';
 import { useRef, useState } from 'react';
 import TasksAnalytics from './TasksAnalytics';
 import TeamOverview from './TeamOverview';
-import { ExpandMoreTwoTone } from '@mui/icons-material';
 
-function DashboardTasks() {
+function Analytics() {
   const theme = useTheme();
 
   const periods = [
@@ -42,6 +42,7 @@ function DashboardTasks() {
   const actionRef1 = useRef(null);
   const [openPeriod, setOpenMenuPeriod] = useState(false);
   const [period, setPeriod] = useState(periods[3].text);
+
   return (
     <>
       <Helmet>
@@ -132,4 +133,4 @@ function DashboardTasks() {
   );
 }
 
-export default DashboardTasks;
+export default Analytics;

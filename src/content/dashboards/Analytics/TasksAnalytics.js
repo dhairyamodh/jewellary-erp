@@ -1,5 +1,7 @@
 import { Box, Typography, alpha, styled, useTheme } from '@mui/material';
 import Chart from 'react-apexcharts';
+import { useSelector } from 'react-redux';
+import { RUPEE_SYMBOL } from 'src/utils/constants';
 
 const DotPrimaryLight = styled('span')(
   ({ theme }) => `
@@ -115,24 +117,19 @@ function TasksAnalytics() {
         show: false
       },
       y: {
-        formatter: function (val) {
-          return '$ ' + val + 'k';
+        formatter: function (value, { seriesIndex }) {
+          if (seriesIndex === 1) {
+            // Format only the tooltip for the first bar
+            return RUPEE_SYMBOL + parseFloat(value).toLocaleString(); // Example formatting
+          }
+          return parseFloat(value).toLocaleString();
         }
       },
       theme: 'dark'
     }
   };
 
-  const chartData = [
-    {
-      name: 'Total Orders',
-      data: [28, 47, 41, 34, 69, 91, 49, 82, 52, 72, 32, 99]
-    },
-    {
-      name: 'Revenue',
-      data: [38, 85, 64, 40, 97, 82, 58, 42, 55, 46, 57, 70]
-    }
-  ];
+  const orderChart = useSelector((state) => state.dashboard?.data?.orderChart);
 
   return (
     <Box>
@@ -155,7 +152,7 @@ function TasksAnalytics() {
           }}
         >
           <DotPrimary />
-          tasks created
+          Revenue
         </Typography>
         <Typography
           variant="body2"
@@ -166,12 +163,12 @@ function TasksAnalytics() {
           }}
         >
           <DotPrimaryLight />
-          tasks completed
+          Orders
         </Typography>
       </Box>
       <Chart
         options={chartOptions}
-        series={chartData}
+        series={orderChart}
         type="bar"
         height={270}
       />

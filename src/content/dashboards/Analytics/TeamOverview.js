@@ -7,6 +7,8 @@ import {
   Typography,
   styled
 } from '@mui/material';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import Text from 'src/components/Text';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
 
@@ -26,6 +28,18 @@ const LinearProgressWrapper = styled(LinearProgress)(
 );
 
 function TeamOverview() {
+  const { data } = useSelector((state) => state.dashboard);
+  const percentages = useMemo(() => {
+    return {
+      order:
+        (parseFloat(data?.order?.pending) / parseFloat(data?.order?.count)) *
+        100,
+      loan:
+        (parseFloat(data?.loan?.pending) / parseFloat(data?.loan?.count)) * 100,
+      emi: (parseFloat(data?.emi?.pending) / parseFloat(data?.emi?.count)) * 100
+    };
+  }, [data]);
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={4}>
@@ -36,16 +50,17 @@ function TeamOverview() {
                 Orders
               </Typography>
               <Typography variant="h3" noWrap gutterBottom>
-                {RUPEE_SYMBOL}3,854.15
+                {RUPEE_SYMBOL}
+                {data?.order?.revenue?.toLocaleString()}
               </Typography>
             </Box>
 
             <Typography variant="subtitle2" gutterBottom>
-              <Text color="black">4</Text> out of <Text color="black">6</Text>{' '}
-              tasks completed
+              <Text color="black">{data?.order?.pending}</Text> out of{' '}
+              <Text color="black">{data?.order?.count}</Text> orders pending
             </Typography>
             <LinearProgressWrapper
-              value={65}
+              value={percentages?.order}
               color="primary"
               variant="determinate"
             />
@@ -57,19 +72,20 @@ function TeamOverview() {
           <CardContent display="flex" alignItems="center" pb={3}>
             <Box pb={2}>
               <Typography variant="subtitle1" noWrap>
-                Orders
+                Loans
               </Typography>
               <Typography variant="h3" noWrap gutterBottom>
-                {RUPEE_SYMBOL}3,854.15
+                {RUPEE_SYMBOL}
+                {data?.loan?.revenue?.toLocaleString()}
               </Typography>
             </Box>
 
             <Typography variant="subtitle2" gutterBottom>
-              <Text color="black">4</Text> out of <Text color="black">6</Text>{' '}
-              tasks completed
+              <Text color="black">{data?.loan?.pending}</Text> out of{' '}
+              <Text color="black">{data?.loan?.count}</Text> loans pending
             </Typography>
             <LinearProgressWrapper
-              value={65}
+              value={percentages?.loan}
               color="primary"
               variant="determinate"
             />
@@ -81,19 +97,20 @@ function TeamOverview() {
           <CardContent display="flex" alignItems="center" pb={3}>
             <Box pb={2}>
               <Typography variant="subtitle1" noWrap>
-                Orders
+                EMIs
               </Typography>
               <Typography variant="h3" noWrap gutterBottom>
-                {RUPEE_SYMBOL}3,854.15
+                {RUPEE_SYMBOL}
+                {data?.emi?.revenue?.toLocaleString()}
               </Typography>
             </Box>
 
             <Typography variant="subtitle2" gutterBottom>
-              <Text color="black">4</Text> out of <Text color="black">6</Text>{' '}
-              tasks completed
+              <Text color="black">{data?.emi?.pending}</Text> out of{' '}
+              <Text color="black">{data?.emi?.count}</Text> emi's pending
             </Typography>
             <LinearProgressWrapper
-              value={65}
+              value={percentages?.emi}
               color="primary"
               variant="determinate"
             />

@@ -128,7 +128,21 @@ const routes = [
       },
       {
         path: '/',
-        element: <Navigate to="order" replace />
+        element: <Navigate to="dashboards" replace />
+      },
+      {
+        path: 'dashboards',
+        element: <SidebarLayout />,
+        children: [
+          {
+            path: '',
+            element: <Navigate to="analytics" replace />
+          },
+          {
+            path: 'analytics',
+            element: <Analytics />
+          }
+        ]
       },
       {
         path: 'order',
@@ -235,20 +249,6 @@ const routes = [
       {
         path: '*',
         element: <Status404 />
-      }
-    ]
-  },
-  {
-    path: 'dashboards',
-    element: <SidebarLayout />,
-    children: [
-      {
-        path: '',
-        element: <Navigate to="analytics" replace />
-      },
-      {
-        path: 'analytics',
-        element: <Analytics />
       }
     ]
   }

@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from 'src/redux/auth/authSlice';
 import { SettingsTwoTone } from '@mui/icons-material';
+import SettingsDialog from 'src/components/Dialogs/SettingsDialog';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -72,6 +73,17 @@ function HeaderUserbox() {
     dispatch(logout());
   };
 
+  const [openSetting, setOpenSetting] = useState(false);
+
+  const handleOpenSetting = () => {
+    handleClose();
+    setOpenSetting(true);
+  };
+
+  const handleCloseSetting = () => {
+    setOpenSetting(false);
+  };
+
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
@@ -122,7 +134,7 @@ function HeaderUserbox() {
               justifyContent: 'start'
             }}
             fullWidth
-            onClick={handleLogout}
+            onClick={handleOpenSetting}
           >
             <SettingsTwoTone sx={{ mr: 1 }} />
             Settings
@@ -140,6 +152,7 @@ function HeaderUserbox() {
           </Button>
         </Stack>
       </Popover>
+      <SettingsDialog open={openSetting} onClose={handleCloseSetting} />
     </>
   );
 }
