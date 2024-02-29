@@ -15,8 +15,8 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useFieldArray, useForm, useWatch } from 'react-hook-form';
+import { useEffect, useMemo, useState } from 'react';
+import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
 
@@ -28,6 +28,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
     register,
     watch,
     reset,
+    getValues,
     setValue,
     formState: { errors }
   } = useForm({
@@ -43,7 +44,8 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
           weight: '',
           price: '',
           design: '',
-          labour: ''
+          labour: '',
+          itemRate: ''
         }
       ],
       replaceItems: [
@@ -58,6 +60,9 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
   });
 
   const [submitLoading, setSubmitLoading] = useState(false);
+
+  const goldRate = 64175;
+  const silverRate = 742;
 
   const navigate = useNavigate();
 
@@ -99,6 +104,16 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
 
   const taxRate = watch('taxRate');
   const discount = watch('discount');
+
+  const calculateRate = useMemo(
+    () => (weightInGrams, type) => {
+      if (type === 'gold') {
+        return (weightInGrams / 10) * goldRate;
+      }
+      return (weightInGrams / 10) * silverRate;
+    },
+    []
+  );
 
   useEffect(() => {
     let total = 0;
@@ -225,6 +240,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                   </Grid>
                   <Grid item xs={3} md={1}>
                     <TextField
+                      {...field}
                       label="Quantity"
                       fullWidth
                       type="number"
@@ -236,15 +252,27 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                     />
                   </Grid>
                   <Grid item xs={3} md={1}>
-                    <TextField
-                      label="Weight/gm"
-                      fullWidth
-                      type="number"
-                      name={`item.${index}.weight`}
-                      {...register(`item.${index}.weight`, {
-                        required: true
-                      })}
-                      error={Boolean(errors?.item?.[index]?.weight)}
+                    <Controller
+                      name={`items[${index}].weight`}
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field }) => (
+                        <TextField
+                          label="Weight/gm"
+                          fullWidth
+                          type="number"
+                          name={`item.${index}.weight`}
+                          onChange={(e) => {
+                            const newWeight = parseFloat(e.target.value);
+                            const type = getValues(`item[${index}].type`);
+                            console.log({ newWeight, type });
+                            const newRate = calculateRate(newWeight, type);
+                            setValue(`item[${index}].itemRate`, newRate);
+                            field.onChange(e);
+                          }}
+                          error={Boolean(errors?.item?.[index]?.weight)}
+                        />
+                      )}
                     />
                   </Grid>
                   <Grid item xs={6} md={1.5}>
@@ -259,7 +287,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                   </Grid>
                   <Grid item xs={4} md={1.5}>
                     <TextField
-                      label="Rate"
+                      placeholder="Rate"
                       type="number"
                       fullWidth
                       name={`item.${index}.itemRate`}
