@@ -145,7 +145,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
       (parseFloat(totalAmount) * (parseFloat(taxRate) || 0)) / 100;
     const total = taxAmount + parseFloat(totalAmount);
     setValue('taxAmount', taxAmount);
-    setValue('total', total);
+    setValue('total', total.toFixed(2));
   }, [taxRate]);
 
   useEffect(() => {
@@ -153,7 +153,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
       parseFloat(watch('subTotal')) +
       watch('taxAmount') -
       (parseFloat(discount) || 0);
-    setValue('total', total);
+    setValue('total', total.toFixed(2));
   }, [discount]);
   return (
     <form onSubmit={handleSubmit(formSubmit)}>
@@ -207,160 +207,290 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
             Items
           </Typography>
           <Grid container spacing={2}>
-            {fields.map((field, index) => (
-              <Grid item xs={12} key={field.id}>
-                <Grid container spacing={2}>
-                  <Grid item xs={8} md={2}>
-                    <TextField
-                      name={`item.${index}.name`}
-                      label="Item Name"
-                      fullWidth
-                      {...register(`item.${index}.name`, {
-                        required: true
-                      })}
-                      error={Boolean(errors?.item?.[index]?.name)}
-                    />
-                  </Grid>
-                  <Grid item xs={4} md={1}>
-                    <FormControl fullWidth>
-                      <InputLabel>Item type</InputLabel>
-                      <Select
-                        label="Item type"
-                        defaultValue="gold"
-                        name={`item.${index}.type`}
-                        {...register(`item.${index}.type`, {
+            {fields.map((field, index) => {
+              return (
+                <Grid item xs={12} key={field.id}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={8} md={2}>
+                      <TextField
+                        name={`item.${index}.name`}
+                        label="Item Name"
+                        fullWidth
+                        {...register(`item.${index}.name`, {
                           required: true
                         })}
-                        error={Boolean(errors?.item?.[index]?.type)}
-                      >
-                        <MenuItem value="gold">Gold</MenuItem>
-                        <MenuItem value="silver">Silver</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={3} md={1}>
-                    <TextField
-                      {...field}
-                      label="Quantity"
-                      fullWidth
-                      type="number"
-                      name={`item.${index}.quantity`}
-                      {...register(`item.${index}.quantity`, {
-                        required: true
-                      })}
-                      error={Boolean(errors?.item?.[index]?.qauntity)}
-                    />
-                  </Grid>
-                  <Grid item xs={3} md={1}>
-                    <Controller
-                      name={`items[${index}].weight`}
-                      control={control}
-                      rules={{ required: true }}
-                      render={({ field }) => (
-                        <TextField
-                          label="Weight/gm"
-                          fullWidth
-                          type="number"
-                          name={`item.${index}.weight`}
-                          onChange={(e) => {
-                            const newWeight = parseFloat(e.target.value);
-                            const type = getValues(`item[${index}].type`);
-                            console.log({ newWeight, type });
-                            const newRate = calculateRate(newWeight, type);
-                            setValue(`item[${index}].itemRate`, newRate);
-                            field.onChange(e);
-                          }}
-                          error={Boolean(errors?.item?.[index]?.weight)}
+                        error={Boolean(errors?.item?.[index]?.name)}
+                      />
+                    </Grid>
+                    <Grid item xs={4} md={1}>
+                      <FormControl fullWidth>
+                        <InputLabel>Item type</InputLabel>
+                        <Controller
+                          name={`item[${index}].type`}
+                          control={control}
+                          rules={{ required: true }}
+                          defaultValue={item.type || 'gold'}
+                          render={({ field }) => (
+                            <Select
+                              {...field}
+                              label="Item type"
+                              defaultValue="gold"
+                              name={`item.${index}.type`}
+                              onChange={(e) => {
+                                const type = e.target.value;
+                                const weight = parseFloat(
+                                  getValues(`item[${index}].weight`)
+                                );
+                                const quantity = getValues(
+                                  `item[${index}].quantity`
+                                );
+                                if (quantity > 0 && weight) {
+                                  const newRate =
+                                    calculateRate(weight, type) * quantity;
+                                  const labourChar =
+                                    parseFloat(
+                                      getValues(`item[${index}].labour`)
+                                    ) || 0;
+                                  setValue(
+                                    `item[${index}].itemRate`,
+                                    newRate.toFixed(2)
+                                  );
+                                  setValue(
+                                    `item[${index}].price`,
+                                    (newRate + labourChar).toFixed(2)
+                                  );
+                                }
+                                field.onChange(e);
+                              }}
+                              error={Boolean(errors?.item?.[index]?.type)}
+                            >
+                              <MenuItem value="gold">Gold</MenuItem>
+                              <MenuItem value="silver">Silver</MenuItem>
+                            </Select>
+                          )}
                         />
-                      )}
-                    />
-                  </Grid>
-                  <Grid item xs={6} md={1.5}>
-                    <TextField
-                      label="Design"
-                      type="text"
-                      fullWidth
-                      name={`item.${index}.design`}
-                      {...register(`item.${index}.design`)}
-                      error={Boolean(errors?.item?.[index]?.design)}
-                    />
-                  </Grid>
-                  <Grid item xs={4} md={1.5}>
-                    <TextField
-                      placeholder="Rate"
-                      type="number"
-                      fullWidth
-                      name={`item.${index}.itemRate`}
-                      {...register(`item.${index}.itemRate`, {
-                        required: true
-                      })}
-                      error={Boolean(errors?.item?.[index]?.itemRate)}
-                    />
-                  </Grid>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={3} md={1}>
+                      <Controller
+                        name={`item[${index}].quantity`}
+                        control={control}
+                        rules={{ required: true }}
+                        defaultValue={item.qauntity || 1}
+                        render={({ field }) => {
+                          return (
+                            <TextField
+                              {...field}
+                              label="Quantity"
+                              fullWidth
+                              type="number"
+                              name={`item.${index}.quantity`}
+                              inputProps={{
+                                min: 1
+                              }}
+                              onChange={(e) => {
+                                const quantity = parseFloat(e.target.value);
+                                const weight = parseFloat(
+                                  getValues(`item[${index}].weight`)
+                                );
+                                if (quantity > 0 && weight) {
+                                  const type = getValues(`item[${index}].type`);
+                                  const newRate =
+                                    calculateRate(weight, type) * quantity;
+                                  const labourChar =
+                                    parseFloat(
+                                      getValues(`item[${index}].labour`)
+                                    ) || 0;
+                                  setValue(
+                                    `item[${index}].itemRate`,
+                                    newRate.toFixed(2)
+                                  );
+                                  setValue(
+                                    `item[${index}].price`,
+                                    (newRate + labourChar).toFixed(2)
+                                  );
+                                }
+                                field.onChange(e);
+                              }}
+                              error={Boolean(errors?.item?.[index]?.qauntity)}
+                            />
+                          );
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={3} md={1}>
+                      <Controller
+                        name={`item[${index}].weight`}
+                        control={control}
+                        rules={{ required: true }}
+                        defaultValue={item.weight || ''}
+                        render={({ field }) => (
+                          <TextField
+                            label="Weight/gm"
+                            fullWidth
+                            type="number"
+                            name={`item.${index}.weight`}
+                            onChange={(e) => {
+                              const newWeight = parseFloat(e.target.value);
+                              const quantity = parseFloat(
+                                getValues(`item[${index}].quantity`)
+                              );
+                              const type = getValues(`item[${index}].type`);
+                              const newRate =
+                                calculateRate(newWeight, type) * quantity;
+                              const labourChar =
+                                parseFloat(
+                                  getValues(`item[${index}].labour`)
+                                ) || 0;
+                              setValue(
+                                `item[${index}].itemRate`,
+                                newRate.toFixed(2)
+                              );
+                              setValue(
+                                `item[${index}].price`,
+                                (newRate + labourChar).toFixed(2)
+                              );
+                              field.onChange(e);
+                            }}
+                            error={Boolean(errors?.item?.[index]?.weight)}
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={6} md={1.5}>
+                      <TextField
+                        label="Design"
+                        type="text"
+                        fullWidth
+                        name={`item.${index}.design`}
+                        {...register(`item.${index}.design`)}
+                        error={Boolean(errors?.item?.[index]?.design)}
+                      />
+                    </Grid>
+                    <Grid item xs={4} md={1.5}>
+                      <Controller
+                        name={`item[${index}].itemRate`}
+                        control={control}
+                        rules={{ required: true }}
+                        defaultValue={item.itemRate || ''}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            label="Rate"
+                            type="number"
+                            fullWidth
+                            name={`item.${index}.itemRate`}
+                            onChange={(e) => {
+                              const rate = parseFloat(e.target.value);
+                              const labourChar =
+                                parseFloat(
+                                  getValues(`item[${index}].labour`)
+                                ) || 0;
+                              setValue(
+                                `item[${index}].price`,
+                                (rate + labourChar).toFixed(2)
+                              );
+                              field.onChange(e);
+                            }}
+                            error={Boolean(errors?.item?.[index]?.itemRate)}
+                          />
+                        )}
+                      />
+                    </Grid>
 
-                  <Grid item xs={4} md={1.5}>
-                    <TextField
-                      label="Labour Charge"
-                      type="number"
-                      fullWidth
-                      name={`item.${index}.labour`}
-                      {...register(`item.${index}.labour`, {
-                        required: true
-                      })}
-                      error={Boolean(errors?.item?.[index]?.labour)}
-                    />
-                  </Grid>
-                  <Grid item xs={4} md={1.5}>
-                    <TextField
-                      label="Price"
-                      type="number"
-                      fullWidth
-                      name={`item.${index}.price`}
-                      {...register(`item.${index}.price`, {
-                        required: true
-                      })}
-                      error={Boolean(errors?.item?.[index]?.price)}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={1}>
-                    {index === 0 ? (
-                      <Button
-                        fullWidth
-                        variant="outlined"
-                        sx={{
-                          height: '100%'
-                        }}
-                        onClick={() =>
-                          append({
-                            name: '',
-                            type: 'gold',
-                            quantity: 1,
-                            weight: '',
-                            price: '',
-                            design: '',
-                            labour: ''
-                          })
-                        }
-                      >
-                        <Add />
-                      </Button>
-                    ) : (
-                      <Button
-                        fullWidth
-                        variant="outlined"
-                        color="error"
-                        sx={{
-                          height: '100%'
-                        }}
-                        onClick={() => remove(index)}
-                      >
-                        <DeleteOutlineTwoTone />
-                      </Button>
-                    )}
+                    <Grid item xs={4} md={1.5}>
+                      <Controller
+                        name={`item[${index}].labour`}
+                        control={control}
+                        rules={{ required: true }}
+                        defaultValue={item.labour || ''}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            label="Labour Charge"
+                            type="number"
+                            fullWidth
+                            name={`item.${index}.labour`}
+                            onChange={(e) => {
+                              const labourChar = parseFloat(e.target.value);
+                              const rate =
+                                parseFloat(
+                                  getValues(`item[${index}].itemRate`)
+                                ) || 0;
+                              if (labourChar) {
+                                setValue(
+                                  `item[${index}].price`,
+                                  (rate + labourChar).toFixed(2)
+                                );
+                              }
+                              field.onChange(e);
+                            }}
+                            error={Boolean(errors?.item?.[index]?.labour)}
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={4} md={1.5}>
+                      <Controller
+                        name={`item[${index}].price`}
+                        control={control}
+                        rules={{ required: true }}
+                        defaultValue={item.price || ''}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            label="Price"
+                            type="number"
+                            fullWidth
+                            inputProps={{
+                              readOnly: true
+                            }}
+                            name={`item.${index}.price`}
+                            error={Boolean(errors?.item?.[index]?.price)}
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={1}>
+                      {index === 0 ? (
+                        <Button
+                          fullWidth
+                          variant="outlined"
+                          sx={{
+                            height: '100%'
+                          }}
+                          onClick={() =>
+                            append({
+                              name: '',
+                              type: 'gold',
+                              quantity: 1,
+                              weight: '',
+                              price: '',
+                              design: '',
+                              labour: ''
+                            })
+                          }
+                        >
+                          <Add />
+                        </Button>
+                      ) : (
+                        <Button
+                          fullWidth
+                          variant="outlined"
+                          color="error"
+                          sx={{
+                            height: '100%'
+                          }}
+                          onClick={() => remove(index)}
+                        >
+                          <DeleteOutlineTwoTone />
+                        </Button>
+                      )}
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-            ))}
+              );
+            })}
           </Grid>
         </Grid>
         <Grid item xs={12}>

@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Grid,
   TextField,
   Typography
@@ -40,24 +39,21 @@ const SettingsDialog = ({ open, onClose }) => {
       open={open}
       onClose={onClose}
       fullWidth
-      maxWidth="sm"
+      maxWidth="xs"
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogTitle sx={{ m: 0, p: 2 }}>
-          <Typography variant="h4">Settings</Typography>
-        </DialogTitle>
         <DialogContent>
-          <Grid container spacing={2}>
+          <Typography variant="h4">Settings</Typography>
+          <Grid container spacing={2} pt={2}>
             <Grid item xs={12}>
               <Grid container spacing={2} alignItems="center">
-                <Grid item sm={6}>
-                  <Typography variant="body1">Gold Rate</Typography>
-                </Grid>
-                <Grid item sm={6}>
+                <Grid item sm={12}>
                   <TextField
                     name="goldRate"
+                    label="Gold Rate"
+                    placeholder="Enter the rate per gram"
                     fullWidth
                     {...register('goldRate', {
                       required: true
@@ -69,12 +65,11 @@ const SettingsDialog = ({ open, onClose }) => {
             </Grid>
             <Grid item xs={12}>
               <Grid container spacing={2} alignItems="center">
-                <Grid item sm={6}>
-                  <Typography variant="body1">Silver Rate</Typography>
-                </Grid>
-                <Grid item sm={6}>
+                <Grid item sm={12}>
                   <TextField
                     name="silverRate"
+                    label="Silver Rate"
+                    placeholder="Enter the rate per gram"
                     fullWidth
                     {...register('silverRate', {
                       required: true
