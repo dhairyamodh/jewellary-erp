@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const dashboardSlice = createSlice({
-  name: 'auth',
+  name: 'dashboard',
   initialState: {
     loading: false,
     error: null,

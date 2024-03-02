@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
 
@@ -61,8 +62,8 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
 
   const [submitLoading, setSubmitLoading] = useState(false);
 
-  const goldRate = 64175;
-  const silverRate = 742;
+  const setting = useSelector((state) => state.setting);
+  const { goldRate, silverRate } = setting.data;
 
   const navigate = useNavigate();
 
@@ -371,7 +372,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       <Controller
                         name={`item[${index}].itemRate`}
                         control={control}
-                        rules={{ required: true }}
+                        rules={{ required: 'Item rate is required' }}
                         defaultValue={item.itemRate || ''}
                         render={({ field }) => (
                           <TextField

@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from 'src/redux/auth/authSlice';
 import { SettingsTwoTone } from '@mui/icons-material';
 import SettingsDialog from 'src/components/Dialogs/SettingsDialog';
+import { setToggleModal } from 'src/redux/Setting/settingSlice';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -73,15 +74,15 @@ function HeaderUserbox() {
     dispatch(logout());
   };
 
-  const [openSetting, setOpenSetting] = useState(false);
+  const setting = useSelector((state) => state.setting);
 
   const handleOpenSetting = () => {
     handleClose();
-    setOpenSetting(true);
+    dispatch(setToggleModal());
   };
 
   const handleCloseSetting = () => {
-    setOpenSetting(false);
+    dispatch(setToggleModal());
   };
 
   return (
@@ -152,7 +153,7 @@ function HeaderUserbox() {
           </Button>
         </Stack>
       </Popover>
-      <SettingsDialog open={openSetting} onClose={handleCloseSetting} />
+      <SettingsDialog open={setting?.open} onClose={handleCloseSetting} />
     </>
   );
 }

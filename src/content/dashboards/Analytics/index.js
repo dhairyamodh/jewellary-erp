@@ -15,7 +15,7 @@ import Footer from 'src/components/Footer';
 
 import { ExpandMoreTwoTone } from '@mui/icons-material';
 import { useRef, useState } from 'react';
-import TasksAnalytics from './TasksAnalytics';
+import OrdersAnalytics from './OrdersAnalytics';
 import TeamOverview from './TeamOverview';
 
 function Analytics() {
@@ -114,7 +114,7 @@ function Analytics() {
                     background: `${theme.colors.alpha.black[5]}`
                   }}
                 >
-                  <TasksAnalytics />
+                  <OrdersAnalytics />
                 </Box>
                 <Divider />
               </Grid>

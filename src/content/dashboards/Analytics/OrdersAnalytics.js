@@ -139,7 +139,7 @@ function TasksAnalytics() {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Typography variant="h4">Tasks Analytics</Typography>
+        <Typography variant="h4">Orders Analytics</Typography>
       </Box>
       <Box display="flex" alignItems="center" pb={2}>
         <Typography

@@ -7,6 +7,7 @@ import authReducer from './auth/authSlice';
 import snackbarReducer from './Snackbar/snackbarSlice';
 import reportReducer from './Report/reportSlice';
 import emiReducer from './EMI/emiSlice';
+import settingReducer from './Setting/settingSlice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
   loan: loanReducer,
   emi: emiReducer,
   report: reportReducer,
-  snackbar: snackbarReducer
+  snackbar: snackbarReducer,
+  setting: settingReducer
 });
 
 export default rootReducer;

@@ -10,17 +10,24 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 
 const SettingsDialog = ({ open, onClose }) => {
   const [loading, setLoading] = useState(false);
   //   const dispatch = useDispatch();
-
+  const { data } = useSelector((state) => state.setting);
+  const { goldRate, silverRate } = data;
   const {
     handleSubmit,
     register,
     reset,
     formState: { errors }
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      goldRate,
+      silverRate
+    }
+  });
 
   const onSubmit = () => {
     (async () => {
@@ -49,10 +56,12 @@ const SettingsDialog = ({ open, onClose }) => {
           <Grid container spacing={2} pt={2}>
             <Grid item xs={12}>
               <Grid container spacing={2} alignItems="center">
-                <Grid item sm={12}>
+                <Grid item sm={6}>
+                  <Typography>Gold Rate</Typography>
+                </Grid>
+                <Grid item sm={6}>
                   <TextField
                     name="goldRate"
-                    label="Gold Rate"
                     placeholder="Enter the rate per gram"
                     fullWidth
                     {...register('goldRate', {
@@ -65,10 +74,12 @@ const SettingsDialog = ({ open, onClose }) => {
             </Grid>
             <Grid item xs={12}>
               <Grid container spacing={2} alignItems="center">
-                <Grid item sm={12}>
+                <Grid item sm={6}>
+                  <Typography>Silver Rate</Typography>
+                </Grid>
+                <Grid item sm={6}>
                   <TextField
                     name="silverRate"
-                    label="Silver Rate"
                     placeholder="Enter the rate per gram"
                     fullWidth
                     {...register('silverRate', {
