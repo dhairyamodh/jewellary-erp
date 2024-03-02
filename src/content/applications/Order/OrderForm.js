@@ -331,6 +331,9 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                             fullWidth
                             type="number"
                             name={`item.${index}.weight`}
+                            inputProps={{
+                              step: 'any'
+                            }}
                             onChange={(e) => {
                               const newWeight = parseFloat(e.target.value);
                               const quantity = parseFloat(
@@ -380,6 +383,9 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                             label="Rate"
                             type="number"
                             fullWidth
+                            inputProps={{
+                              step: 'any'
+                            }}
                             name={`item.${index}.itemRate`}
                             onChange={(e) => {
                               const rate = parseFloat(e.target.value);
@@ -411,6 +417,9 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                             label="Labour Charge"
                             type="number"
                             fullWidth
+                            inputProps={{
+                              step: 'any'
+                            }}
                             name={`item.${index}.labour`}
                             onChange={(e) => {
                               const labourChar = parseFloat(e.target.value);
@@ -444,7 +453,8 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                             type="number"
                             fullWidth
                             inputProps={{
-                              readOnly: true
+                              readOnly: true,
+                              step: 'any'
                             }}
                             name={`item.${index}.price`}
                             error={Boolean(errors?.item?.[index]?.price)}
@@ -529,6 +539,9 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       label="Weight/gm"
                       fullWidth
                       type="number"
+                      inputProps={{
+                        step: 'any'
+                      }}
                       name={`replaceItems.${index}.weight`}
                       {...register(`replaceItems.${index}.weight`)}
                     />
@@ -538,6 +551,9 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       label="Price"
                       type="number"
                       fullWidth
+                      inputProps={{
+                        step: 'any'
+                      }}
                       name={`replaceItems.${index}.price`}
                       {...register(`replaceItems.${index}.price`)}
                     />

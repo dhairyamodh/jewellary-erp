@@ -208,6 +208,9 @@ const CreateLoan = () => {
                                     label="Weight/gm"
                                     fullWidth
                                     type="number"
+                                    inputProps={{
+                                      step: 'any'
+                                    }}
                                     name={`item.${index}.weight`}
                                     {...register(`item.${index}.weight`, {
                                       required: true
@@ -222,6 +225,9 @@ const CreateLoan = () => {
                                     label="Price"
                                     type="number"
                                     fullWidth
+                                    inputProps={{
+                                      step: 'any'
+                                    }}
                                     name={`item.${index}.price`}
                                     {...register(`item.${index}.price`, {
                                       required: true
