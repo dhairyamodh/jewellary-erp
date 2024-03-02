@@ -160,7 +160,7 @@ const OrdersTable = () => {
     {
       id: 'createdAt',
       header: 'Created Date',
-      accessor: 'createdAt',
+      accessor: 'date',
       cell: ({ value }) => {
         return moment(value).format(DATE_FORMAT);
       }

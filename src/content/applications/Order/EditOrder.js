@@ -38,6 +38,7 @@ const EditOrder = () => {
     discount: parseFloat(details?.discount_amount) || 0,
     subTotal: details?.subTotal || 0,
     remark: details?.remark,
+    date: details.date,
     item: details?.items?.map((i) => {
       return {
         name: i?.name,
@@ -89,6 +90,7 @@ const EditOrder = () => {
           discount_amount: parseFloat(data.discount) || 0,
           subTotal: data.subTotal,
           remark: data.remark,
+          date: data.date,
           items: data.item.map((i) => {
             return {
               name: i?.name,
