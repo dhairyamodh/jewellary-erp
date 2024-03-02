@@ -61,6 +61,9 @@ const AddEMIAmountDialog = ({ open, onClose, onClick, id }) => {
               name="amount"
               label="Amount"
               fullWidth
+              inputProps={{
+                step: 'any'
+              }}
               {...register('amount', {
                 required: true
               })}

@@ -520,6 +520,9 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                         type="number"
                         fullWidth
                         name="advancedPayment"
+                        inputProps={{
+                          step: 'any'
+                        }}
                         placeholder="Enter amount"
                         {...register('advancedPayment')}
                         error={Boolean(errors?.advancedPayment)}
@@ -555,6 +558,9 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                     type="number"
                     fullWidth
                     name="taxRate"
+                    inputProps={{
+                      step: 'any'
+                    }}
                     {...register('taxRate', {
                       required: true
                     })}
@@ -571,6 +577,9 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                         type="number"
                         fullWidth
                         name="discount"
+                        inputProps={{
+                          step: 'any'
+                        }}
                         {...register('discount', {
                           required: true
                         })}
