@@ -29,6 +29,7 @@ const CreateOrder = () => {
         discount_amount: parseFloat(data.discount) || 0,
         subTotal: data.subTotal,
         remark: data.remark,
+        date: data.date,
         items: data.item.map((i) => {
           return {
             name: i?.name,

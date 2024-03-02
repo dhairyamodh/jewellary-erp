@@ -1,5 +1,9 @@
 import { Add, DeleteOutlineTwoTone } from '@mui/icons-material';
-import { LoadingButton } from '@mui/lab';
+import {
+  LoadingButton,
+  LocalizationProvider,
+  MobileDatePicker
+} from '@mui/lab';
 import {
   Box,
   Button,
@@ -16,9 +20,10 @@ import {
   Typography
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useFieldArray, useForm, useWatch } from 'react-hook-form';
+import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
+import AdapterMoment from '@mui/lab/AdapterMoment';
 
 const OrderForm = ({ onSubmit, defaultValue }) => {
   const { id } = useParams();
@@ -240,6 +245,9 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       label="Weight/gm"
                       fullWidth
                       type="number"
+                      inputProps={{
+                        step: 'any'
+                      }}
                       name={`item.${index}.weight`}
                       {...register(`item.${index}.weight`, {
                         required: true
@@ -262,6 +270,9 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       label="Rate"
                       type="number"
                       fullWidth
+                      inputProps={{
+                        step: 'any'
+                      }}
                       name={`item.${index}.itemRate`}
                       {...register(`item.${index}.itemRate`, {
                         required: true
@@ -287,6 +298,9 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       label="Price"
                       type="number"
                       fullWidth
+                      inputProps={{
+                        step: 'any'
+                      }}
                       name={`item.${index}.price`}
                       {...register(`item.${index}.price`, {
                         required: true
@@ -370,6 +384,9 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       label="Weight/gm"
                       fullWidth
                       type="number"
+                      inputProps={{
+                        step: 'any'
+                      }}
                       name={`replaceItems.${index}.weight`}
                       {...register(`replaceItems.${index}.weight`)}
                     />
@@ -379,6 +396,9 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       label="Price"
                       type="number"
                       fullWidth
+                      inputProps={{
+                        step: 'any'
+                      }}
                       name={`replaceItems.${index}.price`}
                       {...register(`replaceItems.${index}.price`)}
                     />
@@ -428,6 +448,40 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
           <Card>
             <CardContent>
               <Grid container spacing={2} alignItems="center">
+                <Grid item xs={6}>
+                  <Typography>Date</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Controller
+                    name="date"
+                    control={control}
+                    render={({ field }) => (
+                      <LocalizationProvider dateAdapter={AdapterMoment}>
+                        <MobileDatePicker
+                          {...field}
+                          label="Date"
+                          onAccept={field.onChange}
+                          onChange={() => {}}
+                          format="dd/MM/yyyy"
+                          renderInput={(props) => {
+                            return (
+                              <TextField
+                                {...props}
+                                fullWidth
+                                label=""
+                                placeholder="Select date"
+                                inputProps={{
+                                  ...props.inputProps,
+                                  placeholder: 'Select date'
+                                }}
+                              />
+                            );
+                          }}
+                        />
+                      </LocalizationProvider>
+                    )}
+                  />
+                </Grid>
                 <Grid item xs={6}>
                   <Typography>Full Payment</Typography>
                 </Grid>
