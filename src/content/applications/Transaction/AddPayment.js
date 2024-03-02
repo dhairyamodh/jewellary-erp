@@ -374,6 +374,9 @@ const AddPayment = () => {
                                         name="amount"
                                         label="Amount"
                                         fullWidth
+                                        inputProps={{
+                                          step: 'any'
+                                        }}
                                         {...register('amount', {
                                           required: true,
                                           validate: (value) => {
