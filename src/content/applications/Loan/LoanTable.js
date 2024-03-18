@@ -57,7 +57,7 @@ const LoansTable = () => {
     navigate(`/loan/add-payment/${row._id}`);
   };
 
-  const fetchData = (page, limit, search) => {
+  const fetchData = ({ page, limit, search }) => {
     dispatch(
       getLoanListAsync({
         search,
@@ -92,7 +92,7 @@ const LoansTable = () => {
     const page = query.get('page');
     const limit = query.get('limit');
     const search = query.get('search') || '';
-    fetchData(page, limit, search);
+    fetchData({ page, limit, search });
     handleCloseDiscount();
   };
 

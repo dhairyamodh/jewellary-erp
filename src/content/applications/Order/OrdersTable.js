@@ -3,8 +3,10 @@ import {
   Card,
   CardHeader,
   Divider,
+  FormControlLabel,
   IconButton,
   Stack,
+  Switch,
   Tooltip
 } from '@mui/material';
 import { useState } from 'react';
@@ -75,6 +77,10 @@ const OrdersTable = () => {
     data: {}
   });
 
+  const [filters, setFilters] = useState({
+    dispatch: false
+  });
+
   const handlePrint = (data) => {
     setOpenPrintModal({
       open: true,
@@ -84,9 +90,10 @@ const OrdersTable = () => {
 
   const { data, count, loading } = useSelector((state) => state.order);
 
-  const fetchData = async (page, limit, search) => {
+  const fetchData = async ({ page, limit, search, filters }) => {
     await dispatch(
       getOrdersAsync({
+        ...filters,
         search,
         page,
         perpage: limit
@@ -115,7 +122,7 @@ const OrdersTable = () => {
     const page = query.get('page');
     const limit = query.get('limit');
     const search = query.get('search') || '';
-    await fetchData(page, limit, search);
+    await fetchData({ page, limit, search });
     handleCloseCancelDialog();
   };
 
@@ -217,6 +224,22 @@ const OrdersTable = () => {
     }
   ];
 
+  const DispatchFilter = () => {
+    return (
+      <FormControlLabel
+        control={<Switch color="primary" checked={filters?.dispatch} />}
+        label="Delivered"
+        labelPlacement="start"
+        onChange={(e) => {
+          setFilters({
+            ...filters,
+            dispatch: Boolean(e.target.checked)
+          });
+        }}
+      />
+    );
+  };
+
   return (
     <>
       <Card>
@@ -247,6 +270,8 @@ const OrdersTable = () => {
           fetchData={fetchData}
           count={count}
           searchPlaceholder="Search by names"
+          actions={[DispatchFilter]}
+          filters={filters}
         />
       </Card>
       <DeleteDialog

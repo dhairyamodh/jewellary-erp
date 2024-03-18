@@ -75,9 +75,8 @@ const TransactionInvoice = ({ data }) => {
 
               <div className="invoice-contact clearfix">
                 <div className="contact-info">
-                  <a href="tel:9424138655">Mo. 94241 38655</a>
                   <a className="mr-0 d-none-580">
-                    Ugamani Street, Near Guru Maharaj Mandir, Jagana, Palanpur,
+                    Ugamani Sheri, Near Guru Maharaj Mandir, Jagana, Palanpur,
                     Banaskantha
                   </a>
                 </div>

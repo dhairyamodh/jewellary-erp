@@ -37,6 +37,10 @@ const EmiTable = () => {
         text: 'Withdrawed',
         color: 'success'
       },
+      Cancelled: {
+        text: 'Cancelled',
+        color: 'error'
+      },
       mature: {
         text: 'Matured',
         color: 'info'
@@ -73,7 +77,7 @@ const EmiTable = () => {
     });
   };
 
-  const fetchData = (page, limit, search) => {
+  const fetchData = ({ page, limit, search }) => {
     dispatch(
       getEmiListAsync({
         search,
@@ -89,7 +93,7 @@ const EmiTable = () => {
     const page = query.get('page');
     const limit = query.get('limit');
     const search = query.get('search') || '';
-    fetchData(page, limit, search);
+    fetchData({ page, limit, search });
   };
 
   const handleAddEMIPayment = () => {

@@ -24,6 +24,7 @@ import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
 import AdapterMoment from '@mui/lab/AdapterMoment';
+import moment from 'moment';
 
 const OrderForm = ({ onSubmit, defaultValue }) => {
   const { id } = useParams();
@@ -38,8 +39,10 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
   } = useForm({
     defaultValues: defaultValue || {
       isFullPayment: true,
+      dispatch: false,
       taxRate: 3,
       discount: 0,
+      date: moment(),
       item: [
         {
           name: '',
@@ -48,7 +51,8 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
           weight: '',
           price: '',
           design: '',
-          labour: ''
+          labour: '',
+          rate: ''
         }
       ],
       replaceItems: [
@@ -68,16 +72,13 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
 
   const formSubmit = async (data) => {
     setSubmitLoading(true);
-    try {
-      const res = await onSubmit(data);
-      if (res?.payload?.data?.success) {
-        reset();
-        navigate(-1);
-      }
-      setSubmitLoading(false);
-    } catch (error) {
-      setSubmitLoading(false);
+    const res = await onSubmit(data);
+    console.log('res', res);
+    if (res?.payload?.data?.success) {
+      reset();
+      navigate(-1);
     }
+    setSubmitLoading(false);
   };
 
   const [replaceItemsTotal, setReplaceItemsTotal] = useState(0);
@@ -200,7 +201,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
             {fields.map((field, index) => (
               <Grid item xs={12} key={field.id}>
                 <Grid container spacing={2}>
-                  <Grid item xs={8} md={2}>
+                  <Grid item xs={8} md={1.5}>
                     <TextField
                       name={`item.${index}.name`}
                       label="Item Name"
@@ -255,7 +256,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       error={Boolean(errors?.item?.[index]?.weight)}
                     />
                   </Grid>
-                  <Grid item xs={6} md={1.5}>
+                  <Grid item xs={6} md={1}>
                     <TextField
                       label="Design"
                       type="text"
@@ -273,6 +274,21 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       inputProps={{
                         step: 'any'
                       }}
+                      name={`item.${index}.rate`}
+                      {...register(`item.${index}.rate`, {
+                        required: true
+                      })}
+                      error={Boolean(errors?.item?.[index]?.rate)}
+                    />
+                  </Grid>
+                  <Grid item xs={4} md={1.5}>
+                    <TextField
+                      label="Price"
+                      type="number"
+                      fullWidth
+                      inputProps={{
+                        step: 'any'
+                      }}
                       name={`item.${index}.itemRate`}
                       {...register(`item.${index}.itemRate`, {
                         required: true
@@ -280,8 +296,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       error={Boolean(errors?.item?.[index]?.itemRate)}
                     />
                   </Grid>
-
-                  <Grid item xs={4} md={1.5}>
+                  <Grid item xs={4} md={1.2}>
                     <TextField
                       label="Labour Charge"
                       type="number"
@@ -295,7 +310,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                   </Grid>
                   <Grid item xs={4} md={1.5}>
                     <TextField
-                      label="Price"
+                      label="Item Total"
                       type="number"
                       fullWidth
                       inputProps={{
@@ -308,7 +323,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       error={Boolean(errors?.item?.[index]?.price)}
                     />
                   </Grid>
-                  <Grid item xs={12} md={1}>
+                  <Grid item xs={12} md={0.5}>
                     {index === 0 ? (
                       <Button
                         fullWidth
@@ -455,31 +470,33 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                   <Controller
                     name="date"
                     control={control}
-                    render={({ field }) => (
-                      <LocalizationProvider dateAdapter={AdapterMoment}>
-                        <MobileDatePicker
-                          {...field}
-                          label="Date"
-                          onAccept={field.onChange}
-                          onChange={() => {}}
-                          format="dd/MM/yyyy"
-                          renderInput={(props) => {
-                            return (
-                              <TextField
-                                {...props}
-                                fullWidth
-                                label=""
-                                placeholder="Select date"
-                                inputProps={{
-                                  ...props.inputProps,
-                                  placeholder: 'Select date'
-                                }}
-                              />
-                            );
-                          }}
-                        />
-                      </LocalizationProvider>
-                    )}
+                    render={({ field }) => {
+                      return (
+                        <LocalizationProvider dateAdapter={AdapterMoment}>
+                          <MobileDatePicker
+                            {...field}
+                            label="Date"
+                            onAccept={field.onChange}
+                            onChange={() => {}}
+                            inputFormat="DD/MM/yyyy"
+                            renderInput={(props) => {
+                              return (
+                                <TextField
+                                  {...props}
+                                  fullWidth
+                                  label=""
+                                  placeholder="Select date"
+                                  inputProps={{
+                                    ...props.inputProps,
+                                    placeholder: 'Select date'
+                                  }}
+                                />
+                              );
+                            }}
+                          />
+                        </LocalizationProvider>
+                      );
+                    }}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -509,6 +526,16 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       <MenuItem value="card">Card</MenuItem>
                     </Select>
                   </FormControl>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography>Delivery</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <FormControlLabel
+                    control={<Switch color="primary" />}
+                    {...register(`dispatch`)}
+                    checked={watch('dispatch')}
+                  />
                 </Grid>
                 {!watch('isFullPayment') && (
                   <>

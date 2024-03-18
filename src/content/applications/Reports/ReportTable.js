@@ -50,7 +50,7 @@ const ReportTable = () => {
 
   const [excelLoading, setExcelLoading] = useState(false);
 
-  const fetchData = (page, limit, search, startDate, endDate) => {
+  const fetchData = ({ page, limit, search, startDate, endDate }) => {
     dispatch(
       getOrderReportAsync({
         search,
