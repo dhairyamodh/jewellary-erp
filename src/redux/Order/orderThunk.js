@@ -244,6 +244,41 @@ export const discountTransactionAsync = createAsyncThunk(
   }
 );
 
+export const deleteTransactionAsync = createAsyncThunk(
+  `/cancel-order`,
+  async ({ orderId, transactionId }, { dispatch }) => {
+    try {
+      const response = await axiosClient.delete(
+        `/transaction/deleteTransaction/${orderId}/${transactionId}`
+      );
+      if (response.data.success) {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg,
+            severity: 'success'
+          })
+        );
+      } else {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg || response?.data?.error,
+            severity: 'error'
+          })
+        );
+      }
+      return response;
+    } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
+      throw Error(error.message);
+    }
+  }
+);
+
 // Builder Cases
 
 export const getOrderByIdCase = (builder) => {
@@ -321,6 +356,21 @@ export const addPaymentAsyncCase = (builder) => {
       state.details = action.payload?.data?.results;
     })
     .addCase(addPaymentAsync.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    });
+};
+
+export const deleteTransactionAsyncCase = (builder) => {
+  builder
+    .addCase(deleteTransactionAsync.pending, (state) => {
+      state.error = null;
+    })
+    .addCase(deleteTransactionAsync.fulfilled, (state, action) => {
+      state.loading = false;
+      state.details = action.payload?.data?.results;
+    })
+    .addCase(deleteTransactionAsync.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     });

@@ -9,7 +9,12 @@ function Transactions() {
         <title>Transactions</title>
       </Helmet>
       <Container maxWidth="lg">
-        <Box py={4}>
+        <Box
+          py={{
+            xs: 2,
+            md: 3
+          }}
+        >
           <TransactionsTable />
         </Box>
       </Container>

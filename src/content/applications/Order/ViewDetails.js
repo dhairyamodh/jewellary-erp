@@ -263,51 +263,58 @@ const ViewDetails = () => {
                     </Card>
                   </Grid>
                 )}
-                <Grid item xs={12}>
-                  <Card>
-                    <CardHeader title="All Payments" />
-                    <Divider />
-                    <CardContent>
-                      <TableContainer>
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>Amount</TableCell>
-                              <TableCell>Payment Type</TableCell>
-                              <TableCell>Remark</TableCell>
-                              <TableCell>Date</TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            {details?.transactions?.map((row, index) => (
-                              <TableRow
-                                key={index}
-                                sx={{
-                                  '&:last-child td, &:last-child th': {
-                                    border: 0
-                                  }
-                                }}
-                              >
-                                <TableCell component="th" scope="row">
-                                  {row.amount}
-                                </TableCell>
-                                <TableCell component="th" scope="row">
-                                  {row.paymentType}
-                                </TableCell>
-                                <TableCell component="th" scope="row">
-                                  {row.remark}
-                                </TableCell>
-                                <TableCell>
-                                  {moment(row.date).format('DD/MM/YY hh:mm a')}
-                                </TableCell>
+                {details?.transactions?.length > 0 && (
+                  <Grid item xs={12}>
+                    <Card>
+                      <CardHeader title="All Payments" />
+                      <Divider />
+                      <CardContent>
+                        <TableContainer>
+                          <Table
+                            sx={{ minWidth: 650 }}
+                            aria-label="simple table"
+                          >
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>Amount</TableCell>
+                                <TableCell>Payment Type</TableCell>
+                                <TableCell>Remark</TableCell>
+                                <TableCell>Date</TableCell>
                               </TableRow>
-                            ))}
-                          </TableBody>
-                        </Table>
-                      </TableContainer>
-                    </CardContent>
-                  </Card>
-                </Grid>
+                            </TableHead>
+                            <TableBody>
+                              {details?.transactions?.map((row, index) => (
+                                <TableRow
+                                  key={index}
+                                  sx={{
+                                    '&:last-child td, &:last-child th': {
+                                      border: 0
+                                    }
+                                  }}
+                                >
+                                  <TableCell component="th" scope="row">
+                                    {row.amount}
+                                  </TableCell>
+                                  <TableCell component="th" scope="row">
+                                    {row.paymentType}
+                                  </TableCell>
+                                  <TableCell component="th" scope="row">
+                                    {row.remark}
+                                  </TableCell>
+                                  <TableCell>
+                                    {moment(row.date).format(
+                                      'DD/MM/YY hh:mm a'
+                                    )}
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                )}
               </Grid>
             </CardContent>
           </Card>
