@@ -238,7 +238,7 @@ export const PureLightTheme = createTheme({
     menuItemHeadingColor: colors.layout.sidebar.menuItemHeadingColor,
     boxShadow:
       '2px 0 3px rgba(159, 162, 191, .18), 1px 0 1px rgba(159, 162, 191, 0.32)',
-    width: '250px'
+    width: '220px'
   },
   header: {
     height: '80px',
@@ -1087,8 +1087,7 @@ export const PureLightTheme = createTheme({
           }
         },
         thumb: {
-          border: `1px solid ${colors.alpha.black[30]}`,
-          boxShadow: `0px 9px 14px ${colors.alpha.black[10]}, 0px 2px 2px ${colors.alpha.black[10]}`
+          border: `1px solid ${colors.alpha.black[30]}`
         },
         track: {
           backgroundColor: colors.alpha.black[5],

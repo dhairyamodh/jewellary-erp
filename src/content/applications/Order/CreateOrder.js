@@ -16,59 +16,59 @@ import BackButton from 'src/components/BackButton';
 const CreateOrder = () => {
   const dispatch = useDispatch();
 
-  const onSubmit = (data) => {
-    (async () => {
-      const request = {
-        customerName: data.customerName,
-        customerMobile: data.customerMobile,
-        address: data.address,
-        isFullPayment: data.isFullPayment,
-        paymentType: data.paymentType,
-        taxAmount: data.taxAmount || 0,
-        taxRate: data.taxRate || 0,
-        discount_amount: parseFloat(data.discount) || 0,
-        subTotal: data.subTotal,
-        remark: data.remark,
-        date: data.date,
-        items: data.item.map((i) => {
-          return {
-            name: i?.name,
-            type: i.type,
-            quantity: parseInt(i.qauntity || 1),
-            weight: parseFloat(i.weight),
-            price: parseFloat(i.price),
-            itemRate: parseFloat(i.itemRate),
-            item_no: i?.design,
-            labour: i?.labour
-          };
-        }),
-        replacement: data.replaceItems[0]?.name
-          ? data.replaceItems.map((i) => {
-              return {
-                name: i?.name,
-                type: i.type,
-                quantity: 1,
-                weight: parseFloat(i.weight),
-                total_Price: parseFloat(i.price)
-              };
-            })
+  const onSubmit = async (data) => {
+    const request = {
+      customerName: data.customerName,
+      customerMobile: data.customerMobile,
+      address: data.address,
+      isFullPayment: data.isFullPayment,
+      dispatch: data.dispatch,
+      paymentType: data.paymentType,
+      taxAmount: data.taxAmount || 0,
+      taxRate: data.taxRate || 0,
+      discount_amount: parseFloat(data.discount) || 0,
+      subTotal: data.subTotal,
+      remark: data.remark,
+      date: data.date,
+      items: data.item.map((i) => {
+        return {
+          name: i?.name,
+          type: i.type,
+          quantity: parseInt(i.qauntity || 1),
+          weight: parseFloat(i.weight),
+          price: parseFloat(i.price),
+          itemRate: parseFloat(i.itemRate),
+          item_no: i?.design,
+          labour: i?.labour,
+          rate: parseFloat(i.rate)
+        };
+      }),
+      replacement: data.replaceItems[0]?.name
+        ? data.replaceItems.map((i) => {
+            return {
+              name: i?.name,
+              type: i.type,
+              quantity: 1,
+              weight: parseFloat(i.weight),
+              total_Price: parseFloat(i.price)
+            };
+          })
+        : [],
+      transactions:
+        data.advancedPayment && parseFloat(data.advancedPayment) > 0
+          ? [
+              {
+                amount: parseFloat(data.advancedPayment) || 0,
+                paymentType: data.paymentType,
+                remark: data.remark
+              }
+            ]
           : [],
-        transactions:
-          data.advancedPayment && parseFloat(data.advancedPayment) > 0
-            ? [
-                {
-                  amount: parseFloat(data.advancedPayment) || 0,
-                  paymentType: data.paymentType,
-                  remark: data.remark
-                }
-              ]
-            : [],
-        total_amount: parseFloat(data.total),
-        advance_payment: parseFloat(data.advancedPayment)
-      };
-      const res = await dispatch(createOrderAsync(request));
-      return res;
-    })();
+      total_amount: parseFloat(data.total),
+      advance_payment: parseFloat(data.advancedPayment)
+    };
+    const res = await dispatch(createOrderAsync(request));
+    return res;
   };
 
   return (

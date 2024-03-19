@@ -64,11 +64,11 @@ const TransactionsTable = () => {
     const page = query.get('page');
     const limit = query.get('limit');
     const search = query.get('search') || '';
-    fetchData(page, limit, search);
+    fetchData({ page, limit, search });
     handleCloseDiscount();
   };
 
-  const fetchData = (page, limit, search) => {
+  const fetchData = ({ page, limit, search }) => {
     dispatch(
       getPendingOrdersAsync({
         search,

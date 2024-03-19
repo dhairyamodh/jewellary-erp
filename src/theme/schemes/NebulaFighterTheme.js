@@ -240,7 +240,7 @@ export const NebulaFighterTheme = createTheme({
     menuItemIconColorActive: colors.layout.sidebar.menuItemIconColorActive,
     menuItemHeadingColor: colors.layout.sidebar.menuItemHeadingColor,
     boxShadow: '1px 0 0 #272C48',
-    width: '250px'
+    width: '220px'
   },
   header: {
     height: '80px',
@@ -1076,8 +1076,7 @@ export const NebulaFighterTheme = createTheme({
           }
         },
         thumb: {
-          border: `1px solid ${colors.alpha.black[30]}`,
-          boxShadow: `0px 9px 14px ${colors.alpha.black[10]}, 0px 2px 2px ${colors.alpha.black[10]}`
+          border: `1px solid ${colors.alpha.black[30]}`
         },
         track: {
           backgroundColor: colors.alpha.black[5],

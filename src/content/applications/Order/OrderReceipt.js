@@ -22,6 +22,24 @@ const OrderReceipt = ({ data }) => {
                   </Grid>
                 </Grid>
               </div>
+              <div className="invoice-titel">
+                <Grid container>
+                  <Grid item sm={6}>
+                    <div className="invoice-number">
+                      <Typography variant="h4">
+                        Invoice Number: {data?.orderNo}
+                      </Typography>
+                    </div>
+                  </Grid>
+                  <Grid item sm={6} textAlign="end">
+                    <div className="invoice-date">
+                      <Typography variant="h4">
+                        Date: {moment().format('DD MMM, yy')}
+                      </Typography>
+                    </div>
+                  </Grid>
+                </Grid>
+              </div>
               <div className="invoice-info">
                 <Grid container spacing={2}>
                   <Grid item sm={6} mb={2}>
@@ -47,24 +65,6 @@ const OrderReceipt = ({ data }) => {
                     </Box>
                   </Grid>
                 </Grid>
-                <Grid container spacing={2}>
-                  <Grid item sm={6} mb={2}>
-                    <Typography variant="h5" className="inv-title-1">
-                      Date
-                    </Typography>
-                    <Typography className="inv-from-1">
-                      {moment().format('DD MMM, yy')}
-                    </Typography>
-                  </Grid>
-                  <Grid item sm={6} mb={2} textAlign="end">
-                    <Typography variant="h5" className="inv-title-1">
-                      Payment Method
-                    </Typography>
-                    <Typography className="inv-from-1">
-                      {data?.paymentType}
-                    </Typography>
-                  </Grid>
-                </Grid>
               </div>
               <div className="order-summary">
                 <Typography variant="h6" fontWeight={600} mb={2}>
@@ -77,11 +77,8 @@ const OrderReceipt = ({ data }) => {
                       <th width="10%">Qty.</th>
                       <th width="10%">Weight</th>
                       <th width="15%">Rate</th>
-                      <th width="15%">
-                        Labour <br />
-                        Rate
-                      </th>
                       <th width="15%">Price</th>
+                      <th width="15%">Total</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -90,8 +87,8 @@ const OrderReceipt = ({ data }) => {
                         <td>{item.name}</td>
                         <td className="text-center">{item.quantity}</td>
                         <td className="text-center">{item.weight}</td>
+                        <td className="text-center">{`${RUPEE_SYMBOL} ${item?.rate?.toLocaleString()}`}</td>
                         <td className="text-center">{`${RUPEE_SYMBOL} ${item?.itemRate?.toLocaleString()}`}</td>
-                        <td className="text-center">{`${RUPEE_SYMBOL} ${item.labour.toLocaleString()}`}</td>
                         <td className="text-center">{`${RUPEE_SYMBOL} ${item.price.toLocaleString()}`}</td>
                       </tr>
                     ))}
@@ -266,9 +263,8 @@ const OrderReceipt = ({ data }) => {
 
               <div className="invoice-contact clearfix">
                 <div className="contact-info">
-                  <a href="tel:9424138655">Mo. 94241 38655</a>
                   <a className="mr-0 d-none-580">
-                    Ugamani Street, Near Guru Maharaj Mandir, Jagana, Palanpur,
+                    Ugamani Sheri, Near Guru Maharaj Mandir, Jagana, Palanpur,
                     Banaskantha
                   </a>
                 </div>

@@ -24,7 +24,8 @@ const CustomTable = ({
   searchPlaceholder,
   fetchData,
   isDateFilter = false,
-  actions
+  actions,
+  filters
 }) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
@@ -49,25 +50,37 @@ const CustomTable = ({
     setLimit(parseInt(event.target.value));
   };
 
+  const fetchServerData = async (
+    page,
+    limit,
+    search,
+    startDate,
+    endDate,
+    filters
+  ) => {
+    await fetchData({ page, limit, search, startDate, endDate, filters });
+  };
+
   useEffect(() => {
     if (isMounted) {
-      const fetchServerData = async () => {
-        await fetchData(page, limit, search, startDate, endDate);
+      const paramsObject = {
+        ...filters,
+        page: 1,
+        limit: limit,
+        search: search || '',
+        ...(isDateFilter && { startDate, endDate })
       };
+
       const url = new URL(window.location);
-      url.searchParams.set('page', page);
-      url.searchParams.set('limit', limit);
-      url.searchParams.set('search', search || '');
-      if (isDateFilter) {
-        url.searchParams.set('startDate', startDate);
-        url.searchParams.set('endDate', endDate);
-      }
+      Object.entries(paramsObject).forEach(([key, value]) =>
+        url.searchParams.set(key, value)
+      );
       window.history.pushState(null, '', url.toString());
-      fetchServerData();
+      fetchServerData(page, limit, search, startDate, endDate, filters);
     } else {
       setIsMounted(true);
     }
-  }, [isMounted, page, limit, search, startDate, endDate]);
+  }, [isMounted, page, limit, search, startDate, endDate, filters]);
 
   const query = useQuery();
 
@@ -105,11 +118,6 @@ const CustomTable = ({
           }
         }}
       >
-        <SearchComponent
-          fetchData={(data) => setSearch(data)}
-          value={search}
-          placeholder={searchPlaceholder}
-        />
         {isDateFilter && (
           <DateRange
             startDate={startDate}
@@ -122,6 +130,12 @@ const CustomTable = ({
           actions?.map((Action, index) => {
             return <Action key={index} />;
           })}
+
+        <SearchComponent
+          fetchData={(data) => setSearch(data)}
+          value={search}
+          placeholder={searchPlaceholder}
+        />
       </Stack>
       <TableContainer>
         <Table>
