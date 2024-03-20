@@ -10,6 +10,7 @@ import {
 
 import {
   AddTwoTone,
+  CancelTwoTone,
   CardMembershipTwoTone,
   PaymentTwoTone,
   VisibilityTwoTone
@@ -19,11 +20,12 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import AddEMIAmountDialog from 'src/components/Dialogs/AddEMIAmountDialog';
+import DeleteDialog from 'src/components/Dialogs/DeleteDialog';
 import WithdrawEMIDialog from 'src/components/Dialogs/WithdrawEMIDialog';
 import Label from 'src/components/Label';
 import CustomTable from 'src/components/Table';
 import useQuery from 'src/hooks/useQuery';
-import { getEmiListAsync } from 'src/redux/EMI/emiThunk';
+import { cancelEmiAsync, getEmiListAsync } from 'src/redux/EMI/emiThunk';
 import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
 
 const EmiTable = () => {
@@ -120,6 +122,34 @@ const EmiTable = () => {
     handleCloseWithdrawEMIModal();
   };
 
+  const [openCancel, setOpenCancel] = useState({
+    open: false,
+    id: undefined
+  });
+
+  const handleOpenCancelDialog = (id) => {
+    setOpenCancel({
+      id: id,
+      open: true
+    });
+  };
+
+  const handleCloseCancelDialog = () => {
+    setOpenCancel({
+      id: undefined,
+      open: false
+    });
+  };
+
+  const handleCancelOrder = async () => {
+    await dispatch(cancelEmiAsync({ id: openCancel?.id }));
+    const page = query.get('page');
+    const limit = query.get('limit');
+    const search = query.get('search') || '';
+    await fetchData({ page, limit, search });
+    handleCloseCancelDialog();
+  };
+
   const columns = [
     {
       header: 'Customer Name',
@@ -188,14 +218,24 @@ const EmiTable = () => {
               </IconButton>
             </Tooltip>
             {row.status === 'pending' && (
-              <Tooltip title="Add EMI Payment" arrow>
-                <IconButton
-                  color="info"
-                  onClick={() => handleClickAddPayment(row)}
-                >
-                  <PaymentTwoTone />
-                </IconButton>
-              </Tooltip>
+              <>
+                <Tooltip title="Add EMI Payment" arrow>
+                  <IconButton
+                    color="info"
+                    onClick={() => handleClickAddPayment(row)}
+                  >
+                    <PaymentTwoTone />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Cancel Order" arrow>
+                  <IconButton
+                    color="error"
+                    onClick={() => handleOpenCancelDialog(row._id)}
+                  >
+                    <CancelTwoTone />
+                  </IconButton>
+                </Tooltip>
+              </>
             )}
             {row.status === 'mature' && (
               <Tooltip title="Withdraw EMI" arrow>
@@ -248,6 +288,11 @@ const EmiTable = () => {
           title="EMI List"
         />
         <Divider />
+        <DeleteDialog
+          onAccept={handleCancelOrder}
+          open={openCancel.open}
+          onClose={handleCloseCancelDialog}
+        />
         <CustomTable
           columns={columns}
           data={data}

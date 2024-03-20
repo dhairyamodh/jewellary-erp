@@ -59,6 +59,74 @@ export const createEMIAsync = createAsyncThunk(
   }
 );
 
+export const cancelEmiAsync = createAsyncThunk(
+  `/cancel-emi`,
+  async ({ id }, { dispatch }) => {
+    try {
+      const response = await axiosClient.put(`/emi/cancel-emi/${id}`);
+      if (response.data.success) {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg,
+            severity: 'success'
+          })
+        );
+      } else {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg || response?.data?.error,
+            severity: 'error'
+          })
+        );
+      }
+      return response;
+    } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
+      throw Error(error.message);
+    }
+  }
+);
+
+export const deleteTransactionAsync = createAsyncThunk(
+  `/delete-transaction`,
+  async ({ emiId, transactionId }, { dispatch }) => {
+    try {
+      const response = await axiosClient.delete(
+        `/emi/delete/transaction/${emiId}/${transactionId}`
+      );
+      if (response.data.success) {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg,
+            severity: 'success'
+          })
+        );
+      } else {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg || response?.data?.error,
+            severity: 'error'
+          })
+        );
+      }
+      return response;
+    } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
+      throw Error(error.message);
+    }
+  }
+);
+
 export const addEMIPaymentAsync = createAsyncThunk(
   '/emi/update-emi',
   async (req, { dispatch }) => {
@@ -191,6 +259,20 @@ export const createEMIAsyncCase = (builder) => {
       state.loading = false;
     })
     .addCase(createEMIAsync.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    });
+};
+export const deleteTransactionAsyncCase = (builder) => {
+  builder
+    .addCase(deleteTransactionAsync.pending, (state) => {
+      state.error = null;
+    })
+    .addCase(deleteTransactionAsync.fulfilled, (state, action) => {
+      state.loading = false;
+      state.details = action.payload?.data?.results;
+    })
+    .addCase(deleteTransactionAsync.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     });

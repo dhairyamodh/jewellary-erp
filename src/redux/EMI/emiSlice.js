@@ -2,6 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
   createEMIAsyncCase,
+  deleteTransactionAsyncCase,
   getEMIByIdAyncCase,
   getEmiListAsyncCase
 } from './emiThunk';
@@ -23,6 +24,7 @@ const emiSlice = createSlice({
     getEmiListAsyncCase(builder);
     createEMIAsyncCase(builder);
     getEMIByIdAyncCase(builder);
+    deleteTransactionAsyncCase(builder);
   }
 });
 

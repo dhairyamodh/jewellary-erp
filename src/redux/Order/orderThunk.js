@@ -245,7 +245,7 @@ export const discountTransactionAsync = createAsyncThunk(
 );
 
 export const deleteTransactionAsync = createAsyncThunk(
-  `/cancel-order`,
+  `/delete-transaction`,
   async ({ orderId, transactionId }, { dispatch }) => {
     try {
       const response = await axiosClient.delete(
