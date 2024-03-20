@@ -14,7 +14,6 @@ import { SidebarContext } from 'src/contexts/SidebarContext';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
-  margin-top: ${theme.spacing(2)};
   .MuiList-root {
     padding: ${theme.spacing(1)};
 
@@ -160,7 +159,6 @@ function SidebarMenu() {
 
   const sidebarMenuItems = [
     {
-      title: 'Sales and Orders',
       menuItems: [
         {
           title: 'Order',
@@ -171,12 +169,7 @@ function SidebarMenu() {
           title: 'Transactions',
           disableRipple: false,
           to: '/transaction'
-        }
-      ]
-    },
-    {
-      title: 'Financial Management',
-      menuItems: [
+        },
         {
           title: 'Loans',
           disableRipple: false,
@@ -186,12 +179,7 @@ function SidebarMenu() {
           title: 'EMI',
           disableRipple: false,
           to: '/emi'
-        }
-      ]
-    },
-    {
-      title: 'Analytics Reports',
-      menuItems: [
+        },
         {
           title: 'Reports',
           disableRipple: false,

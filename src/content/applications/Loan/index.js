@@ -9,7 +9,12 @@ function Loans() {
         <title>Loans</title>
       </Helmet>
       <Container maxWidth="lg">
-        <Box py={4}>
+        <Box
+          py={{
+            xs: 2,
+            md: 3
+          }}
+        >
           <LoanTable />
         </Box>
       </Container>

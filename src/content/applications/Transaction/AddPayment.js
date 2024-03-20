@@ -1,3 +1,4 @@
+import { DeleteTwoTone } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import {
   Box,
@@ -8,6 +9,7 @@ import {
   Divider,
   FormControl,
   Grid,
+  IconButton,
   MenuItem,
   Select,
   Table,
@@ -20,14 +22,19 @@ import {
   Typography
 } from '@mui/material';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import BackButton from 'src/components/BackButton';
+import DeleteDialog from 'src/components/Dialogs/DeleteDialog';
 import SuspenseLoader from 'src/components/SuspenseLoader';
-import { addPaymentAsync, getOrderById } from 'src/redux/Order/orderThunk';
+import {
+  addPaymentAsync,
+  deleteTransactionAsync,
+  getOrderById
+} from 'src/redux/Order/orderThunk';
 import { RUPEE_SYMBOL } from 'src/utils/constants';
 
 const AddPayment = () => {
@@ -35,6 +42,24 @@ const AddPayment = () => {
   const { details, loading } = useSelector((state) => state.order);
   const [paymentLoading, setPaymentLoading] = useState(false);
   const dispatch = useDispatch();
+  const [openDelete, setOpenDelete] = useState({
+    open: false,
+    id: undefined
+  });
+
+  const handleOpenDeleteDialog = (id) => {
+    setOpenDelete({
+      id: id,
+      open: true
+    });
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setOpenDelete({
+      id: undefined,
+      open: false
+    });
+  };
 
   const {
     handleSubmit,
@@ -71,11 +96,21 @@ const AddPayment = () => {
     }
   }, [id]);
 
+  const handleDeleteTransaction = () => {
+    dispatch(deleteTransactionAsync(openDelete?.id));
+    handleCloseDeleteDialog();
+  };
+
   if (loading) {
     return <SuspenseLoader />;
   }
   return (
     <>
+      <DeleteDialog
+        onAccept={handleDeleteTransaction}
+        open={openDelete.open}
+        onClose={handleCloseDeleteDialog}
+      />
       <Helmet>
         <title>Orders</title>
       </Helmet>
@@ -299,51 +334,72 @@ const AddPayment = () => {
                   </Grid>
                 )}
 
-                <Grid item xs={12}>
-                  <Card>
-                    <CardHeader title="All Payments" />
-                    <Divider />
-                    <CardContent>
-                      <TableContainer>
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>Amount</TableCell>
-                              <TableCell>Payment Type</TableCell>
-                              <TableCell>Remark</TableCell>
-                              <TableCell>Date</TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            {details?.transactions?.map((row, index) => (
-                              <TableRow
-                                key={index}
-                                sx={{
-                                  '&:last-child td, &:last-child th': {
-                                    border: 0
-                                  }
-                                }}
-                              >
-                                <TableCell component="th" scope="row">
-                                  {row.amount}
-                                </TableCell>
-                                <TableCell component="th" scope="row">
-                                  {row.paymentType}
-                                </TableCell>
-                                <TableCell component="th" scope="row">
-                                  {row.remark}
-                                </TableCell>
-                                <TableCell>
-                                  {moment(row.date).format('DD/MM/YY hh:mm a')}
-                                </TableCell>
+                {details?.transactions?.length > 0 && (
+                  <Grid item xs={12}>
+                    <Card>
+                      <CardHeader title="All Payments" />
+                      <Divider />
+                      <CardContent>
+                        <TableContainer>
+                          <Table
+                            sx={{ minWidth: 650 }}
+                            aria-label="simple table"
+                          >
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>Amount</TableCell>
+                                <TableCell>Payment Type</TableCell>
+                                <TableCell>Remark</TableCell>
+                                <TableCell>Date</TableCell>
+                                <TableCell>Actions</TableCell>
                               </TableRow>
-                            ))}
-                          </TableBody>
-                        </Table>
-                      </TableContainer>
-                    </CardContent>
-                  </Card>
-                </Grid>
+                            </TableHead>
+                            <TableBody>
+                              {details?.transactions?.map((row, index) => (
+                                <TableRow
+                                  key={index}
+                                  sx={{
+                                    '&:last-child td, &:last-child th': {
+                                      border: 0
+                                    }
+                                  }}
+                                >
+                                  <TableCell component="th" scope="row">
+                                    {row.amount}
+                                  </TableCell>
+                                  <TableCell component="th" scope="row">
+                                    {row.paymentType}
+                                  </TableCell>
+                                  <TableCell component="th" scope="row">
+                                    {row.remark}
+                                  </TableCell>
+                                  <TableCell>
+                                    {moment(row.date).format(
+                                      'DD/MM/YY hh:mm a'
+                                    )}
+                                  </TableCell>
+                                  <TableCell component="th" scope="row">
+                                    <IconButton
+                                      color="error"
+                                      onClick={() =>
+                                        handleOpenDeleteDialog({
+                                          orderId: details._id,
+                                          transactionId: row._id
+                                        })
+                                      }
+                                    >
+                                      <DeleteTwoTone />
+                                    </IconButton>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                )}
                 {details?.remainingAmount > 0 && (
                   <Grid item xs={12}>
                     <Card>
@@ -372,8 +428,9 @@ const AddPayment = () => {
                                     <Grid item xs={6} md={4}>
                                       <TextField
                                         name="amount"
-                                        label="Amount"
                                         fullWidth
+                                        type="number"
+                                        placeholder="Enter amount"
                                         inputProps={{
                                           step: 'any'
                                         }}
@@ -431,8 +488,8 @@ const AddPayment = () => {
                                     <Grid item xs={6} md={4}>
                                       <TextField
                                         name="remark"
-                                        label="Remark"
                                         fullWidth
+                                        placeholder="Type remark"
                                         {...register('remark')}
                                         error={Boolean(errors?.remark)}
                                       />
