@@ -20,7 +20,7 @@ import {
   Typography
 } from '@mui/material';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -273,6 +273,8 @@ const AddLoanAmount = () => {
                                       name="amount"
                                       label="Amount"
                                       fullWidth
+                                      type="number"
+                                      onWheel={(e) => e.target.blur()}
                                       inputProps={{
                                         step: 'any'
                                       }}

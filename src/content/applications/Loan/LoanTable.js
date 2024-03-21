@@ -1,20 +1,13 @@
 import {
-  Divider,
+  Button,
   Card,
   CardHeader,
+  Divider,
+  IconButton,
   Stack,
-  Button,
-  Tooltip,
-  IconButton
+  Tooltip
 } from '@mui/material';
 
-import CustomTable from 'src/components/Table';
-import Label from 'src/components/Label';
-import { useDispatch, useSelector } from 'react-redux';
-import { getLoanListAsync } from 'src/redux/Loan/loanThunk';
-import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
-import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
 import {
   AddTwoTone,
   DiscountTwoTone,
@@ -22,8 +15,15 @@ import {
 } from '@mui/icons-material';
 import moment from 'moment';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 import LoanDiscountDialog from 'src/components/Dialogs/LoanDiscountDialog';
+import Label from 'src/components/Label';
+import CustomTable from 'src/components/Table';
 import useQuery from 'src/hooks/useQuery';
+import { getLoanListAsync } from 'src/redux/Loan/loanThunk';
+import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
 
 const getStatusLabel = (status) => {
   const map = {
@@ -102,10 +102,14 @@ const LoansTable = () => {
       accessor: 'customerName'
     },
     {
-      header: 'Mobile',
-      accessor: 'customerMobile',
+      header: 'Total Interest',
+      accessor: 'totalInterest',
       cell: ({ value }) => {
-        return value;
+        return (
+          <>
+            {RUPEE_SYMBOL} {value?.toLocaleString()}
+          </>
+        );
       }
     },
     {

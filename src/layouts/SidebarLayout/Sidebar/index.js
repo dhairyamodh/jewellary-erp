@@ -4,17 +4,16 @@ import { SidebarContext } from 'src/contexts/SidebarContext';
 
 import {
   Box,
+  Divider,
   Drawer,
   alpha,
+  darken,
   styled,
-  Divider,
-  useTheme,
-  lighten,
-  darken
+  useTheme
 } from '@mui/material';
 
-import SidebarMenu from './SidebarMenu';
 import Logo from 'src/components/LogoSign';
+import SidebarMenu from './SidebarMenu';
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `
@@ -45,7 +44,7 @@ function Sidebar() {
           top: 0,
           background:
             theme.palette.mode === 'dark'
-              ? alpha(lighten(theme.header.background, 0.1), 0.5)
+              ? alpha(theme.header.background, 0.95)
               : darken(theme.colors.alpha.black[100], 0.5),
           boxShadow:
             theme.palette.mode === 'dark' ? theme.sidebar.boxShadow : 'none'

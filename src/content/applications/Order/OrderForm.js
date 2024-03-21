@@ -4,6 +4,7 @@ import {
   LocalizationProvider,
   MobileDatePicker
 } from '@mui/lab';
+import AdapterMoment from '@mui/lab/AdapterMoment';
 import {
   Box,
   Button,
@@ -19,12 +20,11 @@ import {
   TextField,
   Typography
 } from '@mui/material';
+import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { RUPEE_SYMBOL } from 'src/utils/constants';
-import AdapterMoment from '@mui/lab/AdapterMoment';
-import moment from 'moment';
+import { RUPEE_SYMBOL, TYPES } from 'src/utils/constants';
 
 const OrderForm = ({ onSubmit, defaultValue }) => {
   const { id } = useParams();
@@ -73,7 +73,6 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
   const formSubmit = async (data) => {
     setSubmitLoading(true);
     const res = await onSubmit(data);
-    console.log('res', res);
     if (res?.payload?.data?.success) {
       reset();
       navigate(-1);
@@ -224,8 +223,11 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                         })}
                         error={Boolean(errors?.item?.[index]?.type)}
                       >
-                        <MenuItem value="gold">Gold</MenuItem>
-                        <MenuItem value="silver">Silver</MenuItem>
+                        {TYPES?.map((type, index) => (
+                          <MenuItem key={index} value={type?.value}>
+                            {type?.label}
+                          </MenuItem>
+                        ))}
                       </Select>
                     </FormControl>
                   </Grid>
@@ -234,6 +236,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       label="Quantity"
                       fullWidth
                       type="number"
+                      onWheel={(e) => e.target.blur()}
                       name={`item.${index}.quantity`}
                       {...register(`item.${index}.quantity`, {
                         required: true
@@ -246,6 +249,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       label="Weight/gm"
                       fullWidth
                       type="number"
+                      onWheel={(e) => e.target.blur()}
                       inputProps={{
                         step: 'any'
                       }}
@@ -270,6 +274,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                     <TextField
                       label="Rate"
                       type="number"
+                      onWheel={(e) => e.target.blur()}
                       fullWidth
                       inputProps={{
                         step: 'any'
@@ -285,6 +290,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                     <TextField
                       label="Price"
                       type="number"
+                      onWheel={(e) => e.target.blur()}
                       fullWidth
                       inputProps={{
                         step: 'any'
@@ -300,6 +306,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                     <TextField
                       label="Labour Charge"
                       type="number"
+                      onWheel={(e) => e.target.blur()}
                       fullWidth
                       name={`item.${index}.labour`}
                       {...register(`item.${index}.labour`, {
@@ -312,6 +319,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                     <TextField
                       label="Item Total"
                       type="number"
+                      onWheel={(e) => e.target.blur()}
                       fullWidth
                       inputProps={{
                         step: 'any'
@@ -389,8 +397,11 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                         name={`replaceItems.${index}.type`}
                         {...register(`replaceItems.${index}.type`)}
                       >
-                        <MenuItem value="gold">Gold</MenuItem>
-                        <MenuItem value="silver">Silver</MenuItem>
+                        {TYPES?.map((type, index) => (
+                          <MenuItem key={index} value={type?.value}>
+                            {type?.label}
+                          </MenuItem>
+                        ))}
                       </Select>
                     </FormControl>
                   </Grid>
@@ -399,6 +410,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       label="Weight/gm"
                       fullWidth
                       type="number"
+                      onWheel={(e) => e.target.blur()}
                       inputProps={{
                         step: 'any'
                       }}
@@ -410,6 +422,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                     <TextField
                       label="Price"
                       type="number"
+                      onWheel={(e) => e.target.blur()}
                       fullWidth
                       inputProps={{
                         step: 'any'
@@ -500,6 +513,42 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                   />
                 </Grid>
                 <Grid item xs={6}>
+                  <Typography>Due Date</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Controller
+                    name="dueDate"
+                    control={control}
+                    render={({ field }) => {
+                      return (
+                        <LocalizationProvider dateAdapter={AdapterMoment}>
+                          <MobileDatePicker
+                            {...field}
+                            label="Due Date"
+                            onAccept={field.onChange}
+                            onChange={() => {}}
+                            inputFormat="DD/MM/yyyy"
+                            renderInput={(props) => {
+                              return (
+                                <TextField
+                                  {...props}
+                                  fullWidth
+                                  label=""
+                                  placeholder="Select date"
+                                  inputProps={{
+                                    ...props.inputProps,
+                                    placeholder: 'Select date'
+                                  }}
+                                />
+                              );
+                            }}
+                          />
+                        </LocalizationProvider>
+                      );
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={6}>
                   <Typography>Full Payment</Typography>
                 </Grid>
                 <Grid item xs={6}>
@@ -545,6 +594,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                     <Grid item xs={6}>
                       <TextField
                         type="number"
+                        onWheel={(e) => e.target.blur()}
                         fullWidth
                         name="advancedPayment"
                         inputProps={{
@@ -583,6 +633,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                 <Grid item xs={6}>
                   <TextField
                     type="number"
+                    onWheel={(e) => e.target.blur()}
                     fullWidth
                     name="taxRate"
                     inputProps={{
@@ -602,6 +653,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                     <Grid item xs={6}>
                       <TextField
                         type="number"
+                        onWheel={(e) => e.target.blur()}
                         fullWidth
                         name="discount"
                         inputProps={{

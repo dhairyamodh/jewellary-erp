@@ -227,7 +227,7 @@ const EmiTable = () => {
                     <PaymentTwoTone />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Cancel Order" arrow>
+                <Tooltip title="Cancel EMI" arrow>
                   <IconButton
                     color="error"
                     onClick={() => handleOpenCancelDialog(row._id)}

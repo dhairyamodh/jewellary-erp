@@ -13,7 +13,6 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -133,6 +132,7 @@ const CreateEMI = () => {
                                 <TextField
                                   placeholder="Enter EMI amount"
                                   type="number"
+                                  onWheel={(e) => e.target.blur()}
                                   fullWidth
                                   name="fixed_Emi"
                                   {...register('fixed_Emi', {
@@ -166,6 +166,7 @@ const CreateEMI = () => {
                                 <TextField
                                   placeholder="Enter first EMI amount"
                                   type="number"
+                                  onWheel={(e) => e.target.blur()}
                                   fullWidth
                                   name="amount"
                                   {...register('amount', {

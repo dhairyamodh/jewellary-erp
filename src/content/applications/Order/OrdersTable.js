@@ -1,10 +1,15 @@
 import {
+  Box,
   Button,
   Card,
   CardHeader,
   Divider,
+  FormControl,
   FormControlLabel,
   IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
   Stack,
   Switch,
   Tooltip
@@ -24,12 +29,12 @@ import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import DeleteDialog from 'src/components/Dialogs/DeleteDialog';
 // import PrintDialog from 'src/components/Dialogs/PrintDialog';
+import PrintDialog from 'src/components/Dialogs/PrintDialog';
 import Label from 'src/components/Label';
 import CustomTable from 'src/components/Table';
 import useQuery from 'src/hooks/useQuery';
 import { cancelOrderAsync, getOrdersAsync } from 'src/redux/Order/orderThunk';
-import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
-import PrintDialog from 'src/components/Dialogs/PrintDialog';
+import { DATE_FORMAT, RUPEE_SYMBOL, TYPES } from 'src/utils/constants';
 import OrderReceipt from './OrderReceipt';
 // import OrderInvoice from './OrderInvoice';
 
@@ -78,7 +83,8 @@ const OrdersTable = () => {
   });
 
   const [filters, setFilters] = useState({
-    dispatch: false
+    dispatch: false,
+    type: 'all'
   });
 
   const handlePrint = (data) => {
@@ -127,6 +133,13 @@ const OrdersTable = () => {
   };
 
   const columns = [
+    {
+      header: 'Order Number',
+      accessor: 'orderNo',
+      cell: ({ value }) => {
+        return `${value ? `#${value}` : '-'}`;
+      }
+    },
     {
       header: 'Customer Name',
       accessor: 'customerName',
@@ -224,6 +237,13 @@ const OrdersTable = () => {
     }
   ];
 
+  const handleSetFilter = (key, value) => {
+    setFilters({
+      ...filters,
+      [key]: value
+    });
+  };
+
   const DispatchFilter = () => {
     return (
       <FormControlLabel
@@ -231,12 +251,34 @@ const OrdersTable = () => {
         label="Delivered"
         labelPlacement="start"
         onChange={(e) => {
-          setFilters({
-            ...filters,
-            dispatch: Boolean(e.target.checked)
-          });
+          handleSetFilter('dispatch', Boolean(e.target.checked));
         }}
       />
+    );
+  };
+
+  const TypeFilter = () => {
+    return (
+      <Box width={150}>
+        <FormControl fullWidth variant="outlined">
+          <InputLabel>Type</InputLabel>
+          <Select
+            value={filters.type || 'all'}
+            onChange={(e) => {
+              handleSetFilter('type', e.target.value);
+            }}
+            label="Status"
+            autoWidth
+          >
+            <MenuItem value="all">All</MenuItem>
+            {TYPES.map((type, index) => (
+              <MenuItem key={index} value={type?.value}>
+                {type?.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
     );
   };
 
@@ -270,7 +312,7 @@ const OrdersTable = () => {
           fetchData={fetchData}
           count={count}
           searchPlaceholder="Search by names"
-          actions={[DispatchFilter]}
+          actions={[DispatchFilter, TypeFilter]}
           filters={filters}
         />
       </Card>

@@ -1,6 +1,7 @@
 import { Card, CardHeader, Divider, IconButton, Tooltip } from '@mui/material';
 import { useState } from 'react';
 
+import { VisibilityTwoTone } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,7 +13,6 @@ import {
   getOrderReportAsync
 } from 'src/redux/Report/reportThunk';
 import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
-import { VisibilityTwoTone } from '@mui/icons-material';
 
 const getStatusLabel = (status) => {
   const map = {
@@ -66,8 +66,22 @@ const ReportTable = () => {
 
   const columns = [
     {
+      header: 'Order Number',
+      accessor: 'orderNo',
+      cell: ({ value }) => {
+        return `${value ? `#${value}` : '-'}`;
+      }
+    },
+    {
       header: 'Customer Name',
-      accessor: 'customerName'
+      accessor: 'customerName',
+      cell: ({ row }) => {
+        return (
+          <>
+            {row.customerName} {`${row.remark ? `(${row.remark})` : ''}`}
+          </>
+        );
+      }
     },
     {
       header: 'Mobile',
@@ -77,19 +91,12 @@ const ReportTable = () => {
       }
     },
     {
-      header: 'Items',
-      accessor: 'items',
-      cell: ({ value }) => {
-        return value?.length;
-      }
-    },
-    {
       header: 'total',
       accessor: 'total_amount',
       cell: ({ value }) => {
         return (
           <>
-            {RUPEE_SYMBOL} {value}
+            {RUPEE_SYMBOL} {value.toLocaleString()}
           </>
         );
       }
@@ -105,7 +112,7 @@ const ReportTable = () => {
     {
       id: 'createdAt',
       header: 'Created Date',
-      accessor: 'createdAt',
+      accessor: 'date',
       cell: ({ value }) => {
         return moment(value).format(DATE_FORMAT);
       }

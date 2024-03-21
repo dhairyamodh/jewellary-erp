@@ -23,7 +23,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import BackButton from 'src/components/BackButton';
 import { createLoanAsync } from 'src/redux/Loan/loanThunk';
-import { RUPEE_SYMBOL } from 'src/utils/constants';
+import { RUPEE_SYMBOL, TYPES } from 'src/utils/constants';
 
 const CreateLoan = () => {
   const {
@@ -184,8 +184,14 @@ const CreateLoan = () => {
                                         errors?.item?.[index]?.type
                                       )}
                                     >
-                                      <MenuItem value="gold">Gold</MenuItem>
-                                      <MenuItem value="silver">Silver</MenuItem>
+                                      {TYPES?.map((type, index) => (
+                                        <MenuItem
+                                          key={index}
+                                          value={type?.value}
+                                        >
+                                          {type?.label}
+                                        </MenuItem>
+                                      ))}
                                     </Select>
                                   </FormControl>
                                 </Grid>
@@ -194,6 +200,7 @@ const CreateLoan = () => {
                                     label="Quantity"
                                     fullWidth
                                     type="number"
+                                    onWheel={(e) => e.target.blur()}
                                     name={`item.${index}.quantity`}
                                     {...register(`item.${index}.quantity`, {
                                       required: true
@@ -208,6 +215,7 @@ const CreateLoan = () => {
                                     label="Weight/gm"
                                     fullWidth
                                     type="number"
+                                    onWheel={(e) => e.target.blur()}
                                     inputProps={{
                                       step: 'any'
                                     }}
@@ -224,6 +232,7 @@ const CreateLoan = () => {
                                   <TextField
                                     label="Price"
                                     type="number"
+                                    onWheel={(e) => e.target.blur()}
                                     fullWidth
                                     inputProps={{
                                       step: 'any'
@@ -299,6 +308,7 @@ const CreateLoan = () => {
                                 <TextField
                                   placeholder="Enter loan cost"
                                   type="number"
+                                  onWheel={(e) => e.target.blur()}
                                   fullWidth
                                   name="loanCost"
                                   {...register('loanCost', {
@@ -319,6 +329,7 @@ const CreateLoan = () => {
                                 <TextField
                                   placeholder="Enter interest rate"
                                   type="number"
+                                  onWheel={(e) => e.target.blur()}
                                   fullWidth
                                   name="interestRate"
                                   {...register('interestRate', {

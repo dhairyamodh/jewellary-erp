@@ -9,9 +9,9 @@ import {
 } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch } from 'react-redux';
+import BackButton from 'src/components/BackButton';
 import { createOrderAsync } from 'src/redux/Order/orderThunk';
 import OrderForm from './OrderForm';
-import BackButton from 'src/components/BackButton';
 
 const CreateOrder = () => {
   const dispatch = useDispatch();
@@ -30,12 +30,13 @@ const CreateOrder = () => {
       subTotal: data.subTotal,
       remark: data.remark,
       date: data.date,
+      dueDate: data.dueDate,
       items: data.item.map((i) => {
         return {
           name: i?.name,
           type: i.type,
           quantity: parseInt(i.qauntity || 1),
-          weight: parseFloat(i.weight),
+          weight: parseFloat(i.weight).toFixed(3),
           price: parseFloat(i.price),
           itemRate: parseFloat(i.itemRate),
           item_no: i?.design,
@@ -49,7 +50,7 @@ const CreateOrder = () => {
               name: i?.name,
               type: i.type,
               quantity: 1,
-              weight: parseFloat(i.weight),
+              weight: parseFloat(i.weight).toFixed(3),
               total_Price: parseFloat(i.price)
             };
           })

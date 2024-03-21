@@ -409,14 +409,10 @@ const AddPayment = () => {
                         <form onSubmit={handleSubmit(onSubmit)}>
                           <Grid container spacing={2}>
                             <Grid item xs={6} md={4}>
-                              <Typography variant="h4" fontWeight="bold">
-                                Remaining Amount
-                              </Typography>
+                              Remaining Amount
                             </Grid>
                             <Grid item xs={6} md={8}>
-                              <Typography variant="h4" fontWeight="bold">
-                                {RUPEE_SYMBOL} {details?.remainingAmount}
-                              </Typography>
+                              {RUPEE_SYMBOL} {details?.remainingAmount}
                             </Grid>
                             <Grid item xs={12}>
                               <Grid container spacing={2}>
@@ -430,6 +426,7 @@ const AddPayment = () => {
                                         name="amount"
                                         fullWidth
                                         type="number"
+                                        onWheel={(e) => e.target.blur()}
                                         placeholder="Enter amount"
                                         inputProps={{
                                           step: 'any'
