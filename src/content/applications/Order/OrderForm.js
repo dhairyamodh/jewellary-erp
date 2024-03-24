@@ -596,6 +596,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                         type="number"
                         onWheel={(e) => e.target.blur()}
                         fullWidth
+                        disabled={id}
                         name="advancedPayment"
                         inputProps={{
                           step: 'any'

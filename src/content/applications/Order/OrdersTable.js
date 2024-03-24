@@ -84,7 +84,7 @@ const OrdersTable = () => {
 
   const [filters, setFilters] = useState({
     dispatch: false,
-    type: 'all'
+    filterType: 'all'
   });
 
   const handlePrint = (data) => {
@@ -263,9 +263,9 @@ const OrdersTable = () => {
         <FormControl fullWidth variant="outlined">
           <InputLabel>Type</InputLabel>
           <Select
-            value={filters.type || 'all'}
+            value={filters.filterType || 'all'}
             onChange={(e) => {
-              handleSetFilter('type', e.target.value);
+              handleSetFilter('filterType', e.target.value);
             }}
             label="Status"
             autoWidth
