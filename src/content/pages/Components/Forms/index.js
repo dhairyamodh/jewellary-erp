@@ -1,34 +1,34 @@
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import PageTitle from 'src/components/PageTitle';
-import { useState } from 'react';
 
-import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import {
-  Container,
-  Grid,
   Card,
-  CardHeader,
   CardContent,
-  Divider
+  CardHeader,
+  Container,
+  Divider,
+  Grid
 } from '@mui/material';
 import Footer from 'src/components/Footer';
+import PageTitleWrapper from 'src/components/PageTitleWrapper';
 
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import { pink } from '@mui/material/colors';
 import Checkbox from '@mui/material/Checkbox';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
+import { pink } from '@mui/material/colors';
 
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 
-import Stack from '@mui/material/Stack';
-import Slider from '@mui/material/Slider';
 import VolumeDown from '@mui/icons-material/VolumeDown';
 import VolumeUp from '@mui/icons-material/VolumeUp';
+import Slider from '@mui/material/Slider';
+import Stack from '@mui/material/Stack';
 
 import Switch from '@mui/material/Switch';
 
@@ -130,6 +130,7 @@ function Forms() {
                       id="outlined-number"
                       label="Number"
                       type="number"
+                      onWheel={(e) => e.target.blur()}
                       InputLabelProps={{
                         shrink: true
                       }}
@@ -181,6 +182,7 @@ function Forms() {
                       id="filled-number"
                       label="Number"
                       type="number"
+                      onWheel={(e) => e.target.blur()}
                       InputLabelProps={{
                         shrink: true
                       }}
@@ -235,6 +237,7 @@ function Forms() {
                       id="standard-number"
                       label="Number"
                       type="number"
+                      onWheel={(e) => e.target.blur()}
                       InputLabelProps={{
                         shrink: true
                       }}

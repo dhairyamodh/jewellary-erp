@@ -1,29 +1,31 @@
 import {
-  Divider,
+  Button,
   Card,
   CardHeader,
+  Divider,
+  IconButton,
   Stack,
-  Button,
-  Tooltip,
-  IconButton
+  Tooltip
 } from '@mui/material';
 
-import CustomTable from 'src/components/Table';
-import Label from 'src/components/Label';
-import { useDispatch, useSelector } from 'react-redux';
-import { getLoanListAsync } from 'src/redux/Loan/loanThunk';
-import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
-import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
 import {
   AddTwoTone,
+  CancelTwoTone,
   DiscountTwoTone,
   PaymentTwoTone
 } from '@mui/icons-material';
 import moment from 'moment';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
+import DeleteDialog from 'src/components/Dialogs/DeleteDialog';
 import LoanDiscountDialog from 'src/components/Dialogs/LoanDiscountDialog';
+import Label from 'src/components/Label';
+import CustomTable from 'src/components/Table';
 import useQuery from 'src/hooks/useQuery';
+import { cancelLoanAsync, getLoanListAsync } from 'src/redux/Loan/loanThunk';
+import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
 
 const getStatusLabel = (status) => {
   const map = {
@@ -38,6 +40,10 @@ const getStatusLabel = (status) => {
     'closed with discount': {
       text: 'Closed with discount',
       color: 'info'
+    },
+    Cancelled: {
+      text: 'Cancelled',
+      color: 'error'
     }
   };
 
@@ -89,11 +95,38 @@ const LoansTable = () => {
   };
 
   const handleAddDiscount = () => {
-    const page = query.get('page');
-    const limit = query.get('limit');
-    const search = query.get('search') || '';
+    const page = parseInt(query['page']);
+    const limit = parseInt(query['limit']);
+    const search = query['search'] || '';
     fetchData({ page, limit, search });
     handleCloseDiscount();
+  };
+
+  const [openCancel, setOpenCancel] = useState({
+    open: false,
+    id: undefined
+  });
+
+  const handleOpenCancelDialog = (id) => {
+    setOpenCancel({
+      id: id,
+      open: true
+    });
+  };
+
+  const handleCloseCancelDialog = () => {
+    setOpenCancel({
+      id: undefined,
+      open: false
+    });
+  };
+  const handleCancelOrder = async () => {
+    dispatch(cancelLoanAsync({ id: openCancel?.id }));
+    const page = parseInt(query['page']);
+    const limit = parseInt(query['limit']);
+    const search = query['search'] || '';
+    fetchData({ page, limit, search });
+    handleCloseCancelDialog();
   };
 
   const columns = [
@@ -102,15 +135,19 @@ const LoansTable = () => {
       accessor: 'customerName'
     },
     {
-      header: 'Mobile',
-      accessor: 'customerMobile',
+      header: 'Current Interest',
+      accessor: 'updatedInterest',
       cell: ({ value }) => {
-        return value;
+        return (
+          <>
+            {RUPEE_SYMBOL} {value?.toLocaleString()}
+          </>
+        );
       }
     },
     {
-      header: 'Total item price',
-      accessor: 'totalItemCost',
+      header: 'Total Interest',
+      accessor: 'totalInterest',
       cell: ({ value }) => {
         return (
           <>
@@ -181,6 +218,14 @@ const LoansTable = () => {
                     <PaymentTwoTone />
                   </IconButton>
                 </Tooltip>
+                <Tooltip title="Cancel Loan" arrow>
+                  <IconButton
+                    color="error"
+                    onClick={() => handleOpenCancelDialog(row._id)}
+                  >
+                    <CancelTwoTone />
+                  </IconButton>
+                </Tooltip>
                 <Tooltip title="Add Discount" arrow>
                   <IconButton
                     color="warning"
@@ -232,6 +277,11 @@ const LoansTable = () => {
         onClose={handleCloseDiscount}
         onClick={handleAddDiscount}
         id={openDiscount?.id}
+      />
+      <DeleteDialog
+        onAccept={handleCancelOrder}
+        open={openCancel.open}
+        onClose={handleCloseCancelDialog}
       />
     </Card>
   );

@@ -15,14 +15,14 @@ import {
   Typography
 } from '@mui/material';
 import moment from 'moment';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import BackButton from 'src/components/BackButton';
 import SuspenseLoader from 'src/components/SuspenseLoader';
 import { getOrderById } from 'src/redux/Order/orderThunk';
-import { RUPEE_SYMBOL } from 'src/utils/constants';
+import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
 
 const ViewDetails = () => {
   const { id } = useParams();
@@ -78,6 +78,12 @@ const ViewDetails = () => {
                             Customer Address
                           </Typography>
                           <Typography mt={1}>{details?.address}</Typography>
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <Typography variant="caption">Due Date</Typography>
+                          <Typography mt={1}>
+                            {moment(details?.dueDate).format(DATE_FORMAT)}
+                          </Typography>
                         </Grid>
                       </Grid>
                     </CardContent>

@@ -52,7 +52,9 @@ const LoanDiscountDialog = ({ open, onClose, onClick, id }) => {
           <TextField
             name="amount"
             label="Amount"
+            type="number"
             fullWidth
+            onWheel={(e) => e.target.blur()}
             {...register('amount', {
               required: true
             })}

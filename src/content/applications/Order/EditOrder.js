@@ -7,14 +7,14 @@ import {
   Divider,
   Grid
 } from '@mui/material';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import BackButton from 'src/components/BackButton';
+import SuspenseLoader from 'src/components/SuspenseLoader';
 import { editOrderAsync, getOrderById } from 'src/redux/Order/orderThunk';
 import OrderForm from './OrderForm';
-import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
-import SuspenseLoader from 'src/components/SuspenseLoader';
-import BackButton from 'src/components/BackButton';
 
 const EditOrder = () => {
   const { id } = useParams();
@@ -91,12 +91,13 @@ const EditOrder = () => {
         subTotal: data.subTotal,
         remark: data.remark,
         date: data.date,
+        dueDate: data.dueDate,
         items: data.item.map((i) => {
           return {
             name: i?.name,
             type: i.type,
             quantity: parseInt(i.qauntity || 1),
-            weight: parseFloat(i.weight),
+            weight: parseFloat(i.weight).toFixed(3),
             price: parseFloat(i.price),
             itemRate: parseFloat(i.itemRate),
             item_no: i?.design,
@@ -110,21 +111,11 @@ const EditOrder = () => {
                 name: i?.name,
                 type: i.type,
                 quantity: 1,
-                weight: parseFloat(i.weight),
+                weight: parseFloat(i.weight).toFixed(3),
                 total_Price: parseFloat(i.price)
               };
             })
           : [],
-        transactions:
-          data.advancedPayment && parseFloat(data.advancedPayment) > 0
-            ? [
-                {
-                  amount: parseFloat(data.advancedPayment) || 0,
-                  paymentType: data.paymentType,
-                  remark: data.remark
-                }
-              ]
-            : [],
         total_amount: parseFloat(data.total),
         advance_payment: parseFloat(data.advancedPayment)
       }

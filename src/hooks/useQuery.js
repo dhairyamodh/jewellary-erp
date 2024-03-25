@@ -1,24 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-const useSearchParams = () => {
-  const [searchParams, setSearchParams] = useState(
-    new URLSearchParams(window.location.search)
-  );
+function useQuery() {
+  const [queryParams, setQueryParams] = useState({});
 
   useEffect(() => {
-    const handlePopState = () => {
-      setSearchParams(new URLSearchParams(window.location.search));
-    };
-
-    // Listen for changes in the browser's history
-    window.addEventListener('popstate', handlePopState);
-
-    // Cleanup the event listener when the component is unmounted
-    return () => {
-      window.removeEventListener('popstate', handlePopState);
-    };
+    const query = window.location.search.substring(1);
+    const params = {};
+    query.split('&').forEach((param) => {
+      const [key, value] = param.split('=');
+      params[key] = decodeURIComponent(value);
+    });
+    setQueryParams(params);
   }, []);
-  return searchParams;
-};
 
-export default useSearchParams;
+  return queryParams;
+}
+
+export default useQuery;

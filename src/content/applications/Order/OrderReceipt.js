@@ -142,6 +142,21 @@ const OrderReceipt = ({ data }) => {
                         {RUPEE_SYMBOL}&nbsp;{data.total_amount.toLocaleString()}
                       </td>
                     </tr>
+                    {data?.remainingAmount > 0 && (
+                      <tr>
+                        <td
+                          colSpan="5"
+                          style={{ textAlign: 'end' }}
+                          className="fw-bold"
+                        >
+                          Remaining Amount
+                        </td>
+                        <td className="text-right fw-bold">
+                          {RUPEE_SYMBOL}&nbsp;
+                          {data.remainingAmount.toLocaleString()}
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>

@@ -54,6 +54,8 @@ const OrderDiscountDialog = ({ open, onClose, onClick, id }) => {
           <TextField
             name="amount"
             label="Amount"
+            type="number"
+            onWheel={(e) => e.target.blur()}
             fullWidth
             {...register('amount', {
               required: true

@@ -60,6 +60,8 @@ const AddEMIAmountDialog = ({ open, onClose, onClick, id }) => {
             <TextField
               name="amount"
               label="Amount"
+              type="number"
+              onWheel={(e) => e.target.blur()}
               fullWidth
               inputProps={{
                 step: 'any'
