@@ -116,16 +116,6 @@ const EditOrder = () => {
               };
             })
           : [],
-        transactions:
-          data.advancedPayment && parseFloat(data.advancedPayment) > 0
-            ? [
-                {
-                  amount: parseFloat(data.advancedPayment) || 0,
-                  paymentType: data.paymentType,
-                  remark: data.remark
-                }
-              ]
-            : [],
         total_amount: parseFloat(data.total),
         advance_payment: parseFloat(data.advancedPayment)
       }

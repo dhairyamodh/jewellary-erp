@@ -149,6 +149,42 @@ export const discountLoanAsync = createAsyncThunk(
   }
 );
 
+export const cancelLoanAsync = createAsyncThunk(
+  `/loan/cancel`,
+  async (req, { dispatch }) => {
+    try {
+      const response = await axiosClient.put(
+        `/loan/cancel/${req.id}`,
+        req.data
+      );
+      if (response.data.success) {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg,
+            severity: 'success'
+          })
+        );
+      } else {
+        dispatch(
+          openSnackbar({
+            message: response?.data?.msg || response?.data?.error,
+            severity: 'error'
+          })
+        );
+      }
+      return response;
+    } catch (error) {
+      dispatch(
+        openSnackbar({
+          message: error?.response?.data?.msg || 'Something went wrong.',
+          severity: 'error'
+        })
+      );
+      throw Error(error.message);
+    }
+  }
+);
+
 // Builder Cases
 
 export const getLoanListAsyncCase = (builder) => {

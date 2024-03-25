@@ -10,11 +10,11 @@ import {
   TablePagination,
   TableRow
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import SearchComponent from '../Search';
-import DateRange from '../DateRange';
 import moment from 'moment';
+import { useEffect, useState } from 'react';
 import useQuery from 'src/hooks/useQuery';
+import DateRange from '../DateRange';
+import SearchComponent from '../Search';
 
 const CustomTable = ({
   columns,
@@ -27,11 +27,14 @@ const CustomTable = ({
   actions,
   filters
 }) => {
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
-  const [search, setSearch] = useState('');
-  const [startDate, setStartDate] = useState(moment().subtract(1, 'month'));
-  const [endDate, setEndDate] = useState(moment());
+  const query = useQuery();
+  const [page, setPage] = useState(parseInt(query['page']) || 1);
+  const [limit, setLimit] = useState(parseInt(query['limit']) || 5);
+  const [search, setSearch] = useState(query['search'] || '');
+  const [startDate, setStartDate] = useState(
+    moment(query['startDate'] || moment().subtract(1, 'month'))
+  );
+  const [endDate, setEndDate] = useState(moment(query['endDate'] || moment()));
   const [isMounted, setIsMounted] = useState(false);
   const handleStartDateChange = (date) => {
     setStartDate(date);
@@ -62,35 +65,37 @@ const CustomTable = ({
   };
 
   useEffect(() => {
-    if (isMounted) {
+    const fetchDataAndUpdateURL = async () => {
       const paramsObject = {
         ...filters,
-        page: 1,
-        limit: limit,
+        page,
+        limit,
         search: search || '',
         ...(isDateFilter && { startDate, endDate })
       };
-
       const url = new URL(window.location);
-      Object.entries(paramsObject).forEach(([key, value]) =>
-        url.searchParams.set(key, value)
-      );
+      Object.entries(paramsObject).forEach(([key, value]) => {
+        url.searchParams.set(key, value);
+      });
       window.history.pushState(null, '', url.toString());
-      fetchServerData(page, limit, search, startDate, endDate, filters);
+
+      await fetchServerData(page, limit, search, startDate, endDate, filters);
+    };
+
+    if (isMounted) {
+      fetchDataAndUpdateURL();
     } else {
       setIsMounted(true);
     }
   }, [isMounted, page, limit, search, startDate, endDate, filters]);
 
-  const query = useQuery();
-
   useEffect(() => {
     if (query) {
-      setSearch(query.get('search') || '');
-      setPage(parseInt(query.get('page')) || 1);
-      setLimit(parseInt(query.get('limit')) || 5);
-      setStartDate(query.get('startDate') || moment().subtract(1, 'month'));
-      setEndDate(query.get('endDate') || moment());
+      setSearch(query['search'] || '');
+      setPage(parseInt(query['page']) || 1);
+      setLimit(parseInt(query['limit']) || 5);
+      setStartDate(query['startDate'] || moment().subtract(1, 'month'));
+      setEndDate(query['endDate'] || moment());
     }
   }, [query]);
 

@@ -92,9 +92,9 @@ const EmiTable = () => {
   const query = useQuery();
 
   const reFetchData = () => {
-    const page = query.get('page');
-    const limit = query.get('limit');
-    const search = query.get('search') || '';
+    const page = parseInt(query['page']);
+    const limit = parseInt(query['limit']);
+    const search = query['search'] || '';
     fetchData({ page, limit, search });
   };
 
@@ -143,9 +143,9 @@ const EmiTable = () => {
 
   const handleCancelOrder = async () => {
     await dispatch(cancelEmiAsync({ id: openCancel?.id }));
-    const page = query.get('page');
-    const limit = query.get('limit');
-    const search = query.get('search') || '';
+    const page = parseInt(query['page']);
+    const limit = parseInt(query['limit']);
+    const search = query['search'] || '';
     await fetchData({ page, limit, search });
     handleCloseCancelDialog();
   };

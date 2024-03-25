@@ -56,7 +56,9 @@ const CreateOrder = () => {
           })
         : [],
       transactions:
-        data.advancedPayment && parseFloat(data.advancedPayment) > 0
+        data.total_amount > 0 &&
+        data.advancedPayment &&
+        parseFloat(data.advancedPayment) > 0
           ? [
               {
                 amount: parseFloat(data.advancedPayment) || 0,

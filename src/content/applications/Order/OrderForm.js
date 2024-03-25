@@ -43,6 +43,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
       taxRate: 3,
       discount: 0,
       date: moment(),
+      dueDate: moment(),
       item: [
         {
           name: '',

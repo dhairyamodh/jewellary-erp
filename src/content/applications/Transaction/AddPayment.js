@@ -35,7 +35,7 @@ import {
   deleteTransactionAsync,
   getOrderById
 } from 'src/redux/Order/orderThunk';
-import { RUPEE_SYMBOL } from 'src/utils/constants';
+import { DATE_FORMAT, RUPEE_SYMBOL } from 'src/utils/constants';
 
 const AddPayment = () => {
   const { id } = useParams();
@@ -148,6 +148,12 @@ const AddPayment = () => {
                             Customer Address
                           </Typography>
                           <Typography mt={1}>{details?.address}</Typography>
+                        </Grid>
+                        <Grid item md={6} xs={12}>
+                          <Typography variant="caption">Due Date</Typography>
+                          <Typography mt={1}>
+                            {moment(details?.dueDate).format(DATE_FORMAT)}
+                          </Typography>
                         </Grid>
                       </Grid>
                     </CardContent>
@@ -400,119 +406,126 @@ const AddPayment = () => {
                     </Card>
                   </Grid>
                 )}
-                {details?.remainingAmount > 0 && (
-                  <Grid item xs={12}>
-                    <Card>
-                      <CardHeader title="Add Amount" />
-                      <Divider />
-                      <CardContent>
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                          <Grid container spacing={2}>
-                            <Grid item xs={6} md={4}>
-                              Remaining Amount
-                            </Grid>
-                            <Grid item xs={6} md={8}>
-                              {RUPEE_SYMBOL} {details?.remainingAmount}
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                  <Grid container spacing={2}>
-                                    <Grid item xs={6} md={4}>
-                                      Amount
-                                    </Grid>
-                                    <Grid item xs={6} md={4}>
-                                      <TextField
-                                        name="amount"
-                                        fullWidth
-                                        type="number"
-                                        onWheel={(e) => e.target.blur()}
-                                        placeholder="Enter amount"
-                                        inputProps={{
-                                          step: 'any'
-                                        }}
-                                        {...register('amount', {
-                                          required: true,
-                                          validate: (value) => {
-                                            const parsedValue = Number(value);
-                                            const remainingAmount = Number(
-                                              details?.remainingAmount
-                                            );
-
-                                            if (parsedValue > remainingAmount) {
-                                              return 'Amount should not be greater than remaining amount';
-                                            }
-
-                                            return undefined;
-                                          }
-                                        })}
-                                        error={Boolean(
-                                          errors?.amount &&
-                                            errors?.amount?.message !== ''
-                                        )}
-                                        helperText={errors?.amount?.message}
-                                      />
-                                    </Grid>
-                                  </Grid>
-                                </Grid>
-                                <Grid item xs={12}>
-                                  <Grid container spacing={2}>
-                                    <Grid item xs={6} md={4}>
-                                      Payment Type
-                                    </Grid>
-                                    <Grid item xs={6} md={4}>
-                                      <FormControl fullWidth>
-                                        <Select
-                                          defaultValue="cash"
-                                          name="type"
-                                          {...register('paymentType', {
+                {details?.remainingAmount > 0 ||
+                  (details?.status === 'price_not_fixed' && (
+                    <Grid item xs={12}>
+                      <Card>
+                        <CardHeader title="Add Amount" />
+                        <Divider />
+                        <CardContent>
+                          <form onSubmit={handleSubmit(onSubmit)}>
+                            <Grid container spacing={2}>
+                              <Grid item xs={6} md={4}>
+                                Remaining Amount
+                              </Grid>
+                              <Grid item xs={6} md={8}>
+                                {RUPEE_SYMBOL} {details?.remainingAmount}
+                              </Grid>
+                              <Grid item xs={12}>
+                                <Grid container spacing={2}>
+                                  <Grid item xs={12}>
+                                    <Grid container spacing={2}>
+                                      <Grid item xs={6} md={4}>
+                                        Amount
+                                      </Grid>
+                                      <Grid item xs={6} md={4}>
+                                        <TextField
+                                          name="amount"
+                                          fullWidth
+                                          type="number"
+                                          onWheel={(e) => e.target.blur()}
+                                          placeholder="Enter amount"
+                                          inputProps={{
+                                            step: 'any'
+                                          }}
+                                          {...register('amount', {
                                             required: true
+                                            // validate: (value) => {
+                                            //   const parsedValue = Number(value);
+                                            //   const remainingAmount = Number(
+                                            //     details?.remainingAmount
+                                            //   );
+
+                                            //   if (
+                                            //     parsedValue > remainingAmount
+                                            //   ) {
+                                            //     return 'Amount should not be greater than remaining amount';
+                                            //   }
+
+                                            //   return undefined;
+                                            // }
                                           })}
-                                        >
-                                          <MenuItem value="cash">Cash</MenuItem>
-                                          <MenuItem value="upi">UPI</MenuItem>
-                                          <MenuItem value="card">Card</MenuItem>
-                                        </Select>
-                                      </FormControl>
+                                          error={Boolean(
+                                            errors?.amount &&
+                                              errors?.amount?.message !== ''
+                                          )}
+                                          helperText={errors?.amount?.message}
+                                        />
+                                      </Grid>
                                     </Grid>
                                   </Grid>
-                                </Grid>
-                                <Grid item xs={12}>
-                                  <Grid container spacing={2}>
-                                    <Grid item xs={6} md={4}>
-                                      Remark
-                                    </Grid>
-                                    <Grid item xs={6} md={4}>
-                                      <TextField
-                                        name="remark"
-                                        fullWidth
-                                        placeholder="Type remark"
-                                        {...register('remark')}
-                                        error={Boolean(errors?.remark)}
-                                      />
+                                  <Grid item xs={12}>
+                                    <Grid container spacing={2}>
+                                      <Grid item xs={6} md={4}>
+                                        Payment Type
+                                      </Grid>
+                                      <Grid item xs={6} md={4}>
+                                        <FormControl fullWidth>
+                                          <Select
+                                            defaultValue="cash"
+                                            name="type"
+                                            {...register('paymentType', {
+                                              required: true
+                                            })}
+                                          >
+                                            <MenuItem value="cash">
+                                              Cash
+                                            </MenuItem>
+                                            <MenuItem value="upi">UPI</MenuItem>
+                                            <MenuItem value="card">
+                                              Card
+                                            </MenuItem>
+                                          </Select>
+                                        </FormControl>
+                                      </Grid>
                                     </Grid>
                                   </Grid>
-                                </Grid>
-                                <Grid item xs={12}>
-                                  <LoadingButton
-                                    loading={paymentLoading}
-                                    variant="contained"
-                                    type="submit"
-                                    sx={{
-                                      height: '100%'
-                                    }}
-                                  >
-                                    Submit
-                                  </LoadingButton>
+                                  <Grid item xs={12}>
+                                    <Grid container spacing={2}>
+                                      <Grid item xs={6} md={4}>
+                                        Remark
+                                      </Grid>
+                                      <Grid item xs={6} md={4}>
+                                        <TextField
+                                          name="remark"
+                                          fullWidth
+                                          placeholder="Type remark"
+                                          {...register('remark')}
+                                          error={Boolean(errors?.remark)}
+                                        />
+                                      </Grid>
+                                    </Grid>
+                                  </Grid>
+                                  <Grid item xs={12}>
+                                    <LoadingButton
+                                      loading={paymentLoading}
+                                      variant="contained"
+                                      type="submit"
+                                      sx={{
+                                        height: '100%'
+                                      }}
+                                    >
+                                      Submit
+                                    </LoadingButton>
+                                  </Grid>
                                 </Grid>
                               </Grid>
                             </Grid>
-                          </Grid>
-                        </form>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                )}
+                          </form>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))}
               </Grid>
             </CardContent>
           </Card>

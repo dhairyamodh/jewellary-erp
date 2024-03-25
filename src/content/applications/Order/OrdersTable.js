@@ -125,11 +125,21 @@ const OrdersTable = () => {
 
   const handleCancelOrder = async () => {
     await dispatch(cancelOrderAsync({ id: openCancel?.id }));
-    const page = query.get('page');
-    const limit = query.get('limit');
-    const search = query.get('search') || '';
+    const page = parseInt(query['page']);
+    const limit = parseInt(query['limit']);
+    const search = query['search'] || '';
     await fetchData({ page, limit, search });
     handleCloseCancelDialog();
+  };
+
+  const handleViewDetails = (row) => {
+    let url = '';
+    if (row.status !== 'price_not_fixed') {
+      url = `/order/view-details/${row._id}`;
+    } else {
+      url = `/transaction/add-payment/${row._id}`;
+    }
+    navigate(url);
   };
 
   const columns = [
@@ -137,7 +147,9 @@ const OrdersTable = () => {
       header: 'Order Number',
       accessor: 'orderNo',
       cell: ({ value }) => {
-        return `${value ? `#${value}` : '-'}`;
+        return (
+          <Label color="secondary">{`${value ? `#${value}` : '-'}`}</Label>
+        );
       }
     },
     {
@@ -169,6 +181,15 @@ const OrdersTable = () => {
         );
       }
     },
+
+    {
+      id: 'dueDate',
+      header: 'Due Date',
+      accessor: 'dueDate',
+      cell: ({ value }) => {
+        return moment(value).format(DATE_FORMAT);
+      }
+    },
     {
       id: 'status',
       header: 'Status',
@@ -195,7 +216,7 @@ const OrdersTable = () => {
             <Tooltip title="View details" arrow>
               <IconButton
                 color={'primary'}
-                onClick={() => navigate(`/order/view-details/${row._id}`)}
+                onClick={() => handleViewDetails(row)}
               >
                 <VisibilityTwoTone />
               </IconButton>
@@ -246,20 +267,48 @@ const OrdersTable = () => {
 
   const DispatchFilter = () => {
     return (
-      <FormControlLabel
-        control={<Switch color="primary" checked={filters?.dispatch} />}
-        label="Delivered"
-        labelPlacement="start"
-        onChange={(e) => {
-          handleSetFilter('dispatch', Boolean(e.target.checked));
-        }}
-      />
+      <Card>
+        <Box
+          display="flex"
+          p={1}
+          px={2}
+          justifyItems="center"
+          alignItems="center"
+        >
+          <FormControlLabel
+            sx={{
+              ml: 0
+            }}
+            control={
+              <Switch
+                color="primary"
+                sx={{
+                  ml: 1
+                }}
+                checked={filters?.dispatch}
+              />
+            }
+            label="Delivered"
+            labelPlacement="start"
+            onChange={(e) => {
+              handleSetFilter('dispatch', Boolean(e.target.checked));
+            }}
+          />
+        </Box>
+      </Card>
     );
   };
 
   const TypeFilter = () => {
     return (
-      <Box width={150}>
+      <Box
+        sx={{
+          width: {
+            xs: '100%',
+            md: 150
+          }
+        }}
+      >
         <FormControl fullWidth variant="outlined">
           <InputLabel>Type</InputLabel>
           <Select

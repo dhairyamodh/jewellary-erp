@@ -61,9 +61,9 @@ const TransactionsTable = () => {
   };
 
   const handleAddDiscount = () => {
-    const page = query.get('page');
-    const limit = query.get('limit');
-    const search = query.get('search') || '';
+    const page = parseInt(query['page']);
+    const limit = parseInt(query['limit']);
+    const search = query['search'] || '';
     fetchData({ page, limit, search });
     handleCloseDiscount();
   };
