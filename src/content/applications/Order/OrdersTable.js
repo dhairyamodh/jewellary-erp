@@ -14,7 +14,7 @@ import {
   Switch,
   Tooltip
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   AddTwoTone,
@@ -128,7 +128,9 @@ const OrdersTable = () => {
     const page = parseInt(query['page']);
     const limit = parseInt(query['limit']);
     const search = query['search'] || '';
-    await fetchData({ page, limit, search });
+    const dispatch = query['dispatch'] || false;
+    const filterType = query['filterType'] || 'all';
+    await fetchData({ page, limit, search, dispatch, filterType });
     handleCloseCancelDialog();
   };
 
@@ -221,14 +223,14 @@ const OrdersTable = () => {
                 <VisibilityTwoTone />
               </IconButton>
             </Tooltip>
-            {row.status !== 'Cancelled' && row.status !== 'price_not_fixed' && (
+            {row.status !== 'Cancelled' && (
               <Tooltip title="Print Receipt" arrow>
                 <IconButton color="info" onClick={() => handlePrint(row)}>
                   <PrintTwoTone />
                 </IconButton>
               </Tooltip>
             )}
-            {row.status === 'price_not_fixed' && (
+            {!row?.dispatch && row.status !== 'Cancelled' && (
               <Tooltip title="Edit Order" arrow>
                 <IconButton
                   color="success"
@@ -330,6 +332,17 @@ const OrdersTable = () => {
       </Box>
     );
   };
+
+  useEffect(() => {
+    if (query) {
+      const dispatch = query['dispatch'] || false;
+      const filterType = query['filterType'] || 'all';
+      setFilters({
+        dispatch,
+        filterType
+      });
+    }
+  }, [query]);
 
   return (
     <>

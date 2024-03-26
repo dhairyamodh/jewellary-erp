@@ -7,14 +7,40 @@ import {
   Divider,
   Grid
 } from '@mui/material';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 import BackButton from 'src/components/BackButton';
+import DeleteDialog from 'src/components/Dialogs/DeleteDialog';
 import { createOrderAsync } from 'src/redux/Order/orderThunk';
 import OrderForm from './OrderForm';
 
 const CreateOrder = () => {
   const dispatch = useDispatch();
+
+  const [state, setState] = useState({
+    open: false,
+    data: undefined
+  });
+
+  const onOpen = async (data) => {
+    if (!data?.dispatch) {
+      setState({
+        open: true,
+        data
+      });
+    } else {
+      await onSubmit(data);
+    }
+  };
+
+  const onClose = () => {
+    setState({
+      open: false,
+      data: undefined
+    });
+  };
 
   const onSubmit = async (data) => {
     const request = {
@@ -74,13 +100,29 @@ const CreateOrder = () => {
     return res;
   };
 
+  const navigate = useNavigate();
+
+  const onAccept = async () => {
+    const res = await onSubmit(state?.data);
+    onClose();
+    if (res?.payload?.data?.success) {
+      navigate(-1);
+    }
+    return res;
+  };
+
   return (
     <>
       <Helmet>
         <title>Create Order</title>
       </Helmet>
       <Container maxWidth="xl">
-        <Box py={4}>
+        <Box
+          py={{
+            xs: 2,
+            md: 3
+          }}
+        >
           <Grid
             container
             direction="row"
@@ -93,13 +135,19 @@ const CreateOrder = () => {
                 <CardHeader avatar={<BackButton />} title="Create Order" />
                 <Divider />
                 <CardContent>
-                  <OrderForm onSubmit={onSubmit} />
+                  <OrderForm onSubmit={onOpen} />
                 </CardContent>
               </Card>
             </Grid>
           </Grid>
         </Box>
       </Container>
+      <DeleteDialog
+        open={state?.open}
+        onClose={onClose}
+        onAccept={onAccept}
+        msg="Are you sure want to create this order without delivered"
+      />
     </>
   );
 };

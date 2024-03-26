@@ -6,7 +6,6 @@ import {
   DialogContentText,
   Typography
 } from '@mui/material';
-import React from 'react';
 
 const DeleteDialog = ({ open, msg, onClose, onAccept }) => {
   return (
@@ -19,8 +18,8 @@ const DeleteDialog = ({ open, msg, onClose, onAccept }) => {
       aria-describedby="alert-dialog-description"
     >
       <DialogContent>
-        <Typography variant="h4" mb={2}>
-          {'Are you sure?' || msg}
+        <Typography variant="h4" mb={2} lineHeight={1.7}>
+          {msg || 'Are you sure?'}
         </Typography>
         <DialogContentText id="alert-dialog-description">
           You won't be able to revert this!

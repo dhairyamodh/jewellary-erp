@@ -77,7 +77,7 @@ const TransactionInvoice = ({ data }) => {
                 <div className="contact-info">
                   <a className="mr-0 d-none-580">
                     Ugamani Sheri, Near Guru Maharaj Mandir, Jagana, Palanpur,
-                    Banaskantha
+                    Banaskantha, 385001.
                   </a>
                 </div>
               </div>

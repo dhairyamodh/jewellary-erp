@@ -146,6 +146,9 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
       (parseFloat(discount) || 0);
     setValue('total', total);
   }, [discount]);
+
+  const disabledWhenCompleted = defaultValue?.total > 0;
+
   return (
     <form onSubmit={handleSubmit(formSubmit)}>
       <Grid container spacing={2}>
@@ -209,6 +212,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       {...register(`item.${index}.name`, {
                         required: true
                       })}
+                      disabled={disabledWhenCompleted}
                       error={Boolean(errors?.item?.[index]?.name)}
                     />
                   </Grid>
@@ -222,6 +226,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                         {...register(`item.${index}.type`, {
                           required: true
                         })}
+                        disabled={disabledWhenCompleted}
                         error={Boolean(errors?.item?.[index]?.type)}
                       >
                         {TYPES?.map((type, index) => (
@@ -242,6 +247,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       {...register(`item.${index}.quantity`, {
                         required: true
                       })}
+                      disabled={disabledWhenCompleted}
                       error={Boolean(errors?.item?.[index]?.qauntity)}
                     />
                   </Grid>
@@ -258,6 +264,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       {...register(`item.${index}.weight`, {
                         required: true
                       })}
+                      disabled={disabledWhenCompleted}
                       error={Boolean(errors?.item?.[index]?.weight)}
                     />
                   </Grid>
@@ -268,6 +275,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       fullWidth
                       name={`item.${index}.design`}
                       {...register(`item.${index}.design`)}
+                      disabled={disabledWhenCompleted}
                       error={Boolean(errors?.item?.[index]?.design)}
                     />
                   </Grid>
@@ -284,6 +292,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       {...register(`item.${index}.rate`, {
                         required: true
                       })}
+                      disabled={disabledWhenCompleted}
                       error={Boolean(errors?.item?.[index]?.rate)}
                     />
                   </Grid>
@@ -300,6 +309,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       {...register(`item.${index}.itemRate`, {
                         required: true
                       })}
+                      disabled={disabledWhenCompleted}
                       error={Boolean(errors?.item?.[index]?.itemRate)}
                     />
                   </Grid>
@@ -313,6 +323,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       {...register(`item.${index}.labour`, {
                         required: true
                       })}
+                      disabled={disabledWhenCompleted}
                       error={Boolean(errors?.item?.[index]?.labour)}
                     />
                   </Grid>
@@ -329,6 +340,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       {...register(`item.${index}.price`, {
                         required: true
                       })}
+                      disabled={disabledWhenCompleted}
                       error={Boolean(errors?.item?.[index]?.price)}
                     />
                   </Grid>
@@ -340,6 +352,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                         sx={{
                           height: '100%'
                         }}
+                        disabled={disabledWhenCompleted}
                         onClick={() =>
                           append({
                             name: '',
@@ -362,6 +375,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                         sx={{
                           height: '100%'
                         }}
+                        disabled={disabledWhenCompleted}
                         onClick={() => remove(index)}
                       >
                         <DeleteOutlineTwoTone />
@@ -386,6 +400,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                       name={`replaceItems.${index}.name`}
                       label="Item Name"
                       fullWidth
+                      disabled={disabledWhenCompleted}
                       {...register(`replaceItems.${index}.name`)}
                     />
                   </Grid>
@@ -396,6 +411,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                         label="Item type"
                         defaultValue="gold"
                         name={`replaceItems.${index}.type`}
+                        disabled={disabledWhenCompleted}
                         {...register(`replaceItems.${index}.type`)}
                       >
                         {TYPES?.map((type, index) => (
@@ -416,6 +432,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                         step: 'any'
                       }}
                       name={`replaceItems.${index}.weight`}
+                      disabled={disabledWhenCompleted}
                       {...register(`replaceItems.${index}.weight`)}
                     />
                   </Grid>
@@ -429,6 +446,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                         step: 'any'
                       }}
                       name={`replaceItems.${index}.price`}
+                      disabled={disabledWhenCompleted}
                       {...register(`replaceItems.${index}.price`)}
                     />
                   </Grid>
@@ -440,6 +458,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                         sx={{
                           height: '100%'
                         }}
+                        disabled={disabledWhenCompleted}
                         onClick={() =>
                           replaceFieldArr?.append({
                             name: '',
@@ -459,6 +478,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                         sx={{
                           height: '100%'
                         }}
+                        disabled={disabledWhenCompleted}
                         onClick={() => replaceFieldArr?.remove(index)}
                       >
                         <DeleteOutlineTwoTone />
@@ -492,6 +512,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                             label="Date"
                             onAccept={field.onChange}
                             onChange={() => {}}
+                            disabled={disabledWhenCompleted}
                             inputFormat="DD/MM/yyyy"
                             renderInput={(props) => {
                               return (
@@ -529,6 +550,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                             onAccept={field.onChange}
                             onChange={() => {}}
                             inputFormat="DD/MM/yyyy"
+                            disabled={disabledWhenCompleted}
                             renderInput={(props) => {
                               return (
                                 <TextField
@@ -556,6 +578,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                   <FormControlLabel
                     control={<Switch color="primary" />}
                     {...register(`isFullPayment`)}
+                    disabled={disabledWhenCompleted}
                     checked={watch('isFullPayment')}
                   />
                 </Grid>
@@ -567,6 +590,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                     <Select
                       defaultValue="cash"
                       name="type"
+                      disabled={disabledWhenCompleted}
                       {...register('paymentType', {
                         required: true
                       })}
@@ -641,6 +665,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                     inputProps={{
                       step: 'any'
                     }}
+                    disabled={disabledWhenCompleted}
                     {...register('taxRate', {
                       required: true
                     })}
@@ -658,6 +683,7 @@ const OrderForm = ({ onSubmit, defaultValue }) => {
                         onWheel={(e) => e.target.blur()}
                         fullWidth
                         name="discount"
+                        disabled={disabledWhenCompleted}
                         inputProps={{
                           step: 'any'
                         }}

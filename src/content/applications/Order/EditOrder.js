@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Card,
   CardContent,
@@ -39,6 +40,8 @@ const EditOrder = () => {
     subTotal: details?.subTotal || 0,
     remark: details?.remark,
     date: details.date,
+    dueDate: details.dueDate,
+    dispatch: details?.dispatch,
     item: details?.items?.map((i) => {
       return {
         name: i?.name,
@@ -133,27 +136,48 @@ const EditOrder = () => {
       <Helmet>
         <title>Edit Order</title>
       </Helmet>
-      <Container maxWidth="xl">
-        <Box py={4}>
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="stretch"
-            spacing={3}
+      <Box>
+        {details?.total_amount > 0 && (
+          <Alert
+            severity="warning"
+            sx={{
+              width: '100%'
+            }}
           >
-            <Grid item xs={12}>
-              <Card>
-                <CardHeader avatar={<BackButton />} title="Edit Order" />
-                <Divider />
-                <CardContent>
-                  <OrderForm onSubmit={onSubmit} defaultValue={defaultValue} />
-                </CardContent>
-              </Card>
+            You can only update delivery option, once you update this then you
+            can't revert this
+          </Alert>
+        )}
+        <Container maxWidth="xl">
+          <Box
+            py={{
+              xs: 2,
+              md: 3
+            }}
+          >
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="stretch"
+              spacing={3}
+            >
+              <Grid item xs={12}>
+                <Card>
+                  <CardHeader avatar={<BackButton />} title="Edit Order" />
+                  <Divider />
+                  <CardContent>
+                    <OrderForm
+                      onSubmit={onSubmit}
+                      defaultValue={defaultValue}
+                    />
+                  </CardContent>
+                </Card>
+              </Grid>
             </Grid>
-          </Grid>
-        </Box>
-      </Container>
+          </Box>
+        </Container>
+      </Box>
     </>
   );
 };
